@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<!-- acl configuration file -->
+<access>
+    <!-- List of all roles -->
+    <roles>
+        <role>Anonymous</role>
+        <role>User</role>
+        <role>Administrator</role>
+    </roles>
+    <!-- Access control list -->
+    <ACL>
+        <view name="Main">
+            <allow>Anonymous</allow>
+        </view>
+        <view name="Registration">
+            <allow>Anonymous</allow>
+        </view>
+        <view name="Login">
+            <allow>Anonymous</allow>
+        </view>
+        <view name="ForgetPassword">
+            <allow>Anonymous</allow>
+        </view>
+        <view name="PasswordSent">
+            <allow>Anonymous</allow>
+        </view>
+        <view name="PermissionTest">
+            <allow>User</allow>
+            <allow>Administrator</allow>
+        </view>
+        <view name="User/*">
+            <allow>Administrator</allow>
+        </view>
+        <action name="Registration">
+            <allow>Anonymous</allow>
+        </action>
+        <action name="Login">
+            <allow>Anonymous</allow>
+        </action>
+        <action name="Logout">
+            <allow>Anonymous</allow>
+        </action>
+        <action name="ForgetPassword">
+            <allow>Anonymous</allow>
+        </action>
+        <action name="User/*">
+            <allow>Administrator</allow>
+        </action>
+    </ACL>
+</access>

@@ -1,0 +1,367 @@
+/*  ################  STANDART CLASSES  ############  */
+body {
+	font-family: Tahoma, Verdana, Helvetica, Arial,  sans-serif;
+	font-size: 12px;
+	background-color: White;
+	color: Black;
+}
+h1 {
+	margin-top: 0;
+	font-size: 170%;
+	font-weight: normal;
+}
+
+h2 {
+	font-size: 110%;
+	margin: 0px;
+	font-weight: bold;
+}
+h3 {
+	margin: 0px;
+	margin-top: 10px;
+	font-size: 100%;
+}
+img {
+	border: none;
+}
+
+a {
+	color: #215DC6;
+	text-decoration: underline;
+}
+a:hover {
+   text-decoration: none;
+}
+td,th {
+	font-family: Tahoma, Verdana, Helvetica, Arial,  sans-serif;
+	font-size: 100%;
+}
+textarea {
+	width: 300px;
+	height: 200px;
+}
+
+form {
+	margin: 0px;
+	padding: 0px;
+}
+hr { 
+  color: #898989;
+  border-top: 1px solid #898989;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  padding: 0px;
+  margin: 0px;
+}
+input {
+	width: 150px;
+	border: 1px solid #444444;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+/* ###########  END STANDART CLASSES  #############*/
+
+
+/* ###########  COMMON CLASSES  ##########*/
+h1.site-title {
+	font-size: 140%;
+	text-align: left;
+	font-weight: bold;
+	margin: 10px;
+}
+
+/* class for HEADER table */
+table.header {
+	width: 780px;	
+	background-color: #eeeeee;
+}
+table.header td.login {
+	font-size: 70%;
+	color: #666666;
+	text-align: right;
+	vertical-align: top;
+}
+table.header td.login a {
+	text-decoration: none;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+table.header td.login a.last {
+	padding-right: 0px;
+}
+table.header td.login a:hover {
+	color: #999999;
+}
+/* end of class for HEADER table */
+
+table.content {
+	width: 780px;
+}
+table.content td.content {
+	text-align: left;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+table.footer {
+	width: 780px;	
+	background-color: #eeeeee;
+}
+table.footer td.footer {
+	padding: 5px;		
+	font-size: 70%;
+	color: #333333;
+	text-align: center;
+}
+
+
+/*  class for CHECKBOXES, RADIOBUTTONS  */
+input.check {
+	width: auto;
+	border: none;
+}
+
+/*  class for SUBMIT and BUTTONS  */
+input.but {
+	width: auto;
+	font-size: 90%;
+	border: none;
+	background-color: #66667e;
+	color: White;
+	font-weight: bold;
+	padding: 3px;
+	padding-bottom: 1px;
+	padding-top: 1px;
+}
+/*  we often use HTMLAREA lib, this is standart size for it  */
+textarea.html {
+	width: 550px;
+	height: 300px;
+}
+
+
+/*  span for REQUIRED FIELDS star  */
+span.rq {
+	color: Red;
+	margin-right: 5px;
+}
+
+.comment {
+	color: #666666;
+}
+
+/*  ACTION td is used for different admin actions in list table
+such as "Add", "Edit", "Delete"
+*/
+td.actions {
+	color: #666666;
+	white-space: nowrap;
+}
+td.actions a {
+	text-decoration: none;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+td.actions a:hover {
+	color: #666666;
+	text-decoration: underline;
+}
+
+/*  ADD ITEM table  id used for links Add User, Add Category etc
+we use this link on the left
+and place pager on the right of the ADD table
+*/
+table.add {
+	width: 100%;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+table.add td {
+	padding: 0px;
+}
+table.add td a, a.add {
+	font-weight: bold;
+	text-decoration: none;
+	color: #FF0033;
+}
+table.add td a:hover, a.add:hover {
+	color: #dd0000;
+	text-decoration: underline;	
+}
+table.error, table.error h2{
+	color: #990000;
+}
+table.error {
+	margin-bottom: 5px;
+}
+table.error td {
+	padding: 0px;
+}
+/*  table for LISTS such as list of user etc  */
+table.list {
+  width: 100%;
+  font-size: 100%;
+}
+table.list td{
+	padding: 3px;
+	
+}
+table.list td.portlet, table.list td.portlet td{
+	padding: 0px;
+}
+table.list td.portlet {
+	padding-bottom: 10px;
+}
+table.list th { 
+  text-align: center;
+  padding: 6px;
+  color:#202020;
+  background-color: #b4b7ca;
+}
+
+table.list th.normal {
+	font-weight: normal;
+}
+table.list th a { 
+  text-align: center;
+  padding: 6px;
+  color:#202020;
+  text-decoration:underline
+}
+
+/*  special table for different FORMS
+such as login form, registration form etc  */
+table.form td {
+	padding: 3px;
+}
+table.form td.fieldName {
+	font-weight: bold;
+	color: #444444;
+}
+table.form td.no-padding {
+	padding: 0px;
+}
+/*  we use different colors for even and odd colors
+
+odd:  basic color
+even:  highlighted color
+
+*/
+tr.even {
+  background-color: #e0e2eb;
+}
+tr.odd {
+  
+}
+
+/*  this class we use when table is empty - NO ITEMS to display  */
+.no-items {
+  text-align: center;
+  font-style: italic;
+  color: #666666;
+}
+
+/*  PAGER table  */
+table.pager td {
+  font-family:Verdana;
+  font-size:9px;
+  color: #404040;
+}
+table.pager td a, table.add table.pager td a{
+  color: #215DC6;
+  
+}
+table.pager td a.num, table.add table.pager td a.num{
+	background-color: #eeeeee;
+	padding: 3px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+table.pager td a.num:hover, table.add table.pager td a.num:hover{
+  color: #ffffff;
+  background-color: #aaaaaa;
+	text-decoration: none;
+}
+table.pager span.current {
+  font-weight: bold;
+  background-color: #cccccc;
+  color: Black;
+  padding: 3px;	
+  padding-left: 5px;
+  padding-right: 5px;
+}
+/*  end of PAGER table  */
+
+/*  div for MAIN MENU  */
+div.tabs {
+  	background-color: #e0e2eb;
+	vertical-align: bottom;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	width: 780px;
+	text-align: left;
+	color: #666666;
+}
+div.tabs a {
+	padding: 5px;
+	text-decoration: none;
+}
+div.tabs a:hover {
+  text-decoration:underline;
+}
+div.tabs a.selected {
+  background-color: #66667e;
+  color: White;
+}
+/*  end of div for MAIN MENU  */
+
+/*  div for SUBMENU  */
+
+div.sub {
+	width: 780px;
+	color: #eeeeee;
+	margin-bottom: 10px;
+	background-color: #8989aa;
+	text-align: left;
+	padding-bottom: 3px;
+	padding-top: 2px;
+	font-size: 85%;
+}
+div.sub a, div.sub strong{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+div.sub a {
+	text-decoration: none;
+	color: White;
+	font-weight: bold;
+}
+div.sub a:hover {
+	color: #dddddd;
+}
+div.sub strong {
+	color: #ffffd7;
+}
+div.portlet {
+	background-color: #e0e2eb;
+	padding: 10px;	
+}
+/*  end of div for SUBMENU  */
+
+/*  #############  MAIN MENU ENDS  ###############  */
+
+/*  ############  end common classes  ##############  */
+
+/*  ###########  PROJECT CLASSES  #################### */
+
+	/*special project classes place here*/
+
+/* ############  END PROJECT CLASSES  ################ */
+
+
+/*#############  TEMPORARY CLASES  ##################*/
+
+	/*if you need you special class place it here*/
+
+/*############  END TEMPORARY CLASSES  ##############*/

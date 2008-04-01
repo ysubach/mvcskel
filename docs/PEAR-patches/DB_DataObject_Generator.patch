@@ -1,0 +1,63 @@
+--- Generator.php.	2006-10-16 09:20:24.000000000 +0700
++++ Generator.php	2007-01-11 11:01:29.000000000 +0600
+@@ -779,11 +779,15 @@
+     {
+         // title = expand me!
+         $foot = "";
+-        $head = "<?php\n/**\n * Table Definition for {$this->table}\n */\n";
++        $head = "<?php\n/**\n * Table Definition for {$this->table}\n";
++        $head .= $this->derivedHookPageLavelDocBlock();
++        $head .= " */\n";
++        $head .= $this->derivedHookExtendsDocBlock();
+         // requires
+         $head .= "require_once '{$this->_extendsFile}';\n\n";
+         // add dummy class header in...
+         // class
++        $head .= $this->derivedHookClassDocBlock();
+         $head .= "class {$this->classname} extends {$this->_extends} \n{";
+ 
+         $body =  "\n    ###START_AUTOCODE\n";
+@@ -946,8 +950,43 @@
+             '/(\n|\r\n)\s*###START_AUTOCODE(\n|\r\n).*(\n|\r\n)\s*###END_AUTOCODE(\n|\r\n)/s',
+             $body,$input);
+     }
++    
++    /**
++     * hook to add extra page-level (in terms of phpDocumentor) DocBlock
++     *
++     * called once for each class, use it add extra page-level docs
++     * @access public
++     * @return string added to class eg. functions.
++     */
++    function derivedHookPageLavelDocBlock() {
++        return '';
++    }
++    
++    /**
++     * hook to add extra doc block (in terms of phpDocumentor) to extend string 
++     *
++     * called once for each class, use it add extra comments to extends
++     * string (require_once...)
++     * @access public
++     * @return string added to class eg. functions.
++     */
++    function derivedHookExtendsDocBlock() {
++        return '';
++    }
+ 
+     /**
++     * hook to add extra class level DocBlock (in terms of phpDocumentor) 
++     *
++     * called once for each class, use it add extra comments to class
++     * string (require_once...)
++     * @access public
++     * @return string added to class eg. functions.
++     */
++    function derivedHookClassDocBlock() {
++        return '';
++    }
++    
++    /**
+      * hook to add extra methods to all classes
+      *
+      * called once for each class, use with $this->table and
