@@ -1,0 +1,7 @@
+RewriteEngine on
+
+## css/js combining
+## set correct server root here
+RewriteBase /mvcskel
+RewriteRule ^styles/(.*\.css)$ combine.php?type=css&files=$1
+RewriteRule ^js/(.*\.js)$      combine.php?type=javascript&files=$1
