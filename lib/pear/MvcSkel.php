@@ -2,23 +2,19 @@
 /**
 * MvcSkel runner.
 *
-* PHP versions 4 and 5
+* PHP versions 5
 *
 * @category   framework
 * @package    MvcSkel
-* @copyright  2007, Whirix Ltd.
+* @copyright  2008, Whirix Ltd.
 * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
-* @link       http://trac.whirix.com/mvcskel
+* @link       http://code.google.com/p/mvcskel/
 */
 
 /**
-*
+* Include base filter.
 */
-require_once 'MvcSkel/Smarty.php';
-require_once 'MvcSkel/ViewFactory.php';
-require_once 'MvcSkel/AccessController.php';
-require_once 'MvcSkel/Phrame/ActionController.php';
-require_once 'MvcSkel/ErrorManager.php';
+require_once 'MvcSkel/Filter.php';
 
 /**
 * Handle request with MvcSkel framework.
@@ -26,44 +22,64 @@ require_once 'MvcSkel/ErrorManager.php';
 * @package    MvcSkel
 */ 
 class MvcSkel {
-    /**
-    * Run framework
-    * @static
-    * @access public
-    */
-    function run($defaultView = 'Main') {
-        if (isset($_REQUEST['view'])) {
-            MvcSkel::_handleView($_REQUEST['view']);
-        } else if (isset($_REQUEST['action'])) {
-            MvcSkel::_handleAction($_REQUEST['action']);
-        } else {
-            MvcSkel::_handleView($defaultView);
-        }
-    }
-    
-    /**
-    * Process view.
-    * @access protected
-    * @static
-    */
-    function _handleView($viewName) {
-        MvcSkel_AccessController::checkViewAccess($viewName);
-        $viewFactory = new MvcSkel_ViewFactory();        
-        $view =& $viewFactory->build($viewName);
-        $view->init(new MvcSkel_Smarty());
-        $view->render();        
-    }
-
-    /**
-    * Process action.
-    * @access protected
-    * @static
-    */
-    function _handleAction($actionName) {
-        MvcSkel_AccessController::checkActionAccess($actionName);
-        $controller = new MvcSkel_Phrame_ActionController();
-        MvcSkel_ErrorManager::clear();
-        $map = &PEAR::getStaticProperty('MvcSkel', 'mappings');
-        $controller->process($map, $_REQUEST);    
-    }
+	/**
+	* Array of filters.
+	*/
+	protected $filters = array();
+	
+	/**
+	* Add filter for the framework. The filters applied here
+	* will be executed for the application scope.
+	* @param MvcSkel_Filter $filter filter object to add
+	* @return void
+	*/
+	public function addFilter(MvcSkel_Filter $filter) {
+		$this->filters[] = $filter;
+	}
+	
+	/**
+	* Execute all the filters.
+	* Stop the excution if one of them return false.
+	* @return boolean false if one of the filters returned false, true if all
+	* filters are executed ok.
+	*/
+	public function applyFilters() {
+		foreach ($this->filters as $filter) {
+			if (!$filter->filter()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	* Run framework. Get Controller name from request variable 'c',
+	* and get Action name from request variable 'a'. So this names
+	* are reserved names. It also do output of the action return result.
+	*/
+	public function run() {
+		// application scope filters
+		if ($this->applyFilters()) {
+			$controller = $_REQUEST['c'];
+			$action = $_REQUEST['a'];
+			
+			require_once "Controller/{$controller}.php";
+			
+			$conName = "Controller_{$controller}";
+			if (!class_exists($conName)) {
+				trigger_error('Can not find controller class definition.');
+			}
+			$conObj = new $conName();
+			
+			$actName = "action{$action}";
+			if (!method_exists($conObj, $actName)) {
+				trigger_error('Can not find controller method.');
+			}
+			// controller scope filters
+			if ($conObj->applyFilters()) {
+				echo $conObj->$actName();
+			}
+		}
+	}
 }
+?>
