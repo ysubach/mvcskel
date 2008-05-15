@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 rm -rf api
-/usr/local/phpdoc/phpdoc -c phpdoc.ini
+~/bin/phpdoc/phpdoc -c phpdoc.ini
