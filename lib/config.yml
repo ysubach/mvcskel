@@ -1,0 +1,9 @@
+database:
+    host: localhost
+    name: mvcskel
+    user: root
+    pass: 
+
+logger:
+    file: log.txt
+    level: 1

@@ -66,15 +66,9 @@ class MvcSkel {
 			require_once "Controller/{$controller}.php";
 			
 			$conName = "Controller_{$controller}";
-			if (!class_exists($conName)) {
-				trigger_error('Can not find controller class definition.');
-			}
 			$conObj = new $conName();
 			
 			$actName = "action{$action}";
-			if (!method_exists($conObj, $actName)) {
-				trigger_error('Can not find controller method.');
-			}
 			// controller scope filters
 			if ($conObj->applyFilters()) {
 				echo $conObj->$actName();

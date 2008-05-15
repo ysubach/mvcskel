@@ -13,7 +13,7 @@
 
 // set PATH to project related PEAR installation
 // and to 
-$p = array('lib/pear/MvcSkel', 'lib/pear', 'lib', ini_get('include_path'));
+$p = array('lib/pear', 'lib/smarty', 'lib', ini_get('include_path'));
 ini_set('include_path', join(PATH_SEPARATOR, $p));
 
 /**
