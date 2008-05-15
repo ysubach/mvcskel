@@ -12,20 +12,24 @@
 */
 
 /**
-* Include base framework class to inherite some basic methods.
-*/
-require_once 'MvcSkel.php';
+ * Include base framework class to inherite some basic methods.
+ */
+    require_once 'MvcSkel.php';
 
 /**
-* Controller base class.
-* @category   framework
-* @package    MvcSkel
-* @subpackage    Controller
-*/ 
-abstract class MvcSkel_Controller extends MvcSkel {
-	/**
-	* Remove the method, it does not necessary here.
-	*/
-	final public function run() {}
-}
+ * Controller base class.
+ * @category   framework
+ * @package    MvcSkel
+ * @subpackage    Controller
+ */ 
+    abstract class MvcSkel_Controller extends MvcSkel {
+        /**
+         * Remove the method.
+         * 
+         * The method does not make sense in context of controller, so we
+         * remove it from here to avoid a confusion. You could safely 
+         * disregard this redefinition.
+         */
+        final public function run() {}
+    }
 ?>

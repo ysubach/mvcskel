@@ -14,66 +14,75 @@
 /**
 * Include base filter.
 */
-require_once 'MvcSkel/Filter.php';
+    require_once 'MvcSkel/Filter.php';
 
 /**
-* Handle request with MvcSkel framework.
-* @category   framework
-* @package    MvcSkel
-*/ 
-class MvcSkel {
-	/**
-	* Array of filters.
-	*/
-	protected $filters = array();
-	
-	/**
-	* Add filter for the framework. The filters applied here
-	* will be executed for the application scope.
-	* @param MvcSkel_Filter $filter filter object to add
-	* @return void
-	*/
-	public function addFilter(MvcSkel_Filter $filter) {
-		$this->filters[] = $filter;
-	}
-	
-	/**
-	* Execute all the filters.
-	* Stop the excution if one of them return false.
-	* @return boolean false if one of the filters returned false, true if all
-	* filters are executed ok.
-	*/
-	public function applyFilters() {
-		foreach ($this->filters as $filter) {
-			if (!$filter->filter()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	* Run framework. Get Controller name from request variable 'c',
-	* and get Action name from request variable 'a'. So this names
-	* are reserved names. It also do output of the action return result.
-	*/
-	public function run() {
-		// application scope filters
-		if ($this->applyFilters()) {
-			$controller = $_REQUEST['c'];
-			$action = $_REQUEST['a'];
-			
-			require_once "Controller/{$controller}.php";
-			
-			$conName = "Controller_{$controller}";
-			$conObj = new $conName();
-			
-			$actName = "action{$action}";
-			// controller scope filters
-			if ($conObj->applyFilters()) {
-				echo $conObj->$actName();
-			}
-		}
-	}
-}
+ * Handle request with MvcSkel framework.
+ * 
+ * @category   framework
+ * @package    MvcSkel
+ */ 
+    class MvcSkel {
+        /**
+        * Array of filters.
+        */
+        protected $filters = array();
+        
+        /**
+        * Add filter for the framework. The filters applied here
+        * will be executed for the application scope.
+        * @param MvcSkel_Filter $filter filter object to add
+        * @return void
+        */
+        public function addFilter(MvcSkel_Filter $filter) {
+            $this->filters[] = $filter;
+        }
+        
+        /**
+        * Execute all the filters.
+        * Stop the excution if one of them return false.
+        * @return boolean false if one of the filters returned false, true if all
+        * filters are executed ok.
+        */
+        public function applyFilters() {
+            foreach ($this->filters as $filter) {
+                if (!$filter->filter()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        /**
+         * Run framework. 
+         * 
+         * Get Controller name from request variable 'c',
+         * and get Action name from request variable 'a'. So this names
+         * are reserved names. It also do output of the action return result.
+         * 
+         * Usage:
+         * <code>
+         * $mvcskel = new MvcSkel();
+         * $mvcskel->run();
+         * </code>
+         */
+        public function run() {
+            // application scope filters
+            if ($this->applyFilters()) {
+                $controller = $_REQUEST['c'];
+                $action = $_REQUEST['a'];
+                        
+                require_once "Controller/{$controller}.php";
+                        
+                $conName = "Controller_{$controller}";
+                $conObj = new $conName();
+                        
+                $actName = "action{$action}";
+                // controller scope filters
+                if ($conObj->applyFilters()) {
+                    echo $conObj->$actName();
+                }
+            }
+        }
+    }
 ?>
