@@ -1,3 +1,5 @@
+root: /mvcskel/
+
 database:
     host: localhost
     name: mvcskel
