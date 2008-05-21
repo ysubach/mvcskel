@@ -1,9 +1,5 @@
 <?php
 /**
-* Index file.
-*
-* PHP versions 5
-*
 * @category   framework
 * @package    MvcSkel
 * @copyright  2008, Whirix Ltd.
@@ -11,9 +7,6 @@
 * @link       http://code.google.com/p/mvcskel/
 */
 
-/**
-* Include filter.
-*/
 require_once 'MvcSkel/Filter.php';
 
 /**
@@ -24,30 +17,30 @@ require_once 'MvcSkel/Filter.php';
 * @subpackage    Filter
 */ 
 class MvcSkel_Filter_DefaultPage extends MvcSkel_Filter {
-	private $controller;
-	private $action;
-	
-	/**
-	* C-r.
-	* @param string $controller default controller name
-	* @param string $action default action name
-	*/
-	public function __construct($controller, $action) {
-		$this->controller = $controller;
-		$this->action = $action;
-	}
-	
-	/**
-	* Add a and c vars to request if necessary.
-	*/
-	public function filter() {
-		if (!isset($_REQUEST['c']) || empty($_REQUEST['c'])) {
-			$_REQUEST['c'] = $this->controller;
-		}
-		if (!isset($_REQUEST['a']) || empty($_REQUEST['a'])) {
-			$_REQUEST['a'] = $this->action;
-		}
-		return true;
-	}
+    private $controller;
+    private $action;
+
+    /**
+    * C-r.
+    * @param string $controller default controller name
+    * @param string $action default action name
+    */
+    public function __construct($controller, $action) {
+        $this->controller = $controller;
+        $this->action = $action;
+    }
+
+    /**
+    * Add 'mvcskel_a' and 'mvcskel_c' vars to request if necessary.
+    */
+    public function filter() {
+        if (!isset($_REQUEST['mvcskel_c']) || empty($_REQUEST['mvcskel_c'])) {
+            $_REQUEST['mvcskel_c'] = $this->controller;
+        }
+        if (!isset($_REQUEST['mvcskel_a']) || empty($_REQUEST['mvcskel_a'])) {
+            $_REQUEST['mvcskel_a'] = $this->action;
+        }
+        return true;
+    }
 }
 ?>
