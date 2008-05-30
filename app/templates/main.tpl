@@ -8,3 +8,4 @@ We used this solution in many projects, that's why we strongly believe
 that MvcSkel will be useful for professional web development.</p>
 
 <p><a href="{url to='Main/ShowConfig' v=1}">show config</a></p>
+<p><a href="{url to='Main/PhpInfo' v=1}">PHP Info</a></p>

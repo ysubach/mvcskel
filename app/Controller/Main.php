@@ -21,5 +21,9 @@ class Controller_Main extends MvcSkel_Controller {
         $config = MvcSkel_Helper_Config::read();
         var_dump($config);
     }
+    
+    public function actionPhpInfo() {
+	phpinfo();
+    }
 }
 ?>
