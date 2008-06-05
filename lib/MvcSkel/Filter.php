@@ -30,4 +30,3 @@ abstract class MvcSkel_Filter {
 	abstract public function filter();
 }
 ?>
-

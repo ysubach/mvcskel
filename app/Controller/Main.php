@@ -3,6 +3,7 @@ require_once 'MvcSkel/Controller.php';
 require_once 'MvcSkel/Helper/Smarty.php';
 require_once 'MvcSkel/Helper/Config.php';
 require_once 'MvcSkel/Helper/Log.php';
+require_once 'MvcSkel/Helper/Auth.php';
 
 /**
 * Test controller.
@@ -24,6 +25,22 @@ class Controller_Main extends MvcSkel_Controller {
     
     public function actionPhpInfo() {
 	phpinfo();
+    }
+    
+    public function actionCheckAuth() {
+        $auth = new MvcSkel_Helper_Auth();
+        $auth->start();
+        $res = 'not authenticated';
+        if ($auth->checkAuth()) {
+            $res = 'authenticated<br>';
+            if ($auth->checkRole('User')) {
+                $res .= 'has User role<br>';
+            }
+            if ($auth->checkRole('Administrator')) {
+                $res .= 'has Administrator role<br>';
+            }
+        }
+        return $res;
     }
 }
 ?>

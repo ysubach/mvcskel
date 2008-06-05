@@ -127,6 +127,7 @@ class Auth_Container_MDB2 extends Auth_Container
         }
 
         if (MDB2::isError($this->db) || PEAR::isError($this->db)) {
+	    //die($this->db->getMessage());
             return PEAR::raiseError($this->db->getMessage(), $this->db->code);
         }
 

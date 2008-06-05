@@ -1,14 +1,24 @@
 <?php
 /**
-* @category   framework
-* @package    MvcSkel
-* @copyright  2008, Whirix Ltd.
-* @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
-* @link       http://code.google.com/p/mvcskel/
-*/
+ * MvcSkel Smarty helper.
+ * 
+ * Read more about this awesome tool at
+ * http://smarty.php.net/
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    MvcSkel
+ * @copyright  2008, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
+ */
 
 require_once 'Smarty.class.php';
 require_once 'MvcSkel/Helper/Config.php';
+require_once 'MvcSkel/Helper/Url.php';
+require_once 'MvcSkel/Helper/Auth.php';
+
 
 /**
  * Smarty helper. Implements basic concept of templates rendering.
@@ -26,6 +36,7 @@ class MvcSkel_Helper_Smarty extends Smarty {
 
         $this->compile_dir = $config['tmp_dir'] . '/templates_c';
         $this->assign('bodyTemplate', $bodyTemplate);
+        $this->assign('auth', new MvcSkel_Helper_Auth());
         
         $this->register_function('url', 
             array('MvcSkel_Helper_Smarty', 'pluginUrl'));
@@ -36,7 +47,7 @@ class MvcSkel_Helper_Smarty extends Smarty {
      * @return result of @see Smarty::fetch()
      */
     public function render() {
-        return $this->fetch('master.tpl');
+        return $this->fetch('master.html');
     }
     
     /**
@@ -55,22 +66,13 @@ class MvcSkel_Helper_Smarty extends Smarty {
      */
     public static function pluginUrl($params, &$smarty) {
         if (!isset($params['to'])) {
-          throw new Exception("Parameter 'to' is required");
+            throw new Exception("Parameter 'to' is required");
         }
         $url = $params['to'];
-        $anchor = isset($params['a']) ? $params['a'] : false;
+        $anchor = $params['a'];
         unset($params['to']);
         unset($params['a']);
-        
-        foreach ($params as $k=>$v) {
-            $url .= "/$k/".urlencode($v);
-        }
-        if ($anchor!==false) {
-            $url .= "#$anchor";
-        }
-        
-        $config = MvcSkel_Helper_Config::read();
-        return $config['root'].$url;
+        return MvcSkel_Helper_Url::url($url, $params, $anchor);
     }
 }
 ?>

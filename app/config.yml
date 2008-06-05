@@ -1,10 +1,6 @@
 root: /mvcskel/
 
-database:
-    host: localhost
-    name: mvcskel
-    user: root
-    pass: 
+dsn: mysql://root:@localhost/mvcskel
 
 logger:
     name: tmp/log.txt
