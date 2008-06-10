@@ -1,2 +1,3 @@
+RewriteEngine off
 #Order Deny,Allow
 #Deny from All

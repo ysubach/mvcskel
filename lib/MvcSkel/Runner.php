@@ -70,6 +70,13 @@ class MvcSkel_Runner {
      * and get Action name from request variable 'mvcskel_a'. 
      * So this names are reserved names. It also do output of the action 
      * return result.
+	 * 
+	 * The controller class will be found due to the set include paths.
+	 * Framework have it's own controllers. Your project has controllers
+	 * as well. The pririty is defined by you (set include paths). Most of all,
+	 * you'll prefer to set priority for your own Controllers. Any way,
+	 * it is not important until you decide to override internal controllers
+	 * such as @see MvcSkel_Controller_Auth, etc
      * 
      * Usage:
      * <code>
@@ -82,10 +89,10 @@ class MvcSkel_Runner {
         if ($this->applyFilters()) {
             $controller = $_REQUEST['mvcskel_c'];
             $action = $_REQUEST['mvcskel_a'];
-
+			
             require_once "Controller/{$controller}.php";
 
-            $conName = "Controller_{$controller}";
+            $conName = $this->getControllerClass($controller);
             $conObj = new $conName();
 
             $actName = "action{$action}";
@@ -95,5 +102,21 @@ class MvcSkel_Runner {
             }
         }
     }
+	
+	/**
+	* Get controller class name.
+	*
+	* Detects the class name defined: project related or framework related
+	*
+	* @param string $controller name of controller
+	* @return string controller class name
+	*/
+	private function getControllerClass($controller) {
+		$className = "Controller_{$controller}";
+		if (class_exists($className)) {
+			return $className;
+		}
+		return "MvcSkel_{$className}";
+	}
 }
 ?>

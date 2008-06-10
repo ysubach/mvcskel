@@ -10,7 +10,10 @@
 * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
 * @link       http://code.google.com/p/mvcskel/
 */
-    
+
+/**
+* Base controller.
+*/
 require_once 'MvcSkel/Controller.php';
 require_once 'MvcSkel/Helper/Smarty.php';
 require_once 'MvcSkel/Helper/Auth.php';
@@ -21,7 +24,7 @@ require_once 'MvcSkel/Helper/Url.php';
  * Renders login form, start authenticated session.
  * Makes logout.
  */
-class Controller_Auth extends MvcSkel_Controller {
+class MvcSkel_Controller_Auth extends MvcSkel_Controller {
     public function actionLogin() {
         $auth = new MvcSkel_Helper_Auth();
         $auth->start();

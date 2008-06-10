@@ -1,5 +1,9 @@
 <?php
 /**
+* MvcSkel auth filter.
+*
+* PHP versions 5
+*
 * @category   framework
 * @package    MvcSkel
 * @copyright  2008, Whirix Ltd.

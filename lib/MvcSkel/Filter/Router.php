@@ -1,5 +1,9 @@
 <?php
 /**
+* MvcSkel request parser filter.
+*
+* PHP versions 5
+*
 * @category   framework
 * @package    MvcSkel
 * @copyright  2008, Whirix Ltd.

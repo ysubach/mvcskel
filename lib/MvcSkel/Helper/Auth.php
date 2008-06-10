@@ -1,6 +1,6 @@
 <?php
 /**
-* MvcSkel controller.
+* MvcSkel Auth helper.
 *
 * PHP versions 5
 *
@@ -14,12 +14,12 @@
 /**
 * Include PEAR Auth library.
 */
-    require_once 'Auth.php';
+require_once 'Auth.php';
     
-    /**
-     * Config helper is required to read Logger setup.
-     */
-    require_once 'MvcSkel/Helper/Config.php';
+/**
+* Config helper is required to read Logger setup.
+*/
+require_once 'MvcSkel/Helper/Config.php';
 
 /**
  * Auth helper. 
@@ -53,30 +53,30 @@
  * @package    MvcSkel
  * @subpackage    Helper
  */
-    class MvcSkel_Helper_Auth extends Auth {
-        public function __construct() {
-            $config = MvcSkel_Helper_Config::read();
-            
-            $options = array('dsn'=>$config['dsn'],
-                'table'      => 'User',
-                'db_fields'  => array('roles', 'fname'),
-                'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE)
-            );
-            
-            $this->Auth('MDB2', $options, '', false);
-        }
-        
-        /**
-         * Check user role.
-         * 
-         * Check if authenticated user has a role. 
-         * @param string $role role name
-         * @return boolean true if the user has the role, false otherwise
-         */
-        public function checkRole($role) {
-            $roles = $this->getAuthData('roles');
-            $res = preg_split('/,\s*/', $roles, -1, PREG_SPLIT_NO_EMPTY);
-            return in_array($role, $res);
-        }
+class MvcSkel_Helper_Auth extends Auth {
+    public function __construct() {
+        $config = MvcSkel_Helper_Config::read();
+
+        $options = array('dsn'=>$config['dsn'],
+            'table'      => 'User',
+            'db_fields'  => array('roles', 'fname'),
+            'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE)
+        );
+
+        $this->Auth('MDB2', $options, '', false);
     }
+        
+    /**
+     * Check user role.
+     * 
+     * Check if authenticated user has a role. 
+     * @param string $role role name
+     * @return boolean true if the user has the role, false otherwise
+     */
+    public function checkRole($role) {
+        $roles = $this->getAuthData('roles');
+        $res = preg_split('/,\s*/', $roles, -1, PREG_SPLIT_NO_EMPTY);
+        return in_array($role, $res);
+    }
+}
 ?>
