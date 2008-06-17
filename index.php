@@ -12,7 +12,7 @@
  */
 
 // set PATH to project related PEAR installation
-$p = array('app', 'lib', 'lib/pear', 'lib/smarty', ini_get('include_path'));
+$p = array('app', 'lib', 'lib/pear', 'lib/misc', 'lib/smarty', ini_get('include_path'));
 ini_set('include_path', join(PATH_SEPARATOR, $p));
 
 /**
