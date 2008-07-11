@@ -13,7 +13,7 @@
 
 require_once 'MvcSkel/Filter.php';
 require_once 'MvcSkel/Helper/Config.php';
-require_once 'doctrine/Doctrine.php';
+require_once 'Doctrine.php';
 
 /**
  * @category   framework
