@@ -13,6 +13,7 @@
 
 require_once 'MvcSkel/Filter.php';
 require_once 'MvcSkel/Filter/Router.php';
+require_once 'MvcSkel/Filter/DoctrineInit.php';
 
 /**
  * Handle request with MvcSkel framework.
@@ -31,6 +32,7 @@ class MvcSkel_Runner {
      */
     public function __construct() {
         $this->addFilter(new MvcSkel_Filter_Router());
+        $this->addFilter(new MvcSkel_Filter_DoctrineInit());
     }
     
     /**
@@ -98,6 +100,10 @@ class MvcSkel_Runner {
             $actName = "action{$action}";
             // controller scope filters
             if ($conObj->applyFilters()) {
+                // Starting session
+                session_start();
+                
+                // Execute action
                 echo $conObj->$actName();
             }
         }

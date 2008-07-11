@@ -22,7 +22,7 @@ require_once 'spyc.php5';
 * This helper read configuration from YAML file.
 *  Usage:
 *  <code>
-*    $config = new MvcSkel_Helper_Config::read();
+*    $config = MvcSkel_Helper_Config::read();
 *    echo 'Temp directory is: ' . $config['tmp_dir'] . '<br>';
 *    echo 'Database name is: ' . $config['database']['name'];
 *  </code>
@@ -41,7 +41,7 @@ class MvcSkel_Helper_Config {
      *  structure for futher usage in the application
      * @return array configuration data
      */
-    public function read($file = 'app/config.yml', $tmp_dir = 'tmp') {
+    public static function read($file = 'app/config.yml', $tmp_dir = 'tmp') {
         static $conf = array();
 
         // try to read from memory cache at first

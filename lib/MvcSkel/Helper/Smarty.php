@@ -47,7 +47,7 @@ class MvcSkel_Helper_Smarty extends Smarty {
      * @return result of @see Smarty::fetch()
      */
     public function render() {
-        return $this->fetch('master.html');
+        return $this->fetch('master.tpl');
     }
     
     /**
@@ -73,6 +73,35 @@ class MvcSkel_Helper_Smarty extends Smarty {
         unset($params['to']);
         unset($params['a']);
         return MvcSkel_Helper_Url::url($url, $params, $anchor);
+    }
+    
+    /**
+    * Extract date string in ISO format from request fields.
+    * Create for work with {html_select_date} - standard Smarty custom function.
+    * @param string $prefix Prefix used in template in {html_select_date}
+    */
+    public static function extractDate($prefix) {
+        return $_REQUEST[$prefix.'Year'].'-'.
+            $_REQUEST[$prefix.'Month'].'-'.$_REQUEST[$prefix.'Day'];
+    }
+
+    /**
+    * Extract time string in ISO format from request fields.
+    * Create for work with {html_select_time} - standard Smarty custom function.
+    * @param string $prefix Prefix used in template in {html_select_time}
+    */
+    public static function extractTime($prefix) {
+        $h = $_REQUEST[$prefix.'Hour'];
+        $m = $_REQUEST[$prefix.'Minute'];
+        if (isset($_REQUEST[$prefix.'Meridian']) && 
+                $_REQUEST[$prefix.'Meridian']=='pm') {
+            $h += 12;
+        }
+        $time = $h.':'.$m;
+        if (isset($_REQUEST[$prefix.'Second'])) {
+            $time = $time.':'.$_REQUEST[$prefix.'Second'];
+        }
+        return $time;
     }
 }
 ?>
