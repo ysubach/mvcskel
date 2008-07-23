@@ -37,6 +37,7 @@ class MvcSkel_Helper_Smarty extends Smarty {
         $this->compile_dir = $config['tmp_dir'] . '/templates_c';
         $this->assign('bodyTemplate', $bodyTemplate);
         $this->assign('auth', new MvcSkel_Helper_Auth());
+        $this->assign('root', $config['root']);
         
         $this->register_function('url', 
             array('MvcSkel_Helper_Smarty', 'pluginUrl'));

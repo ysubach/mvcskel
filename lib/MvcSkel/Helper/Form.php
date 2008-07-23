@@ -18,10 +18,14 @@ require_once 'MvcSkel/Helper/Config.php';
 * Save object edited in the form and associated validation errors. Provide
 * methods for access to object and errors.
 *
+* Provide generalized form processing framework as a set of abstract methods
+* which must be implemented by child classes. Top level form processing logic
+* implemented in process() method.
+*
 * @package    MvcSkel
 * @subpackage Helper
 */
-class MvcSkel_Helper_Form {
+abstract class MvcSkel_Helper_Form {
     /** Form identifier */
     private $id;
     
@@ -34,14 +38,27 @@ class MvcSkel_Helper_Form {
     /** Errors associated with object */
     private $errors;
     
+    /** Smarty instance for form rendering */
+    protected $smarty;
+    
+    /** Name of form source action  */
+    private $sourceAction;
+    
+    /** Name of form exit action  */
+    private $exitAction;
+
+    /** Flag shows that action inside form is performed */
+    private $actionDone = false;
+    
     /**
     * Contructor.
     * If 'mvcskel_form_id' field found in request, then form is loaded
     * from session. Otherwise new fresh form created.
-    * @param string $freshObject Object to be used if nothing found in request
-    *      and session
     */
-    public function __construct($freshObject=null) {
+    public function __construct($sourceAction, $exitAction, $smarty) {
+        $this->sourceAction = $sourceAction;
+        $this->exitAction = $exitAction;
+        $this->smarty = $smarty;
         if (isset($_REQUEST['mvcskel_form_id'])) {
             // Existing form
             $this->inRequest = true;
@@ -51,10 +68,7 @@ class MvcSkel_Helper_Form {
         } else {
             // New form
             $this->inRequest = false;
-            if ($freshObject==null) {
-                throw new Exception("No form Id in request and freshObject".
-                    " is null => Can't create new form");
-            }
+            $freshObject = $this->buildFresh();
             $this->id = get_class($freshObject); //md5(microtime());
             $this->setObject($freshObject);
             $this->resetErrors();
@@ -81,6 +95,16 @@ class MvcSkel_Helper_Form {
     /** Return current form identifier */
     public function getId() {
         return $this->id;
+    }
+    
+    /** Return associated action name */
+    public function getSourceAction() {
+        return $this->sourceAction;
+    }
+
+    /** Check that action inside form performed */
+    public function isActionDone() {
+        return $this->actionDone;
     }
 
     /** Return current `inRequest` flag */
@@ -152,5 +176,60 @@ class MvcSkel_Helper_Form {
         }
         return implode("<br>", $this->errors[$fieldId]);
     }
+    
+    /**
+    * Form processing entry point.
+    * Implements top level processing logic, supported by set of 
+    * abstract methods.
+    *
+    * @return string Content of rendered Smarty instance,
+    *       or exit if redirect was done
+    */
+    public function process() {
+        // process request
+        if ($this->foundInRequest()) {
+            $this->fillByRequest();
+            $this->validate();
+        }
+        // doing action or rendering
+        if ($this->foundInRequest() && !$this->haveErrors()) {
+            $this->action();
+            $this->actionDone = true;
+        } else {
+            $this->render();
+        }
+        // finish processing
+        if ($this->isActionDone()) {
+            MvcSkel_Helper_Url::redirect($this->exitAction);
+        } else {
+            return $this->smarty->render();
+        }
+
+    }
+    
+    /**
+    * @return object The fresh one for this form
+    */
+    abstract protected function buildFresh();
+    
+    /**
+    * Fill form object's fields from request
+    */
+    abstract protected function fillByRequest();
+    
+    /**
+    * Validate current object
+    */
+    abstract protected function validate();
+    
+    /**
+    * Performs action, called after successful validation
+    */
+    abstract protected function action();
+    
+    /**
+    * Implements form rendering
+    */
+    abstract protected function render();
 }
 ?>
