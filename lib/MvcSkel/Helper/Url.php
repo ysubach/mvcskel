@@ -64,7 +64,7 @@ class MvcSkel_Helper_Url {
     * Usage:
     * <code>
     *    // make a redirect
-    *    MvcSkel_Helper_Log::redirect('Main/Index');
+    *    MvcSkel_Helper_Url::redirect('Main/Index');
     *  </code>
     * @param string $url controller/action format path
     * @return void, it actually stop flow doing exit().
@@ -73,5 +73,27 @@ class MvcSkel_Helper_Url {
         header('Location: ' . MvcSkel_Helper_Url::url($url));
         exit();
     }
+    
+    /**
+    * Get variable from request (higher priority) 
+    * or session (lower priority), and put it into session
+    * for later usage in further requests.
+    * @param string $varName Variable name
+    * @param mixed $default Default variable value, used if it's
+    *                   not found in request and session
+    * @return mixed Current variable value
+    */
+    public static function getStickyVar($varName, $default) {
+        $value = $default;
+        if (isset($_REQUEST[$varName])) {
+            $value = $_REQUEST[$varName];
+        } else if (isset($_SESSION[$varName])) {
+            $value = $_SESSION[$varName];
+        }
+        
+        $_SESSION[$varName] = $value;
+        return $value;
+    }
+
 }
 ?>

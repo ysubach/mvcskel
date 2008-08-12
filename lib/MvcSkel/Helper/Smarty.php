@@ -34,6 +34,7 @@ class MvcSkel_Helper_Smarty extends Smarty {
     public function __construct($bodyTemplate) {
         $config = MvcSkel_Helper_Config::read();
 
+        $this->force_compile = true;
         $this->compile_dir = $config['tmp_dir'] . '/templates_c';
         $this->assign('bodyTemplate', $bodyTemplate);
         $this->assign('auth', new MvcSkel_Helper_Auth());
