@@ -26,12 +26,24 @@ require_once 'MvcSkel/Helper/Auth.php';
  * @subpackage    Helper
  */
 class MvcSkel_Helper_Smarty extends Smarty {
+    /** Currently rendered file */
+    protected $bodyTemplate;
+    
+    /**
+    * Flag shows that Smarty instance will be used for AJAX rendering.
+    * This mean template is rendered without master.tpl.
+    */
+    protected $forAjax;
+    
     /**
      * C-r.
-     * @param string $bodyTemplate template which is used for rendering 
+     * @param string $bodyTemplate template which is used for rendering
+     * @param boolean $forAjax AJAX rendering flag, default false
      * of the page content
      */
-    public function __construct($bodyTemplate) {
+    public function __construct($bodyTemplate, $forAjax=false) {
+        $this->bodyTemplate = $bodyTemplate;
+        $this->forAjax = $forAjax;
         $config = MvcSkel_Helper_Config::read();
 
         $this->force_compile = true;
@@ -49,7 +61,11 @@ class MvcSkel_Helper_Smarty extends Smarty {
      * @return result of @see Smarty::fetch()
      */
     public function render() {
-        return $this->fetch('master.tpl');
+        if (!$this->forAjax) {
+            return $this->fetch('master.tpl');
+        } else {
+            return $this->fetch($this->bodyTemplate);
+        }
     }
     
     /**
