@@ -20,6 +20,15 @@ require_once 'Runner.php';
 * @subpackage    Controller
 */ 
 abstract class MvcSkel_Controller extends MvcSkel_Runner {
+	/**
+	* C-r.
+	*/
+	public function __construct() {
+		// we clear that to separate application
+		// level filter
+		$this->addFilter();
+	}
+	
     /**
      * Remove the method.
      * 
