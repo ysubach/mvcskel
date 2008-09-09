@@ -22,11 +22,16 @@ require_once 'Doctrine.php';
  */ 
 class MvcSkel_Filter_DoctrineInit extends MvcSkel_Filter {
     public function filter() {
+        // load models
         spl_autoload_register(array('Doctrine', 'autoload'));
         Doctrine_Manager::getInstance()->setAttribute('model_loading', 'aggressive');
         Doctrine::loadModels('app/Model/generated');
         Doctrine::loadModels('app/Model');
         
+        // back to standard limit clause
+        Doctrine_Manager::getInstance()->setAttribute(Doctrine::ATTR_QUERY_LIMIT, Doctrine::LIMIT_ROWS);
+        
+        // setup connection
         $config = MvcSkel_Helper_Config::read();
         Doctrine_Manager::connection($config['dsn']);
         
