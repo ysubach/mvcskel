@@ -57,9 +57,12 @@ class MvcSkel_Helper_Auth extends Auth {
     public function __construct() {
         $config = MvcSkel_Helper_Config::read();
 
-        $options = array('dsn'=>$config['dsn'],
+        $options = array(
+            'dsn'        => $config['dsn'],
             'table'      => 'User',
-            'db_fields'  => array('roles', 'fname'),
+            'usernamecol'  => 'email',
+            'passwordcol'  => 'password',
+            'db_fields'  => array('roles', 'fname', 'id'),
             'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE)
         );
 
@@ -77,6 +80,17 @@ class MvcSkel_Helper_Auth extends Auth {
         $roles = $this->getAuthData('roles');
         $res = preg_split('/,\s*/', $roles, -1, PREG_SPLIT_NO_EMPTY);
         return in_array($role, $res);
+    }
+    
+    /**
+    * Return current logged in user object
+    */
+    public function getUser() {
+        $id = $this->getAuthData('id');
+        if ($id==null) {
+            throw new Exception("User identifier is missing!");
+        }
+        return Doctrine::getTable('User')->find($id);
     }
 }
 ?>

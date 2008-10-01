@@ -106,11 +106,15 @@ class MvcSkel_Helper_Validator {
     public function checkEmail($field, $value)
     {
         $value = trim($value);        
-        if (!Validate::email($value)) {
+        if (ereg('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+'.'@'.
+                 '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.'.
+                 '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$', 
+                 $value)) {
+            return true;
+        } else {
             $this->form->attachError($field, 'please enter correct Email');
             return false;
         }
-        return true;
     }
 
     /**

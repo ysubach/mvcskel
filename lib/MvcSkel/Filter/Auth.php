@@ -13,6 +13,7 @@
 
 require_once 'MvcSkel/Filter.php';
 require_once 'MvcSkel/Helper/Auth.php';
+require_once 'MvcSkel/Helper/Url.php';
 
 /**
 * Authentication filter.
@@ -76,8 +77,7 @@ class MvcSkel_Filter_Auth extends MvcSkel_Filter {
      */
     protected function showLogin() {
         // redirect to login form
-        header('Location: Auth/Login');
-        exit();
+        MvcSkel_Helper_Url::redirect('Auth/Login');
     }
 }
 ?>

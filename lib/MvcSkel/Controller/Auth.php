@@ -30,7 +30,7 @@ class MvcSkel_Controller_Auth extends MvcSkel_Controller {
         $auth->start();
         
         if (!$auth->getAuth()) {
-            $smarty = new MvcSkel_Helper_Smarty('login.html');            
+            $smarty = new MvcSkel_Helper_Smarty('login.tpl');            
             return $smarty->render();
         }
         
