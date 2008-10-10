@@ -11,8 +11,6 @@
 * @link       http://code.google.com/p/mvcskel/
 */
 
-require_once 'MvcSkel/Filter.php';
-
 /**
 * Define default page (controller and action)
 * if the request do not contain necessary vars.

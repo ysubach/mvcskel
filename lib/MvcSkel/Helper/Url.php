@@ -17,11 +17,6 @@
 require_once 'Log.php';
 
 /**
-* Config helper is required to read Logger setup.
-*/
-require_once 'MvcSkel/Helper/Config.php';
-
-/**
 * Url helper. 
 * 
 * Builds urls.

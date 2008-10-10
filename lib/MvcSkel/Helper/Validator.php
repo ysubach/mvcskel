@@ -11,9 +11,6 @@
  * @link       http://code.google.com/p/mvcskel/
  */
 
-require_once 'MvcSkel/Helper/Config.php';
-require_once 'MvcSkel/Helper/Form.php';
-
 /**
 * Validator helper.
 * Provide standard validation methods. Found errors are saved in associated

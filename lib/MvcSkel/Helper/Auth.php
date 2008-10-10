@@ -17,11 +17,6 @@
 require_once 'Auth.php';
     
 /**
-* Config helper is required to read Logger setup.
-*/
-require_once 'MvcSkel/Helper/Config.php';
-
-/**
  * Auth helper. 
  * 
  * It is a wrapper for PEAR::Auth lib. It uses MBD2 driver

@@ -1,11 +1,4 @@
 <?php
-require_once 'MvcSkel/Controller.php';
-require_once 'MvcSkel/Helper/Smarty.php';
-require_once 'MvcSkel/Helper/Config.php';
-require_once 'MvcSkel/Helper/Log.php';
-require_once 'MvcSkel/Helper/Auth.php';
-require_once 'MvcSkel/Filter/Auth.php';
-
 /**
 * Test controller.
 */

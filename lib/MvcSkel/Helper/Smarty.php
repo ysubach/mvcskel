@@ -15,10 +15,6 @@
  */
 
 require_once 'Smarty.class.php';
-require_once 'MvcSkel/Helper/Config.php';
-require_once 'MvcSkel/Helper/Url.php';
-require_once 'MvcSkel/Helper/Auth.php';
-
 
 /**
  * Smarty helper. Implements basic concept of templates rendering.

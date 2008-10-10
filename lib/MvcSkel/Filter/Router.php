@@ -11,8 +11,6 @@
 * @link       http://code.google.com/p/mvcskel/
 */
 
-require_once 'MvcSkel/Filter.php';
-
 /**
  * Performs routing from nicely formatted URLs into standard MvcSkel request
  * representation. Example "controller/action/v1/s1/v2/s2/..." is mapped

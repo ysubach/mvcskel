@@ -11,10 +11,6 @@
 * @link       http://code.google.com/p/mvcskel/
 */
 
-require_once 'MvcSkel/Filter.php';
-require_once 'MvcSkel/Helper/Auth.php';
-require_once 'MvcSkel/Helper/Url.php';
-
 /**
 * Authentication filter.
 * 

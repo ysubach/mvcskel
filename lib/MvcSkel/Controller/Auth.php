@@ -12,14 +12,6 @@
 */
 
 /**
-* Base controller.
-*/
-require_once 'MvcSkel/Controller.php';
-require_once 'MvcSkel/Helper/Smarty.php';
-require_once 'MvcSkel/Helper/Auth.php';
-require_once 'MvcSkel/Helper/Url.php';
-
-/**
  * Auth controller.
  * Renders login form, start authenticated session.
  * Makes logout.

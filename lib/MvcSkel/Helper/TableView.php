@@ -11,8 +11,6 @@
  * @link       http://code.google.com/p/mvcskel/
  */
 
-require_once 'MvcSkel/Helper/Config.php';
-
 /**
 * Table view helper.
 * Retrieve list of objects from datasource and assign them to Smarty instance

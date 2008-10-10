@@ -17,24 +17,28 @@ require_once 'MvcSkel/Filter/DoctrineInit.php';
 
 /**
  * Handle request with MvcSkel framework.
- * 
+ *
  * @category   framework
  * @package    MvcSkel
- */ 
+ */
 class MvcSkel_Runner {
     /**
-    * Array of filters.
-    */
+     * Array of filters.
+     */
     protected $filters = array();
 
     /**
      * Constructor. Add some default filters like routing.
      */
     public function __construct() {
+        // register autoload function
+        spl_autoload_register(array($this, 'autoload'));
+
+        // add default filters
         $this->addFilter(new MvcSkel_Filter_Router());
         $this->addFilter(new MvcSkel_Filter_DoctrineInit());
     }
-    
+
     /**
      * Add filter for the framework. The filters applied here
      * will be executed for the application scope.
@@ -66,20 +70,13 @@ class MvcSkel_Runner {
     }
 
     /**
-     * Run framework. 
-     * 
+     * Run framework.
+     *
      * Get Controller name from request variable 'mvcskel_c',
-     * and get Action name from request variable 'mvcskel_a'. 
-     * So this names are reserved names. It also do output of the action 
+     * and get Action name from request variable 'mvcskel_a'.
+     * So this names are reserved names. It also do output of the action
      * return result.
-	 * 
-	 * The controller class will be found due to the set include paths.
-	 * Framework have it's own controllers. Your project has controllers
-	 * as well. The pririty is defined by you (set include paths). Most of all,
-	 * you'll prefer to set priority for your own Controllers. Any way,
-	 * it is not important until you decide to override internal controllers
-	 * such as @see MvcSkel_Controller_Auth, etc
-     * 
+     *
      * Usage:
      * <code>
      * $mvcskel = new MvcSkel_Runner();
@@ -91,8 +88,6 @@ class MvcSkel_Runner {
         if ($this->applyFilters()) {
             $controller = $_REQUEST['mvcskel_c'];
             $action = $_REQUEST['mvcskel_a'];
-			
-            require_once "Controller/{$controller}.php";
 
             $conName = $this->getControllerClass($controller);
             $conObj = new $conName();
@@ -102,27 +97,66 @@ class MvcSkel_Runner {
             if ($conObj->applyFilters()) {
                 // Starting session
                 session_start();
-                
+
                 // Execute action
                 echo $conObj->$actName();
             }
         }
     }
-	
-	/**
-	* Get controller class name.
-	*
-	* Detects the class name defined: project related or framework related
-	*
-	* @param string $controller name of controller
-	* @return string controller class name
-	*/
-	private function getControllerClass($controller) {
-		$className = "Controller_{$controller}";
-		if (class_exists($className)) {
-			return $className;
-		}
-		return "MvcSkel_{$className}";
-	}
+    
+    /**
+     * Autoloader function for MvcSkel framework and application classes.
+     *
+     * Class will be searched in set of directories including own
+     * MvcSkel directory and specific application directory.
+     *
+     * @param string $className Name of class to be loaded
+     */
+    public function autoload($className) {
+        // check for legal prefix
+        if (substr($className, 0, 7)!='MvcSkel' &&
+            substr($className, 0, 10)!='Controller' &&
+            substr($className, 0, 6)!='Helper' &&
+            substr($className, 0, 7)!='Filter'
+        ) {
+            // class is not related w/ MvcSkel
+            return;
+        }
+
+        // define include paths to search for class
+        static $includePaths = array('lib/MvcSkel/', 'app/');
+
+        // construct full file name
+        $fileName = str_replace('_', '/', $className).'.php';
+        if (substr($fileName, 0, 7)=='MvcSkel') {
+            // remove MvcSkel prefix, it exists in path
+            $fileName = substr($fileName, 8, strlen($fileName)-8);
+        }
+
+        // search for file, include if found
+        foreach ($includePaths as $path) {
+            //echo $className.' => '.$path.$fileName.'<hr>';
+            if (file_exists($path.$fileName)) {
+                require_once $path.$fileName;
+                return;
+            }
+        }
+    }
+
+    /**
+     * Get controller class name.
+     *
+     * Detects the class name defined: project related or framework related
+     *
+     * @param string $controller name of controller
+     * @return string controller class name
+     */
+    private function getControllerClass($controller) {
+        $className = "Controller_{$controller}";
+        if (class_exists($className)) {
+            return $className;
+        }
+        return "MvcSkel_{$className}";
+    }
 }
 ?>

@@ -14,38 +14,33 @@
 /**
 * Include PEAR Log library.
 */
-    require_once 'Log.php';
-    
-    /**
-     * Config helper is required to read Logger setup.
-     */
-    require_once 'MvcSkel/Helper/Config.php';
+require_once 'Log.php';
 
 /**
- * Log helper. 
- * 
+ * Log helper.
+ *
  * Just shorthand wrapper for PEAR::Log package.
  *  Usage:
  *  <code>
  *    $log = new MvcSkel_Helper_Log::get();
  *    $log->debug('some test message');
  *  </code>
- *    
+ *
  * @package    MvcSkel
  * @subpackage    Helper
  */
-    class MvcSkel_Helper_Log {
-        /**
-         * Log instance getter.
-         * Wrapper for Log::singleton method.
-         * @param string $logId log messages id, default is 'MvcSkel'
-         * @return PEAR::Log object instance
-         */
-        public function get($logId = 'MvcSkel') {
-            $config = MvcSkel_Helper_Config::read();
-            return Log::singleton($config['logger']['handler'],
-                $config['logger']['name'],
-                $logId, array(), $config['logger']['level']);
-        }
+class MvcSkel_Helper_Log {
+    /**
+     * Log instance getter.
+     * Wrapper for Log::singleton method.
+     * @param string $logId log messages id, default is 'MvcSkel'
+     * @return PEAR::Log object instance
+     */
+    public function get($logId = 'MvcSkel') {
+        $config = MvcSkel_Helper_Config::read();
+        return Log::singleton($config['logger']['handler'],
+            $config['logger']['name'],
+            $logId, array(), $config['logger']['level']);
     }
+}
 ?>

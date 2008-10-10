@@ -11,8 +11,6 @@
  * @link       http://code.google.com/p/mvcskel/
  */
 
-require_once 'MvcSkel/Helper/Config.php';
-
 /**
 * Form processing helper.
 * Save object edited in the form and associated validation errors. Provide

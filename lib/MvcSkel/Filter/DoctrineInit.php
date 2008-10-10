@@ -11,8 +11,6 @@
 * @link       http://code.google.com/p/mvcskel/
 */
 
-require_once 'MvcSkel/Filter.php';
-require_once 'MvcSkel/Helper/Config.php';
 require_once 'Doctrine.php';
 
 /**
