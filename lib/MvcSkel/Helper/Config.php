@@ -35,7 +35,7 @@ class MvcSkel_Helper_Config {
      * Read config file and return as array.
      * Also it caches the config data within the request
      * @param string $file configuration file name,
-     *  default is 'lib/config.yml'
+     *  default is 'app/config.yml'
      * @param string $tmp_dir tmp folder name, the values is used
      *  to define a place for cache file creating and put in config
      *  structure for futher usage in the application

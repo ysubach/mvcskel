@@ -11,10 +11,6 @@
  * @link       http://code.google.com/p/mvcskel/
  */
 
-require_once 'MvcSkel/Filter.php';
-require_once 'MvcSkel/Filter/Router.php';
-require_once 'MvcSkel/Filter/DoctrineInit.php';
-
 /**
  * Handle request with MvcSkel framework.
  *
