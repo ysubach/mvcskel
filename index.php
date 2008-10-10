@@ -21,11 +21,6 @@ ini_set('include_path', join(PATH_SEPARATOR, $p));
 */
 require_once 'MvcSkel/Runner.php';
 
-/**
-* Resolve the problem of default page.
-*/
-require_once 'MvcSkel/Filter/DefaultPage.php';
-
 $mvcskel = new MvcSkel_Runner();
 $mvcskel->addFilter(new MvcSkel_Filter_DefaultPage('Main', 'Index'));
 $mvcskel->run();
