@@ -135,7 +135,6 @@ class MvcSkel_Runner {
 
         // search for file, include if found
         foreach ($includePaths as $path) {
-            //echo $className.' => '.$path.$fileName.'<hr>';
             if (file_exists($path.$fileName)) {
                 require_once $path.$fileName;
                 return;
