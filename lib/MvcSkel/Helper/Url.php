@@ -50,8 +50,14 @@ class MvcSkel_Helper_Url {
             $url .= "#$anchor";
         }
         
-        $config = MvcSkel_Helper_Config::read();
-        return $config['root'] . $url;
+        if (substr($url, 0, 1)!='/') {
+            // add root path
+            $config = MvcSkel_Helper_Config::read();
+            return $config['root'] . $url;
+        } else {
+            // url already has root
+            return $url;
+        }
     }
     
     /**

@@ -87,5 +87,15 @@ class MvcSkel_Helper_Auth extends Auth {
         }
         return Doctrine::getTable('User')->find($id);
     }
+
+    /**
+     * Retrieve current user, static function for more comfortable use.
+     */
+    public static function user() {
+        $auth = new MvcSkel_Helper_Auth();
+        $auth->start();
+        return $auth->getUser();
+    }
+
 }
 ?>

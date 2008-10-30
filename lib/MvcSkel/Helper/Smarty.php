@@ -73,19 +73,35 @@ class MvcSkel_Helper_Smarty extends Smarty {
      * 
      * @param array $params Parameters passed to plugin, they are
      *    treated as request parameters with following exceptions:
-     *    'to' - contains target controller and action, 'a' - contains
-     *    HTML page anchor name.
+     *    'to' - contains target controller and action,
+     *    'a' - contains HTML page anchor name,
+     *    'cc' - flag for copying current request before building new URL,
+     *        this include controller/action name and request parameters;
+     *        if this flag set, then parameter 'to' is not required.
      * @param Smarty $smarty Reference to smarty instance
      * @return string Formatted MvcSkel URL
      */
     public static function pluginUrl($params, &$smarty) {
-        if (!isset($params['to'])) {
+        // handling 'cc' or 'to'
+        if (isset($params['to'])) {
+            $url = $params['to'];
+            unset($params['to']);
+        } else if (isset($params['cc'])){
+            $url = $_REQUEST['mvcskel_c'].'/'.$_REQUEST['mvcskel_a'];
+            foreach ($_GET as $k=>$v) {
+                if (substr($k, 0, 7)!='mvcskel' && !isset($params[$k])) {
+                    $params[$k] = $v;
+                }
+            }
+            unset($params['cc']);
+        } else {
             throw new Exception("Parameter 'to' is required");
         }
-        $url = $params['to'];
+
+        // handling 'a'
         $anchor = $params['a'];
-        unset($params['to']);
         unset($params['a']);
+        // build URL
         return MvcSkel_Helper_Url::url($url, $params, $anchor);
     }
     
