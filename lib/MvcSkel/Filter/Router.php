@@ -32,7 +32,7 @@ class MvcSkel_Filter_Router extends MvcSkel_Filter {
      */
     public function filter() {
         if (!isset($_REQUEST['mvcskel_redirect_url'])) {
-            return;
+            return true;
         }
         $parts = explode('/', $_REQUEST['mvcskel_redirect_url']);
         if (isset($parts[0]) && $parts[0]!='') {
