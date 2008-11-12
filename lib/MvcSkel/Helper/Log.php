@@ -36,7 +36,7 @@ class MvcSkel_Helper_Log {
      * @param string $logId log messages id, default is 'MvcSkel'
      * @return PEAR::Log object instance
      */
-    public function get($logId = 'MvcSkel') {
+    public static function get($logId = 'MvcSkel') {
         $config = MvcSkel_Helper_Config::read();
         return Log::singleton($config['logger']['handler'],
             $config['logger']['name'],
