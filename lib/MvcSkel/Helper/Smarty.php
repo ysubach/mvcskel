@@ -32,7 +32,25 @@ class MvcSkel_Helper_Smarty extends Smarty {
     protected $forAjax;
     
     /**
-     * C-r.
+     * Constructor.
+     *
+     * Special class Helper_SmartyAssigner is used for assigning of
+     * project specific variables to Smarty instance ($this). It have to
+     * implement single public function assignCommon($smarty), parameter
+     * $smarty is reference to current Smarty instance. Class example:
+     * <pre>
+     * //
+     * // Smarty assigner, used to assign common variables before
+     * // template processing happen
+     * //
+     * class Helper_SmartyAssigner {
+     *
+     *     public function assignCommon($smarty) {
+     *         $smarty->assign('aaa', 1);
+     *     }
+     * }
+     * </pre>
+     *
      * @param string $bodyTemplate template which is used for rendering
      * @param boolean $forAjax AJAX rendering flag, default false
      * of the page content
@@ -40,14 +58,23 @@ class MvcSkel_Helper_Smarty extends Smarty {
     public function __construct($bodyTemplate, $forAjax=false) {
         $this->bodyTemplate = $bodyTemplate;
         $this->forAjax = $forAjax;
-        $config = MvcSkel_Helper_Config::read();
 
+        $config = MvcSkel_Helper_Config::read();
         $this->force_compile = true;
         $this->compile_dir = $config['tmp_dir'] . '/templates_c';
+
+        // assign common variables
         $this->assign('bodyTemplate', $bodyTemplate);
         $this->assign('auth', new MvcSkel_Helper_Auth());
         $this->assign('root', $config['root']);
         
+        // assign variables from external class Helper_SmartyAssigner
+        if (class_exists('Helper_SmartyAssigner')) {
+            $sa = new Helper_SmartyAssigner();
+            $sa->assignCommon($this);
+        }
+
+        // add MvcSkel specific plugin(s)
         $this->register_function('url', 
             array('MvcSkel_Helper_Smarty', 'pluginUrl'));
     }
