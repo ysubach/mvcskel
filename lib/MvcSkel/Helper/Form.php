@@ -40,10 +40,10 @@ abstract class MvcSkel_Helper_Form {
     protected $smarty;
     
     /** Name of form source action  */
-    private $sourceAction;
+    protected $sourceAction;
     
     /** Name of form exit action  */
-    private $exitAction;
+    protected $exitAction;
 
     /** Flag shows that action inside form is performed */
     private $actionDone = false;
@@ -198,11 +198,19 @@ abstract class MvcSkel_Helper_Form {
         }
         // finish processing
         if ($this->isActionDone()) {
-            MvcSkel_Helper_Url::redirect($this->exitAction);
+            $this->exitRedirect();
         } else {
             return $this->smarty->render();
         }
+    }
 
+    /**
+     * Performs redirect to exit action. Child classes can override
+     * this method for changing redirect dynamically or adding specific
+     * parameters.
+     */
+    protected function exitRedirect() {
+        MvcSkel_Helper_Url::redirect($this->exitAction);
     }
     
     /**
