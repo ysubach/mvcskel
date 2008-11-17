@@ -36,6 +36,21 @@ abstract class MvcSkel_Helper_TableView {
     protected $pagerEnabled = true;
 
     /**
+     * Columns used for sorting, hash map with sort identifier as key
+     * and real field name used in datasource
+     */
+    protected $sortColumns;
+
+    /** Sorting enable flag */
+    protected $sortEnabled = false;
+
+    /** Current sort column */
+    protected $sortCol;
+
+    /** Current sort dir */
+    protected $sortDir;
+
+    /**
     * Get list of objects from datasource.
     * Child classes HAVE TO override this method w/ own implementation.
     * @param integer $offset Shows which object from the full list must
@@ -46,6 +61,15 @@ abstract class MvcSkel_Helper_TableView {
     */
     abstract protected function getObjects($offset=null, $limit=null);
     
+    /**
+     * Enable sorting for datasource.
+     * Default implementation is empty.
+     * @param string $sortColumn Datasource name of column to be used,
+     *                   taken from $sortColumns hash map
+     * @param string $sortDirection Direction of sorting: 'asc', 'desc'
+     */
+    protected function setSorting($sortColumn, $sortDirection) {}
+
     /**
     * Count objects in the database.
     * Child classes HAVE TO override this method w/ own implementation.
@@ -60,6 +84,12 @@ abstract class MvcSkel_Helper_TableView {
     public function assignValues($smarty) {
         $this->processRequest();
         $this->count = $this->countObjects();
+        if ($this->sortEnabled) {
+            $dsCol = $this->sortColumns[$this->sortCol];
+            $this->setSorting($dsCol, $this->sortDir);
+            $smarty->assign('sortCol', $this->sortCol);
+            $smarty->assign('sortDir', $this->sortDir);
+        }
         if ($this->pagerEnabled) {
             $offset = $this->page * $this->pageSize;
             $this->objects = $this->getObjects($offset, $this->pageSize);
@@ -77,6 +107,16 @@ abstract class MvcSkel_Helper_TableView {
         if (isset($_REQUEST['page'])) {
             $this->setPage($_REQUEST['page']);
         }
+        if ($this->sortEnabled) {
+            if (isset($_REQUEST['sortCol']) &&
+                array_key_exists($_REQUEST['sortCol'], $this->sortColumns)) {
+                $this->sortCol = $_REQUEST['sortCol'];
+            }
+            if (isset($_REQUEST['sortDir']) &&
+                ($_REQUEST['sortDir']=='asc' || $_REQUEST['sortDir']=='desc')) {
+                $this->sortDir = $_REQUEST['sortDir'];
+            }
+        }
     }
     
     /**
@@ -84,43 +124,29 @@ abstract class MvcSkel_Helper_TableView {
     */
     protected function assignPagerValues(&$smarty) {
         $pager = array();
-        $maxPage = floor($this->count/$this->pageSize);
-        if ($this->count%$this->pageSize>0) {
-            $maxPage++;
-        }
+        $maxPage = ceil($this->count/$this->pageSize);
         // prev link
         if ($this->page>0) {
-            $pager[] = array('page' => $this->page-1, 'text' => 'prev');
+            $pager['prev'] = array('page' => $this->page-1, 'text' => 'prev');
         }
+
         // middle links
         $pstart = 0;
         $pend = $maxPage;
-        $shrinkMode = false;
-        if ($maxPage>16) {
-            $shrinkMode = true;
-            $pstart = $this->page-8;
-            if ($pstart<0) {
-                $pstart = 0;
-            } else {
-                $pager[] = array('page' => -1, 'text' => '...');
-            }
-            $pend = $pstart+16;
-            if ($pend>$maxPage) {
-                $pend = $maxPage;
-            }
-        }
+
         for ($p=$pstart; $p<$pend; $p++) {
-            $pager[] = array('page' => $p, 'text' => $p+1);
+            $pager['pages'][$p] = $p+1;
         }
-        if ($shrinkMode && $pend<$maxPage) {
-            $pager[] = array('page' => -1, 'text' => '...');
-        }
+
         // next link
         if ($this->page<($maxPage-1)) {
-            $pager[] = array('page' => $this->page+1, 'text' => 'next');
+            $pager['next'] = array('page' => $this->page+1, 'text' => 'next');
         }
         $smarty->assign('pager', $pager);
+        $smarty->assign('pagesTotal', count($pager['pages']));
         $smarty->assign('currentPage', $this->page);
+        $smarty->assign('currentPageText', $this->page+1);
+        $smarty->assign('pagerTotalCount', $this->count);
     }
     
     /** Enable/disable pager */
@@ -136,6 +162,17 @@ abstract class MvcSkel_Helper_TableView {
     /** Set current page size */
     public function setPageSize($size) {
         $this->pageSize = $size;
+    }
+
+    /** Set sorting columns */
+    public function setSortColumns($sc) {
+        $this->sortColumns = $sc;
+        if (count($sc)>0) {
+            $this->sortEnabled = true;
+            $sortIds = array_keys($this->sortColumns);
+            $this->sortCol = $sortIds[0]; // default column
+            $this->sortDir = 'asc';       // default direction
+        }
     }
 }
 ?>
