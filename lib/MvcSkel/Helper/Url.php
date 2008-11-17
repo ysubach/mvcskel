@@ -61,17 +61,18 @@ class MvcSkel_Helper_Url {
     }
     
     /**
-    * Redirect tool.
-    * Usage:
-    * <code>
-    *    // make a redirect
-    *    MvcSkel_Helper_Url::redirect('Main/Index');
-    *  </code>
-    * @param string $url controller/action format path
-    * @return void, it actually stop flow doing exit().
-    */
-    public static function redirect($url) {
-        header('Location: ' . MvcSkel_Helper_Url::url($url));
+     * Redirect tool.
+     * Usage:
+     * <code>
+     *    // make a redirect
+     *    MvcSkel_Helper_Url::redirect('Main/Index');
+     *  </code>
+     * @param string $url controller/action format path
+     * @param array  $params query values ('p1'=>'a', 'p2'=>'1'), null by default
+     * @return void, it actually stop flow doing exit().
+     */
+    public static function redirect($url, $params=null) {
+        header('Location: ' . MvcSkel_Helper_Url::url($url, $params));
         exit();
     }
     
