@@ -17,14 +17,20 @@
  * is executed through Doctrine library but it's not critical requirement,
  * any other library for database access works fine here.
  *
+ * This class is basic implementation with focus on simplicity but not
+ * performance. That's why it is not using LIMIT keyword for fetching part
+ * of result, so all data is loaded in memory. Query can be executed twice.
+ * If your query is complex, then you can implement own class derived from
+ * MvcSkel_Helper_TableView.
+ *
  * @package    MvcSkel
  * @subpackage Helper
  */
 class MvcSkel_Helper_SqlTableView extends MvcSkel_Helper_TableView {
     /**
      * Basic SQL query text, must be defined by child classes.
-     * Do not include "ORDER BY" and "LIMIT" instruction because they
-     * are added automatically when query executed.
+     * Do not include "ORDER BY" instruction because it is
+     * added automatically when query executed.
      */
     protected $sqlQuery;
 
