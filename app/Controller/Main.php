@@ -18,7 +18,7 @@ class Controller_Main extends MvcSkel_Controller {
     }
     
     public function actionPhpInfo() {
-	phpinfo();
+        phpinfo();
     }
     
     public function actionCheckAuth() {

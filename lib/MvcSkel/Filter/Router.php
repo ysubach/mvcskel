@@ -39,14 +39,27 @@ class MvcSkel_Filter_Router extends MvcSkel_Filter {
             // controller
             $_REQUEST['mvcskel_c'] = $parts[0];
         }
-        if (isset($parts[1])) {
-            // action
-            $_REQUEST['mvcskel_a'] = $parts[1];
-        }
-        if (count($parts)>=4) {
-            // vars processing
-            for ($i=2; ($i+1)<count($parts); $i+=2) {
+
+        if (count($parts)>=3 && (count($parts)-1)%2==0) {
+            //
+            // Short URL w/out action like "controller/v1/s1/v2/s2/..."
+            //
+            for ($i=1; ($i+1)<count($parts); $i+=2) {
                 $_REQUEST[$parts[$i]] = urldecode($parts[$i+1]);
+            }
+        } else {
+            //
+            // Normal URL of type "controller/action/v1/s1/v2/s2/..."
+            //
+            if (isset($parts[1])) {
+                // action
+                $_REQUEST['mvcskel_a'] = $parts[1];
+            }
+            if (count($parts)>=4) {
+                // vars processing
+                for ($i=2; ($i+1)<count($parts); $i+=2) {
+                    $_REQUEST[$parts[$i]] = urldecode($parts[$i+1]);
+                }
             }
         }
         return true;
