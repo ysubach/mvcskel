@@ -1,7 +1,7 @@
 <?php
 /**
  * MvcSkel table view helper.
- * 
+ *
  * PHP versions 5
  *
  * @category   framework
@@ -10,6 +10,8 @@
  * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
  * @link       http://code.google.com/p/mvcskel/
  */
+
+require_once "Spreadsheet/Excel/Writer.php";
 
 /**
 * Table view helper.
@@ -25,13 +27,13 @@ abstract class MvcSkel_Helper_TableView {
 
     /** List of object read from datasource */
     protected $objects = array();
-    
+
     /** Current page */
     protected $page = 0;
-    
+
     /** Count of objects per page */
     protected $pageSize = 25;
-    
+
     /** Pager enable flag */
     protected $pagerEnabled = true;
 
@@ -55,12 +57,12 @@ abstract class MvcSkel_Helper_TableView {
     * Child classes HAVE TO override this method w/ own implementation.
     * @param integer $offset Shows which object from the full list must
     *                   be returned, null means start from first
-    * @param integer $limit Shows maximum count of objects from the full 
+    * @param integer $limit Shows maximum count of objects from the full
                         list to be returned, null means all
     * @return array Fetched objects.
     */
     abstract protected function getObjects($offset=null, $limit=null);
-    
+
     /**
      * Enable sorting for datasource.
      * Default implementation is empty.
@@ -77,7 +79,7 @@ abstract class MvcSkel_Helper_TableView {
     */
     abstract protected function countObjects();
 
-    /** 
+    /**
     * Assign value in Smarty object - main entry point
     * @param object $smarty Values assigned here
     */
@@ -99,7 +101,36 @@ abstract class MvcSkel_Helper_TableView {
         }
         $smarty->assign('objects', $this->objects);
     }
-    
+
+    /**
+     * Export data into Excel format.
+     * Method sends all headers and necessary data to client, that's why
+     * any other output to browser must be stopped after it.
+     */
+    public function exportToExcel() {
+        // prepare data
+        $this->processRequest();
+        if ($this->sortEnabled) {
+            $dsCol = $this->sortColumns[$this->sortCol];
+            $this->setSorting($dsCol, $this->sortDir);
+        }
+        $objects = $this->getObjects();
+
+        // generate excel
+        $xls = new Spreadsheet_Excel_Writer();
+        $xls->send("cft-report.xls");
+        $sheet = $xls->addWorksheet('CFT Report');
+        for ($i=0; $i<count($objects); $i++ ) {
+            $row = $objects[$i];
+            $j = 0;
+            while (isset($row[$j])) {
+                $sheet->write($i, $j, trim($row[$j]));
+                $j++;
+            }
+        }
+        $xls->close();
+    }
+
     /**
     * Process values from request
     */
@@ -118,7 +149,7 @@ abstract class MvcSkel_Helper_TableView {
             }
         }
     }
-    
+
     /**
     * Assign Smarty values for pager rendering
     */
@@ -133,7 +164,7 @@ abstract class MvcSkel_Helper_TableView {
         // middle links
         $pstart = 0;
         $pend = $maxPage;
-
+        
         for ($p=$pstart; $p<$pend; $p++) {
             $pager['pages'][$p] = $p+1;
         }
@@ -148,7 +179,7 @@ abstract class MvcSkel_Helper_TableView {
         $smarty->assign('currentPageText', $this->page+1);
         $smarty->assign('pagerTotalCount', $this->count);
     }
-    
+
     /** Enable/disable pager */
     public function pagerEnable($flag) {
         $this->pagerEnabled = $flag;
@@ -158,7 +189,7 @@ abstract class MvcSkel_Helper_TableView {
     public function setPage($page) {
         $this->page = $page;
     }
-    
+
     /** Set current page size */
     public function setPageSize($size) {
         $this->pageSize = $size;
