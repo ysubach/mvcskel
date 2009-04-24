@@ -24,9 +24,11 @@
                 <a href="{url to='Auth/Login'}">Login</a>
                 {/if}
              </div>
+             <hr/>
              <div class="column span-24">
                 {include file=$bodyTemplate}
              </div>
+             <hr class="space"/><hr/>
              <div class="footer column span-24">
                  fOOTER
              </div>

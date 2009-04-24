@@ -23,8 +23,5 @@ class Controller_Admin extends MvcSkel_Controller {
         $usersList->assignValues($smarty);
         return $smarty->render();
     }
-
-
-
 }
 ?>

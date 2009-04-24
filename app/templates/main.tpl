@@ -1,4 +1,4 @@
-<h2>MvcSkel - Basis for professional web development</h2>
+<h1>MvcSkel - Basis for professional web development</h1>
 
 <p>MvcSkel is open source web framework. It provides good basis for professional
 web developers because it integrates industry leading practices and libraries.</p>

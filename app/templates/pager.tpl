@@ -9,12 +9,12 @@
     </form>
     {if $pager.prev.page===0 || $pager.prev.page>0}
     <div class="pagerPart">
-        <a href="{url cc=1 page=$pager.prev.page}">{icon f=previous}Previous Page</a>
+        <a href="{url cc=1 page=$pager.prev.page}">previous page</a>
     </div>
     {/if}
     {if $pager.next.page>0}
     <div class="pagerPart">
-        <a href="{url cc=1 page=$pager.next.page}">{icon f=next}Next Page</a>
+        <a href="{url cc=1 page=$pager.next.page}">next Page</a>
     </div>
     {/if}
 </div>

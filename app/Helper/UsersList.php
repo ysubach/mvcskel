@@ -5,8 +5,19 @@ class Helper_UsersList extends MvcSkel_Helper_DoctrineTableView {
     /** C-tor */
     public function __construct() {
         $this->query = Doctrine_Query::create()
-        ->select('*')->from('Region r')->orderBy('RegDescr');
-        $this->pagerEnable(false);
+            ->select('*')
+            ->from('User u');
+        //$this->pagerEnable(false);
+
+        $this->setSortColumns(
+            array(
+                'id'=>'u.id',
+                'un'=>'u.username',
+                'fn'=>'u.fname',
+                'em'=>'u.email'
+            ));
+
+        $this->setPageSize(2);
     }
 }
 ?>
