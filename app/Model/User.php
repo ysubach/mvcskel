@@ -5,5 +5,6 @@
  */
 class User extends BaseUser
 {
-
+    /** Value of password repeat */
+    public $pass2;
 }

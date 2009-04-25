@@ -67,7 +67,7 @@ abstract class MvcSkel_Helper_Form {
             // New form
             $this->inRequest = false;
             $freshObject = $this->buildFresh();
-            $this->id = get_class($freshObject); //md5(microtime());
+            $this->id = get_class($freshObject).'-'.md5(rand());
             $this->setObject($freshObject);
             $this->resetErrors();
         }
