@@ -55,13 +55,15 @@ class MvcSkel_Helper_Auth extends Auth {
         $options = array(
             'dsn'        => $config['dsn'],
             'table'      => 'User',
-            'usernamecol'  => 'email',
+            'usernamecol'  => 'username',
             'passwordcol'  => 'password',
             'db_fields'  => array('roles', 'fname', 'id'),
-            'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE)
+            'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE),
+            'enableLogging'=>true,
         );
 
         $this->Auth('MDB2', $options, '', false);
+        $this->logger = MvcSkel_Helper_Log::get('MvcSkel_Helper_Auth');
     }
         
     /**
