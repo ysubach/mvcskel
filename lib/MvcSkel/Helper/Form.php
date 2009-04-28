@@ -45,9 +45,6 @@ abstract class MvcSkel_Helper_Form {
     /** Name of form exit action  */
     protected $exitAction;
 
-    /** Flag shows that action inside form is performed */
-    private $actionDone = false;
-    
     /**
     * Contructor.
     * If 'mvcskel_form_id' field found in request, then form is loaded
@@ -98,11 +95,6 @@ abstract class MvcSkel_Helper_Form {
     /** Return associated action name */
     public function getSourceAction() {
         return $this->sourceAction;
-    }
-
-    /** Check that action inside form performed */
-    public function isActionDone() {
-        return $this->actionDone;
     }
 
     /** Return current `inRequest` flag */
@@ -192,15 +184,9 @@ abstract class MvcSkel_Helper_Form {
         // doing action or rendering
         if ($this->foundInRequest() && !$this->haveErrors()) {
             $this->action();
-            $this->actionDone = true;
-        } else {
-            $this->render();
-        }
-        // finish processing
-        if ($this->isActionDone()) {
             $this->exitRedirect();
         } else {
-            return $this->smarty->render();
+            return $this->render();
         }
     }
 
