@@ -1,6 +1,6 @@
 <?php
 /**
-* MvcSkel controller.
+* MvcSkel logger helper.
 *
 * PHP versions 5
 *
