@@ -6,3 +6,5 @@ logger:
     name: tmp/log.txt
     level: 7
     handler: file
+
+nice-urls: true

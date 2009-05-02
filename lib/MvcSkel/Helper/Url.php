@@ -39,25 +39,49 @@ class MvcSkel_Helper_Url {
     * @return string target URL
     */
     public static function url($url, $params = null, $anchor = '') {
+        $config = MvcSkel_Helper_Config::read();
         if ($params==null) {
             $params = array();
         }
-        
-        foreach ($params as $k=>$v) {
-            $url .= "/$k/".urlencode($v);
-        }
-        if (!empty($anchor)) {
-            $url .= "#$anchor";
-        }
-        
-        if (substr($url, 0, 1)!='/') {
-            // add root path
-            $config = MvcSkel_Helper_Config::read();
-            return $config['root'] . $url;
+
+        if (isset($config['nice-urls']) && $config['nice-urls']==true) {
+            /*
+             * Search engine friendly URLs like /Main/Index/p1/a
+             */
+            foreach ($params as $k=>$v) {
+                $url .= "/$k/".urlencode($v);
+            }
+            if (!empty($anchor)) {
+                $url .= "#$anchor";
+            }
+
+            if (substr($url, 0, 1)!='/') {
+                // add root path
+                $config = MvcSkel_Helper_Config::read();
+                return $config['root'] . $url;
+            } else {
+                // url already has root
+                return $url;
+            }
         } else {
-            // url already has root
-            return $url;
+            /*
+             * Usual URLs like /Main/Index?p1=a
+             */
+            if (substr($url, 0, 1)!='/') {
+                $params['mvcskel_redirect_url'] = $url;
+                $config = MvcSkel_Helper_Config::read();
+                $url = $config['root'];
+            }
         }
+
+        // Return result
+        $urlObj = new MvcSkel_Url($url);
+        $urlObj->setUseHtmlEntities(false);
+        $urlObj->addVars($params);
+        if ($anchor!='') {
+            $urlObj->setAnchor($anchor);
+        }
+        return $urlObj->construct();
     }
     
     /**
