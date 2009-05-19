@@ -113,7 +113,7 @@ class MvcSkel_Runner {
         if (substr($className, 0, 7)!='MvcSkel' &&
             substr($className, 0, 10)!='Controller' &&
             substr($className, 0, 6)!='Helper' &&
-            substr($className, 0, 7)!='Filter'
+            substr($className, 0, 6)!='Filter'
         ) {
             // class is not related w/ MvcSkel
             return;

@@ -20,13 +20,20 @@ class MvcSkel_Controller_Auth extends MvcSkel_Controller {
     public function actionLogin() {
         $auth = new MvcSkel_Helper_Auth();
         $auth->start();
-        
+
         if (!$auth->getAuth()) {
-            $smarty = new MvcSkel_Helper_Smarty('login.tpl');            
-            return $smarty->render();
+            $view = new MvcSkel_Helper_Smarty('login.tpl');
+            $view->assign('title', 'Sign In Page');
+            if (isset($_REQUEST['destination'])) {
+                $view->assign('destination', $_REQUEST['destination']);
+            }
+            return $view->render();
         }
-        
-        MvcSkel_Helper_Url::redirect("Main/Index");
+        if (isset($_REQUEST['destination'])) {
+            MvcSkel_Helper_Url::redirect($_REQUEST['destination']);
+        } else {
+            MvcSkel_Helper_Url::redirect("Main/Index");
+        }
     }
 
     public function actionLogout() {
