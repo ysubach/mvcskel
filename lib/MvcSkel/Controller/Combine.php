@@ -40,159 +40,137 @@
 require_once 'Cache/Lite.php';
 
 class MvcSkel_Controller_Combine extends MvcSkel_Controller {
+    private $type;
 
-    /**
-    * Type request files (css or javascript)
-    *
-    * @var string $_type
-    */
-    var $_type;
-    
-    /**
-    * Request files 
-    *
-    * @var string $_files
-    */
-    var $_files;
+    private $logger;
+
+    private $base;
+
+    private $elements;
+
+    public function  __construct() {
+        session_cache_limiter('public');
+        $this->logger = MvcSkel_Helper_Log::get();
+        $elements = trim($_REQUEST['files'], DIRECTORY_SEPARATOR);
+
+        $this->hash = md5($elements);
+        $elements = explode('?', $elements);
+        $this->base = $elements[0];
+        $this->elements = explode(',', $elements[1]);
+    }
 
     public function actionCss() {
-        $this->_type = 'css';
-        $this->_files = $_REQUEST['files'];
+        $this->type = 'css';
         $this->combine();
     }
     public function actionJs() {
-        $this->_type = 'javascript';
-        $this->_files = $_REQUEST['files'];
+        $this->type = 'javascript';
         $this->combine();
     }
-    
+
+    static public function url($base, $files) {
+        return MvcSkel_Helper_Url::url("/$base/?".join(urlencode(','), $files));
+    }
+
     /**
     * Combine and create cache
     */
     protected function combine() {
-        $cache = true;
+        $lastmod = gmdate('D, d M Y H:i:s \G\M\T', $this->lastModified()) . ' GMT';
+
+        $this->logger->debug('lastmode:'. $lastmod);
+        $this->logger->debug('type:'. $this->type);
+
+        // maybe we just send 304 header
+        $this->logger->debug('check browser cache...');
+        $this->conditionalGet($lastmod);
+        $this->logger->debug('NO check browser cache...');
+
+        // Determine supported compression method
+        $gzip = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip');
+        $this->logger->debug('gzip:'. $gzip);
+
+        $encoding = $this->_checkMethod();
+        $this->logger->debug('encoding:'. $encoding);
+
+        // Try the cache first to see if the combined files were already generated
+        $cacheFileId = 'cache-'.$this->hash.'.'.$this->type.'.'.$encoding;
+        $this->logger->debug('cacheFileId:'. $cacheFileId);
+
         $options = MvcSkel_Helper_Config::read();
-        
         $cacheDir = rtrim($options['tmp'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $cacheLite = new Cache_Lite(array('cacheDir'=>$cacheDir));
+        $cacheFile = $cacheLite->get($cacheFileId);
 
-        $base = $this->_determineDir();
+        if ($cacheFile) {
+            $this->logger->debug('from cache: YES');
+            $this->logger->debug('output cached content');
+            $this->output($cacheFile, $encoding);
+            exit();
+        }
 
-        $elements = explode(',', $this->_files);
-        /*var_dump($elements);
-        var_dump($_REQUEST);
-        die();*/
+        $this->logger->debug('from cache: NO');
 
-        $hash = $this->_lastModified($base, $elements);
+        // Get contents of the files
+        $contents = $this->getContent();
 
-        header ("Etag: \"" . $hash . "\"");
+        // Send compressed contents?
+        if ($encoding != 'none') {
+            $this->logger->debug('gzipping...');
+            $contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
+            $this->logger->debug('gzipped size: '.strlen($contents).' bytes');
+        }
+        $this->logger->debug('output newly generated content');
+        $this->output($contents, $encoding);
 
-        // Return visit and no modifications, so do not send anything
-        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-            stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"') {
-            // Return visit and no modifications, so do not send anything
-            header ("HTTP/1.0 304 Not Modified");
-            header ('Content-Length: 0');
-        } else {
-            // First time visit or files were modified
-            if ($cache) {
-                // Determine supported compression method
-                $gzip = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip');
-
-                $encoding = $this->_checkMethod();
-
-                // Try the cache first to see if the combined files were already generated
-                $cacheFileId = 'cache-' . $hash . '.' . $this->_type . ($encoding != 'none' ? '.' . $encoding : '');
-
-                $cacheLite = new Cache_Lite(array('cacheDir'=>$cacheDir));
-                $cacheFile = $cacheLite->get($cacheFileId);
-
-                if ($cacheFile) {
-                  if ($encoding != 'none') {
-                     header ("Content-Encoding: " . $encoding);
-                  }
-
-                  header ("Content-Type: text/" . $this->_type);
-                  header ("Content-Length: " . strlen($cacheFile));
-
-                  echo $cacheFile;
-
-                  exit;
-                }
-            }
-
-            // Get contents of the files
-            $contents = '';
-            reset($elements);
-            while (list(,$element) = each($elements)) {
-                $path = realpath($base . '/' . $element);
-                $contents .= "\n\n" . file_get_contents($path);
-            }
-
-            // Send Content-Type
-            header ("Content-Type: text/" . $this->_type);
-
-            if (isset($encoding) && $encoding != 'none') {
-                // Send compressed contents
-                $contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
-                header ("Content-Encoding: " . $encoding);
-                header ('Content-Length: ' . strlen($contents));
-                echo $contents;
-            } else {
-                // Send regular contents
-                header ('Content-Length: ' . strlen($contents));
-                echo $contents;
-            }
-
-            // Save cache
-            $cacheFileId = 'cache-' . $hash . '.' . $this->_type . ($encoding != 'none' ? '.' . $encoding : '');
-
-            $cacheLite = new Cache_Lite(array('cacheDir'=>$cacheDir));
-//            $cacheLite = new Cache_Lite(array('cacheDir'=>$cacheDir, 'lifeTime'=>false));
-            $cacheLite->save($contents,$cacheFileId);
-	    }
+        $this->logger->debug('creating cache');
+        $cacheLite->save($contents, $cacheFileId);
     }
 
     /**
-    * Determine the directory and type we should use
-    * @param  string $dir base dir
-    */
-    protected function _determineDir($dir = '.') {
-        if ($this->_type == 'css') {
-           $base = realpath($dir.'/styles');
-        } else if ($this->_type == 'javascript') {
-           $base = realpath($dir.'/js');
-        } else {
-          header ("HTTP/1.0 503 Not Implemented");
-          exit;
+     * Output ready content with all correct headers
+     */
+    protected function output($content, $encoding) {
+        header ("Content-Type: text/" . $this->type);
+        if ($encoding != 'none') {
+            header ("Content-Encoding: " . $encoding);
         }
-        return $base;
+        header ('Content-Length: ' . strlen($content));
+        $this->logger->debug('echo '.strlen($content) . ' bytes');
+        echo $content;
     }
-
 
     /**
     * Determine last modification date of the files
     * @param  string $base base dir
     * @param  string $elements file list
     */
-    protected function _lastModified($base, $elements) {
+    protected function lastModified() {
         $lastModified = 0;
-        while (list(,$element) = each($elements)) {
-            $path = realpath($base . '/' . $element);
-            if ($path!==false && 
-               (($this->_type == 'javascript' && substr($path, -3) != '.js') ||
-                ($this->_type == 'css'        && substr($path, -4) != '.css'))) {
+        foreach ($this->elements as $element) {
+            $path = realpath($this->base . $element);
+            if ($path!==false &&
+                (($this->type == 'javascript' && substr($path, -3) != '.js') ||
+                    ($this->type == 'css'        && substr($path, -4) != '.css'))) {
                 header ("HTTP/1.0 403 Forbidden");
                 exit;
             }
-            if (substr($path, 0, strlen($base)) != $base || !file_exists($path)) {
-            echo $path;
-            die();
+            if (!file_exists($path)) {
                 header ("HTTP/1.0 404 Not Found");
                 exit;
             }
             $lastModified = max($lastModified, filemtime($path));
         }
-        return $lastModified . '-' . md5($this->_files);
+        return $lastModified;
+    }
+
+    public function getContent() {
+        foreach ($this->elements as $element) {
+            $path = realpath($this->base . '/' . $element);
+            $contents .= ("\n\n" . file_get_contents($path));
+        }
+        $this->logger->debug('compiled '.strlen($contents).' bytes');
+        return $contents;
     }
 
 
@@ -212,10 +190,32 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
             preg_match('/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i', $_SERVER['HTTP_USER_AGENT'], $matches)) {
             $version = floatval($matches[1]);
             if ($version < 6)
-               $encoding = 'none';
+            $encoding = 'none';
             if ($version == 6 && !strstr($_SERVER['HTTP_USER_AGENT'], 'EV1'))
-               $encoding = 'none';
+            $encoding = 'none';
         }
         return $encoding;
+    }
+
+    /**
+     * Send not modified header if nothing changed
+     * @param int $lastmod last modification of content
+     */
+    protected function conditionalGet ($lastmod) {
+        $lastmod = gmdate('D, d M Y H:i:s', intval($lastmod)) . ' GMT';
+        $etag = '"' . $this->hash . '"';
+
+        // ETag is sent even with 304 header
+        header("ETag: $etag");
+        $ifmod = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] == $lastmod : null;
+        $iftag = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] == $etag : null;
+
+        // If either matches and neither is a mismatch, send not modified header
+        if (($ifmod || $iftag) && ($ifmod !== false && $iftag !== false)) {
+            header('HTTP/1.0 304 Not Modified');
+            die();
+        }
+        // Last-Modified doesn't need to be sent with 304 response
+        header("Last-Modified: $lastmod");
     }
 }
