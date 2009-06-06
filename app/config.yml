@@ -1,6 +1,6 @@
 root: /mvcskel/
 
-dsn: mysql://root:@localhost/mvcskel
+dsn: mysql://root:@mermaid.whx/mvcskel
 
 logger:
     name: tmp/log.txt

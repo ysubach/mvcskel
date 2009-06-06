@@ -9,6 +9,7 @@ class Controller_Main extends MvcSkel_Controller {
         $log2 = MvcSkel_Helper_Log::get();
         $log->debug('hi!');
         $log2->debug('hi2');
+        $smarty->assign('title', 'Summary Page');
         return $smarty->render();
     }
 
