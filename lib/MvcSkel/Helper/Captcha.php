@@ -19,6 +19,8 @@
  * @license http://www.yiiframework.com/license/
  */
 
+require_once 'Text/Password.php';
+
 /**
  * Verification image service.
  */
@@ -32,20 +34,13 @@ class MvcSkel_Helper_Captcha {
             MvcSkel_Helper_Captcha::clear();
         }
         // generate only if not set
-        if (isset($_SESSION['_VERIFICATION_IMAGE'])) {
-            return $_SESSION['_VERIFICATION_IMAGE'];
+        if (isset($_SESSION['MVCSKEL_VERIFICATION_IMAGE'])) {
+            return $_SESSION['MVCSKEL_VERIFICATION_IMAGE'];
         }
-        /*random string generator.*/
-        /*The seed for the random number*/
-        //srand((double)microtime()*1000000);
 
-        /*Runs the string through the md5 function*/
-        $string = md5(rand(0,9999));
+        $_SESSION['MVCSKEL_VERIFICATION_IMAGE'] = Text_Password::create(6);
 
-        /*creates the new string. */
-        $_SESSION['_VERIFICATION_IMAGE'] = str_replace("0", "1", substr($string, 17, 6));
-
-        return $_SESSION['_VERIFICATION_IMAGE'];
+        return $_SESSION['MVCSKEL_VERIFICATION_IMAGE'];
     }
 
     /**
@@ -54,14 +49,14 @@ class MvcSkel_Helper_Captcha {
     * @return boolean true if values are matched
     */
     public static function check($value) {
-        return $_SESSION['_VERIFICATION_IMAGE']==$value;
+        return $_SESSION['MVCSKEL_VERIFICATION_IMAGE']==$value;
     }
 
     /**
     * Removes value.
     */
     public static function clear() {
-        unset($_SESSION['_VERIFICATION_IMAGE']);
+        unset($_SESSION['MVCSKEL_VERIFICATION_IMAGE']);
     }
 
     /**
@@ -91,7 +86,7 @@ class MvcSkel_Helper_Captcha {
             $fontFile = dirname(__FILE__).'/Duality.ttf';
         }
 
-        $code = $_SESSION['_VERIFICATION_IMAGE'];
+        $code = $_SESSION['MVCSKEL_VERIFICATION_IMAGE'];
         $offset = 2;
         $length = strlen($code);
         $box = imagettfbbox(30, 0, $fontFile, $code);

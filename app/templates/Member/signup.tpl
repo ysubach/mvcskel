@@ -5,12 +5,26 @@
         {include file='field.tpl' name='username' label='Username' type='text' class='text'}
         {include file='field.tpl' name='password' label='Password' type='password' class='text'}
         {include file='field.tpl' name='pass2' label='Password repeat' type='password' class='text'}
+    </fieldset>
+    <fieldset>
+        <legend>Personal Information</legend>
         {include file='field.tpl' name='email' label='Email address' type='text' class='text'}
         {include file='field.tpl' name='fname' label='First name' type='text' class='text'}
-        <p>
-            <button type="submit" class="button positive">
-                <img src="{$root}styles/blueprint/plugins/buttons/icons/tick.png" alt=""/> Join
-            </button>
-        </p>
     </fieldset>
+    <fieldset>
+        <legend>Spam Protection</legend>
+        <div>
+            <label for="captcha">Type the code shown</label>
+            <input type="text" class="text" id="captcha" name="captcha" value="{$smarty.request.captcha}">
+            <img class="captcha" id="captchaImage" src="{url to='Member/Captcha'}" alt="Type the code shown"><br>
+            {if $form->haveError('captcha')}<div class="error">{$form->getError('captcha')}</div>{/if}
+            <a id="captchaChange" href="javascript:">change image</a>
+
+        </div>
+    </fieldset>
+    <p>
+        <button type="submit" class="button positive">
+            <img src="{$root}styles/blueprint/plugins/buttons/icons/tick.png" alt=""/> Join
+        </button>
+    </p>
 </form>

@@ -56,11 +56,11 @@ class MvcSkel_Helper_Smarty extends Smarty {
      * of the page content
      */
     public function __construct($bodyTemplate, $forAjax=false) {
+        parent::Smarty();
         $this->bodyTemplate = $bodyTemplate;
         $this->forAjax = $forAjax;
 
         $config = MvcSkel_Helper_Config::read();
-        $this->force_compile = true;
         $this->compile_dir = $config['tmp_dir'] . '/templates_c';
 
         // assign common variables

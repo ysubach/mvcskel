@@ -27,6 +27,10 @@ class Helper_SignupForm extends MvcSkel_Helper_Form {
         }
         $validator->checkNotEmpty('email', $u->email);
         $validator->checkEmail('email', $u->email);
+        if (!MvcSkel_Helper_Captcha::check($_REQUEST['captcha'])) {
+            MvcSkel_Helper_Captcha::init(true);
+            $this->attachError('captcha', 'Text does not match.');
+        }
     }
 
     protected function action() {
