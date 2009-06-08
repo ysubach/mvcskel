@@ -9,12 +9,13 @@
         <p>
             <label for="password">Password</label><br>
             <input id="password" class="title" type="password" name="password" value="{$smarty.request.password}" /><br />
+            {if $smarty.request.username}
+            <div class="error">
+                Incorrect username or password.
+            </div>
+            {/if}
         </p>
-        {if $smarty.request.username}
-        <div class="error">
-            Incorrect username or password.
-        </div>
-        {/if}
+        
         <p>
             <button type="submit" class="button positive">
                 <img src="{$root}styles/blueprint/plugins/buttons/icons/tick.png" alt=""/> Login
