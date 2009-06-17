@@ -1,4 +1,4 @@
-<form  class="prepend-3 span-11 append-3" action="{url to=$form->getSourceAction()}" method="post">
+<form id="formSignup" class="prepend-3 span-11 append-3" action="{url to=$form->getSourceAction()}" method="post">
     <input type="hidden" name="mvcskel_form_id" value="{$form->getId()}" />
     <fieldset>
         <legend>Fill in the Registration Form</legend>
@@ -16,7 +16,7 @@
         <div>
             <label for="captcha">Type the code shown</label>
             <input type="text" class="text" id="captcha" name="captcha" value="{$smarty.request.captcha}">
-            <img class="captcha" id="captchaImage" src="{url to='Member/Captcha'}" alt="Type the code shown"><br>
+            <img class="captcha" id="captchaImage" src="{url to='Signup/Captcha'}" alt="Type the code shown"><br>
             {if $form->haveError('captcha')}<div class="error">{$form->getError('captcha')}</div>{/if}
             <a id="captchaChange" href="javascript:">change image</a>
 

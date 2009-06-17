@@ -16,6 +16,10 @@
         <link rel="stylesheet" href="{$root}styles/blueprint/plugins/link-icons/screen.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="{$root}styles/blueprint/plugins/buttons/screen.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="{$root}styles/style.css" type="text/css" media="screen, projection">
+
+        <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js"></script>
+        <script type="text/javascript" src="{$root}js/init.js"></script>
+        <script type="text/javascript" src="{$root}js/SignupPage.js"></script>
     </head>
     <body>
         <div class="container">
@@ -29,7 +33,7 @@
                 <a href="{url to='Auth/Logout'}">Logout</a>
                 {else}
                 <a href="{url to='Auth/Login'}">Sing In</a>
-                <a href="{url to='Member/Signup'}">Sing Up</a>
+                <a href="{url to='Signup'}">Sing Up</a>
                 <a href="{url to='Member/ForgotPassword'}">Forgot Password?</a>
                 {/if}
             </div>
