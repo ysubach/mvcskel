@@ -19,10 +19,15 @@
  * @license http://www.yiiframework.com/license/
  */
 
+/**
+ * Random text generation from PEAR.
+ */
 require_once 'Text/Password.php';
 
 /**
  * Verification image service.
+ * @package    MvcSkel
+ * @subpackage Helper
  */
 class MvcSkel_Helper_Captcha {
     /**

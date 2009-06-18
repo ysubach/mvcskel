@@ -15,6 +15,8 @@
  * Auth controller.
  * Renders login form, start authenticated session.
  * Makes logout.
+ * @package    MvcSkel
+ * @subpackage Controller
  */
 class MvcSkel_Controller_Auth extends MvcSkel_Controller {
     public function actionLogin() {

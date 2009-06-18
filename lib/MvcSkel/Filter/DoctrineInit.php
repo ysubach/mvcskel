@@ -1,20 +1,22 @@
 <?php
 /**
-* MvcSkel filter for Doctrine initialization.
-*
-* PHP versions 5
-*
-* @category   framework
-* @package    MvcSkel
-* @copyright  2008, Whirix Ltd.
-* @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
-* @link       http://code.google.com/p/mvcskel/
-*/
+ * MvcSkel filter for Doctrine initialization.
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    MvcSkel
+ * @copyright  2008, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
+ */
 
+/**
+ * Include Doctrine ORM lib.
+ */
 require_once 'Doctrine.php';
 
 /**
- * @category   framework
  * @package    MvcSkel
  * @subpackage Filter
  */ 

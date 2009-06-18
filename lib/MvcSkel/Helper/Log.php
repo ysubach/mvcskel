@@ -1,19 +1,20 @@
 <?php
 /**
-* MvcSkel logger helper.
-*
-* PHP versions 5
-*
-* @category   framework
-* @package    MvcSkel
-* @copyright  2008, Whirix Ltd.
-* @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
-* @link       http://code.google.com/p/mvcskel/
-*/
+ * MvcSkel logger helper.
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    MvcSkel
+ * @copyright  2008, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
+ */
 
 /**
-* Include PEAR Log library.
-*/
+ * Include PEAR Loger.
+ * @link http://pear.php.net/package/Log
+ */
 require_once 'Log.php';
 
 /**
@@ -27,7 +28,7 @@ require_once 'Log.php';
  *  </code>
  *
  * @package    MvcSkel
- * @subpackage    Helper
+ * @subpackage Helper
  */
 class MvcSkel_Helper_Log {
     /**

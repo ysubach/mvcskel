@@ -11,13 +11,11 @@
 * @link       http://code.google.com/p/mvcskel/
 */
 
-require_once 'Runner.php';
-
 /**
 * Controller base class.
 * @category   framework
 * @package    MvcSkel
-* @subpackage    Controller
+* @subpackage Controller
 */ 
 abstract class MvcSkel_Controller extends MvcSkel_Runner {
 	/**

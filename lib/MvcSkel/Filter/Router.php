@@ -20,7 +20,7 @@
  * <li>$_REQUEST['mvcskel_a'] = action</li>
  * <li>$_REQUEST[v1] = s1</li>
  * <li>etc.</li>
- * <ul>
+ * </ul>
  * Only controller part is necessary, action and variables can be dropped.
  * @category   framework
  * @package    MvcSkel

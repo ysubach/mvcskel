@@ -3,7 +3,7 @@
  * MvcSkel Smarty helper.
  * 
  * Read more about this awesome tool at
- * http://smarty.php.net/
+ * @link http://smarty.php.net/
  *
  * PHP versions 5
  *
@@ -14,6 +14,9 @@
  * @link       http://code.google.com/p/mvcskel/
  */
 
+/**
+ * Use Smarty as template engine.
+ */
 require_once 'Smarty.class.php';
 
 /**

@@ -11,6 +11,9 @@
  * @link       http://code.google.com/p/mvcskel/
  */
 
+/**
+ * Use PEAR package for creating of excel output.
+ */
 require_once "Spreadsheet/Excel/Writer.php";
 
 /**

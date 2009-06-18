@@ -1,25 +1,24 @@
 <?php
 /**
-* MvcSkel auth filter.
-*
-* PHP versions 5
-*
-* @category   framework
-* @package    MvcSkel
-* @copyright  2008, Whirix Ltd.
-* @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
-* @link       http://code.google.com/p/mvcskel/
-*/
+ * MvcSkel auth filter.
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    MvcSkel
+ * @copyright  2008, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
+ */
 
 /**
-* Authentication filter.
-* 
-* Check for authenticated users. Also can check user roles.
-* 
-* @category   framework
-* @package    MvcSkel
-* @subpackage    Filter
-*/ 
+ * Authentication filter.
+ *
+ * Check for authenticated users. Also can check user roles.
+ *
+ * @package    MvcSkel
+ * @subpackage Filter
+ */
 class MvcSkel_Filter_Auth extends MvcSkel_Filter {
     private $roles;
 
@@ -27,7 +26,7 @@ class MvcSkel_Filter_Auth extends MvcSkel_Filter {
      * C-r.
      * @param string|array $roles role name or array of role names
      *  if the parameter is empty, then the filter will just check whether
-     *  user authenticated or not. Otherwise filter will allow request if the 
+     *  user authenticated or not. Otherwise filter will allow request if the
      *  user have at least one of the roles.
      * @see MvcSkel_Helper_Auth::checkRole()
      */
@@ -46,14 +45,14 @@ class MvcSkel_Filter_Auth extends MvcSkel_Filter {
     public function filter() {
         $auth = new MvcSkel_Helper_Auth();
         $auth->start();
-        
-        
+
+
         // visitor have to be authenticated at least
         if (!$auth->checkAuth()) {
             $this->showLogin();
             return false;
         }
-        
+
         // check if we need to check roles also
         if (count($this->roles)) {
             foreach ($this->roles as $role) {
@@ -64,10 +63,10 @@ class MvcSkel_Filter_Auth extends MvcSkel_Filter {
             $this->showLogin();
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Do redirect to login form.
      */

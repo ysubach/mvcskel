@@ -46,7 +46,7 @@ require_once 'Auth.php';
  * @see MvcSkel_Filter_Auth
  *    
  * @package    MvcSkel
- * @subpackage    Helper
+ * @subpackage Helper
  */
 class MvcSkel_Helper_Auth extends Auth {
     public function __construct() {

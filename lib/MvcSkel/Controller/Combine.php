@@ -1,44 +1,26 @@
 <?php
-
 /**
-* CSS and Javascript Combinator 0.5
-*
-* 
-* Copyright 2006 by Niels Leenheer 
-* 
-* Permission is hereby granted, free of charge, to any person obtaining 
-* a copy of this software and associated documentation files (the 
-* "Software"), to deal in the Software without restriction, including 
-* without limitation the rights to use, copy, modify, merge, publish, 
-* distribute, sublicense, and/or sell copies of the Software, and to 
-* permit persons to whom the Software is furnished to do so, subject to 
-* the following conditions: 
-*  
-* The above copyright notice and this permission notice shall be 
-* included in all copies or substantial portions of the Software. 
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
-* LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
-* OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
-* WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
-*
-* PHP versions 4 and 5
-*
-* @category   framework
-* @package    MvcSkel
-* @modified   2007, Whirix Ltd, Sasha Evdokov.
-* @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
-* @link       http://trac.whirix.com/mvcskel
-*/
+ * CSS and Javascript Combinator.
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    MvcSkel
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://trac.whirix.com/mvcskel
+ */
 
 /**
 * Include pear cache.
 */
 require_once 'Cache/Lite.php';
 
+/**
+ * Combine JS and CSS files.
+ * @todo make this controller as helper?
+ * @package    MvcSkel
+ * @subpackage Controller
+ */
 class MvcSkel_Controller_Combine extends MvcSkel_Controller {
     private $type;
 
@@ -48,6 +30,9 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
 
     private $elements;
 
+    /**
+     * C-r.
+     */
     public function  __construct() {
         session_cache_limiter('public');
         $this->logger = MvcSkel_Helper_Log::get();
@@ -58,6 +43,7 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
         $this->base = $elements[0];
         $this->elements = explode(',', $elements[1]);
     }
+
 
     public function actionCss() {
         $this->type = 'css';
