@@ -29,7 +29,7 @@
             </div>
             <div id="mainlinks" class="span-7 last">
                 {if $auth->getAuth()}
-                Welcome, {$auth->getAuthData('fname')}.
+                Welcome, <a href="{url to='Member'}">{$auth->getAuthData('fname')}</a>.
                 <a href="{url to='Auth/Logout'}">Logout</a>
                 {else}
                 <a href="{url to='Auth/Login'}">Sing In</a>

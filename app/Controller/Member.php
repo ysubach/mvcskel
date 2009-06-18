@@ -1,18 +1,36 @@
 <?php
 /**
-* Test controller.
-*/
+ * MvcSkel Member controller.
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    startup
+ * @copyright  2009, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
+ */
 class Controller_Member extends MvcSkel_Controller {
     public function __construct() {
         $this->addFilter(new MvcSkel_Filter_Auth(array('User', 'Administrator')));
     }
 
     /**
-     * @todo complete profile
+     * Profile edit page.
      * @todo upload avatar
      */
     public function actionIndex() {
-        return 'profile page';
+        $smarty = new MvcSkel_Helper_Smarty('Member/profile.tpl');
+        $form = new Helper_ProfileForm('Member', 'Member/View', $smarty);
+        $smarty->assign('title', 'Profile Page');
+        return $form->process();
+    }
+
+    /**
+     * @todo Profile view page.
+     */
+    public function actionView() {
+        echo 'comming soon...';
     }
 }
 ?>

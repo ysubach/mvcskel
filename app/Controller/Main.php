@@ -5,10 +5,6 @@
 class Controller_Main extends MvcSkel_Controller {
     public function actionIndex() {
         $smarty = new MvcSkel_Helper_Smarty('main.tpl');            
-        $log = MvcSkel_Helper_Log::get(get_class($this));
-        $log2 = MvcSkel_Helper_Log::get();
-        $log->debug('hi!');
-        $log2->debug('hi2');
         $smarty->assign('title', 'Summary Page');
         return $smarty->render();
     }

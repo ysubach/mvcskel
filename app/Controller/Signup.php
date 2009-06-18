@@ -17,7 +17,7 @@ class Controller_Signup extends MvcSkel_Controller {
     }
 
     public function actionIndex() {
-        $smarty = new MvcSkel_Helper_Smarty('Member/signup.tpl');
+        $smarty = new MvcSkel_Helper_Smarty('Signup/signup.tpl');
         $form = new Helper_SignupForm('Signup', 'Member', $smarty);
         $smarty->assign('title', 'Sign Up MvcSkel');
         return $form->process();
