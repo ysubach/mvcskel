@@ -19,7 +19,7 @@
     
     <p>
         <button type="submit" class="button positive">
-            <img src="{$root}styles/blueprint/plugins/buttons/icons/tick.png" alt=""/> Login
+            <img src="{$root}styles/blueprint/icons/tick.png" alt=""/> Login
         </button>
     </p>
 </form>

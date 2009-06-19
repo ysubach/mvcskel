@@ -3,20 +3,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <title>{$title} - MvcSkel Skeleton Application</title>
+        <title>{$title} - MvcSkel Startup Application</title>
 
         <link rel="icon" href="{$root}images/favicon.ico" type="image/x-icon" />
         <link rel="shortcut icon" href="{$root}images/favicon.ico" type="image/x-icon" />
 
-        <link rel="stylesheet" href="{$root}styles/blueprint/screen.css" type="text/css" media="screen, projection">
-        <link rel="stylesheet" href="{$root}styles/blueprint/print.css" type="text/css" media="print">
-        <link rel="stylesheet" href="{$root}styles/style.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="{$root}styles/blueprint/screen.css,style.css" type="text/css" media="screen">
 
         <!--[if lt IE 8]><link rel="stylesheet" href="{$root}styles/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
-        <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js"></script>
-        <script type="text/javascript" src="{$root}js/init.js"></script>
-        <script type="text/javascript" src="{$root}js/SignupPage.js"></script>
+        <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js,init.js,SignupPage.js"></script>
     </head>
     <body>
         <div class="container">

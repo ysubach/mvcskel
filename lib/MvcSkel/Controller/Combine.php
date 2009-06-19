@@ -35,34 +35,28 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
      */
     public function  __construct() {
         session_cache_limiter('public');
-        $this->logger = MvcSkel_Helper_Log::get();
-        $elements = trim($_REQUEST['files'], DIRECTORY_SEPARATOR);
-
-        $this->hash = md5($elements);
-        $elements = explode('?', $elements);
-        $this->base = $elements[0];
-        $this->elements = explode(',', $elements[1]);
+        $this->logger = MvcSkel_Helper_Log::get(__CLASS__);
+        $this->elements = explode(',', $_REQUEST['files']);
+        $this->logger->debug('elements:'. $_REQUEST['files']);
     }
 
-
-    public function actionCss() {
-        $this->type = 'css';
-        $this->combine();
-    }
     public function actionJs() {
         $this->type = 'javascript';
+        $this->base = 'js/';
         $this->combine();
     }
-
-    static public function url($base, $files) {
-        return MvcSkel_Helper_Url::url("/$base/?".join(urlencode(','), $files));
+    public function actionCss() {
+        $this->type = 'css';
+        $this->base = 'styles/';
+        $this->combine();
     }
 
     /**
     * Combine and create cache
     */
     protected function combine() {
-        $lastmod = gmdate('D, d M Y H:i:s \G\M\T', $this->lastModified()) . ' GMT';
+        $lastmod = gmdate('D, d M Y H:i:s \G\M\T', $this->lastModified());
+        $this->hash = md5($_REQUEST['files'].$lastmod);
 
         $this->logger->debug('lastmode:'. $lastmod);
         $this->logger->debug('type:'. $this->type);
@@ -70,7 +64,7 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
         // maybe we just send 304 header
         $this->logger->debug('check browser cache...');
         $this->conditionalGet($lastmod);
-        $this->logger->debug('NO check browser cache...');
+        $this->logger->debug('no browser cache, continue');
 
         // Determine supported compression method
         $gzip = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip');
@@ -84,18 +78,17 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
         $this->logger->debug('cacheFileId:'. $cacheFileId);
 
         $options = MvcSkel_Helper_Config::read();
-        $cacheDir = rtrim($options['tmp'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $cacheDir = $options['tmp_dir'] . DIRECTORY_SEPARATOR;
         $cacheLite = new Cache_Lite(array('cacheDir'=>$cacheDir));
         $cacheFile = $cacheLite->get($cacheFileId);
 
         if ($cacheFile) {
-            $this->logger->debug('from cache: YES');
-            $this->logger->debug('output cached content');
+            $this->logger->debug('disc cache is actual, output cached content');
             $this->output($cacheFile, $encoding);
             exit();
         }
 
-        $this->logger->debug('from cache: NO');
+        $this->logger->debug('no disk cache, continue...');
 
         // Get contents of the files
         $contents = $this->getContent();
@@ -106,11 +99,10 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
             $contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
             $this->logger->debug('gzipped size: '.strlen($contents).' bytes');
         }
-        $this->logger->debug('output newly generated content');
         $this->output($contents, $encoding);
 
-        $this->logger->debug('creating cache');
         $cacheLite->save($contents, $cacheFileId);
+        $this->logger->debug('cache created');
     }
 
     /**
@@ -122,27 +114,33 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
             header ("Content-Encoding: " . $encoding);
         }
         header ('Content-Length: ' . strlen($content));
-        $this->logger->debug('echo '.strlen($content) . ' bytes');
         echo $content;
+        $this->logger->debug(strlen($content) . ' bytes sent to client');
     }
 
     /**
-    * Determine last modification date of the files
-    * @param  string $base base dir
-    * @param  string $elements file list
-    */
+     * Determine last modification date of the files
+     * AND SECURITY CHECK.
+     * @param  string $base base dir
+     * @param  string $elements file list
+     */
     protected function lastModified() {
         $lastModified = 0;
         foreach ($this->elements as $element) {
             $path = realpath($this->base . $element);
-            if ($path!==false &&
-                (($this->type == 'javascript' && substr($path, -3) != '.js') ||
-                    ($this->type == 'css'        && substr($path, -4) != '.css'))) {
+            if (!file_exists($path)) {
+                $this->logger->err('incorrect path: '.$this->base . $element);
+                header ("HTTP/1.0 404 Not Found");
+                exit;
+            }
+            if (strpos($path, $this->base)===false) {
+                $this->logger->err('danger access defined: '.$path);
                 header ("HTTP/1.0 403 Forbidden");
                 exit;
             }
-            if (!file_exists($path)) {
-                header ("HTTP/1.0 404 Not Found");
+            if (($this->type == 'javascript' && substr($path, -3) != '.js') ||
+                ($this->type == 'css'        && substr($path, -4) != '.css')) {
+                header ("HTTP/1.0 403 Forbidden");
                 exit;
             }
             $lastModified = max($lastModified, filemtime($path));
@@ -188,20 +186,24 @@ class MvcSkel_Controller_Combine extends MvcSkel_Controller {
      * @param int $lastmod last modification of content
      */
     protected function conditionalGet ($lastmod) {
-        $lastmod = gmdate('D, d M Y H:i:s', intval($lastmod)) . ' GMT';
         $etag = '"' . $this->hash . '"';
 
         // ETag is sent even with 304 header
         header("ETag: $etag");
         $ifmod = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] == $lastmod : null;
         $iftag = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] == $etag : null;
+        
+        $this->logger->debug("sent: ETag: $etag");
+        $this->logger->debug('HTTP_IF_MODIFIED_SINCE: '.$_SERVER['HTTP_IF_MODIFIED_SINCE']);
+        $this->logger->debug('HTTP_IF_NONE_MATCH:'.$_SERVER['HTTP_IF_NONE_MATCH']);
 
         // If either matches and neither is a mismatch, send not modified header
         if (($ifmod || $iftag) && ($ifmod !== false && $iftag !== false)) {
             header('HTTP/1.0 304 Not Modified');
-            die();
+            exit();
         }
         // Last-Modified doesn't need to be sent with 304 response
         header("Last-Modified: $lastmod");
+        $this->logger->debug("sent: Last-Modified: $lastmod");
     }
 }

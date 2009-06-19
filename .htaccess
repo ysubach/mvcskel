@@ -3,5 +3,5 @@ RewriteBase /mvcskel
 RewriteCond %{REQUEST_URI} !(index.php|images/|styles/|js/)
 RewriteRule ^.* index.php?mvcskel_redirect_url=$0 [QSA]
 
-#RewriteRule ^styles/(.*\.css)$ combine.php?type=css&files=$1
-#RewriteRule ^js/(.*\.js)$      combine.php?type=javascript&files=$1
+RewriteRule ^styles/(.*\.css)$ index.php?mvcskel_redirect_url=Combine/Css&files=$1
+RewriteRule ^js/(.*\.js)$      index.php?mvcskel_redirect_url=Combine/Js&files=$1

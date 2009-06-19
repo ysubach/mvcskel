@@ -23,7 +23,7 @@ require_once 'Log.php';
  * Just shorthand wrapper for PEAR::Log package.
  *  Usage:
  *  <code>
- *    $log = new MvcSkel_Helper_Log::get();
+ *    $log = new MvcSkel_Helper_Log::get(__CLASS__);
  *    $log->debug('some test message');
  *  </code>
  *
