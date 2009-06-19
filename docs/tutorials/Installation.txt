@@ -8,7 +8,9 @@ Very simple:
   - ensure folder ''tmp/'' and it's sub-folders are writable by web-server
   - ensure RewriteEngine is enabled in your Apache
 
-It is all. Now you can access it by URL like %%http://mydomain.com/mvcskel/%%
+It is all. Now you can access it by URL like %%http://mydomain.com/mvcskel/%%. Please check the application work properly, just login with login/password
+  * user/user - to login as user;
+  * admin/admin - to login with admin privileges.
 
 ==== Change Directory Name ====
 
