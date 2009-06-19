@@ -1,0 +1,21 @@
+===== MvcSkel Installation =====
+
+Very simple:
+  - download a release from http://code.google.com/p/mvcskel/downloads/list\\ or checkout svn using instructions at http://code.google.com/p/mvcskel/source/checkout
+  - extract archive file to your web directory
+  - create database from file ''docs/mvcskel.sql''
+  - edit ''app/config.yml'' and set correct database credentials
+  - ensure folder ''tmp/'' and it's sub-folders are writable by web-server
+  - ensure RewriteEngine is enabled in your Apache
+
+It is all. Now you can access it by URL like %%http://mydomain.com/mvcskel/%%
+
+==== Change Directory Name ====
+
+If you wish to change the path to make it accessible by URL like %%http://mydomain.com/myapp/%%
+then please make proper changes for:
+  - //root// item in ''app/config.yml'';
+  - //application_root// variable in ''js/init.js''.
+
+Similar changes are necessary to make it accessible by URL like %%http://mydomain.com%%:
+set the entities above to empty values.
