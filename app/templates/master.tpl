@@ -10,12 +10,9 @@
 
         <link rel="stylesheet" href="{$root}styles/blueprint/screen.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="{$root}styles/blueprint/print.css" type="text/css" media="print">
-        <!--[if lt IE 8]><link rel="stylesheet" href="{$root}styles/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
-
-        <link rel="stylesheet" href="{$root}styles/blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
-        <link rel="stylesheet" href="{$root}styles/blueprint/plugins/link-icons/screen.css" type="text/css" media="screen, projection">
-        <link rel="stylesheet" href="{$root}styles/blueprint/plugins/buttons/screen.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="{$root}styles/style.css" type="text/css" media="screen, projection">
+
+        <!--[if lt IE 8]><link rel="stylesheet" href="{$root}styles/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
         <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js"></script>
         <script type="text/javascript" src="{$root}js/init.js"></script>

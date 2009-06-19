@@ -1,0 +1,6 @@
+mvcskel:
+  path: /home/ivg/www/mvcskel/styles/blueprint
+  plugins:
+    - fancy-type
+    - buttons
+    - link-icons
