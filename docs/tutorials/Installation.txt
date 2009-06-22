@@ -18,6 +18,7 @@ If you wish to change the path to make it accessible by URL like %%http://mydoma
 then please make proper changes for:
   - //root// item in ''app/config.yml'';
   - //application_root// variable in ''js/init.js''.
+  - //RewriteBase// variable in ''.htaccess''.
 
 Similar changes are necessary to make it accessible by URL like %%http://mydomain.com%%:
-set the entities above to empty values.
+set the entities above to empty values and //RewriteBase// directive should be just removed.
