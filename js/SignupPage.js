@@ -11,5 +11,3 @@ var SignupPage = Class.create({
         image.writeAttribute('src', mvcskel_root+'Signup/Captcha/c/'+this.refrechCount++);
     }
 });
-
-

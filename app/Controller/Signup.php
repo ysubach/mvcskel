@@ -23,6 +23,20 @@ class Controller_Signup extends MvcSkel_Controller {
         return $form->process();
     }
 
+    public function actionForgotPassword() {
+        $smarty = new MvcSkel_Helper_Smarty('Signup/forgot.tpl');
+        $form = new Helper_ForgotPasswordForm('Signup/ForgotPassword', 
+            'Signup/ForgotPasswordSent', $smarty);
+        $smarty->assign('title', 'Forgot Password Form');
+        return $form->process();
+    }
+
+    public function actionForgotPasswordSent() {
+        $smarty = new MvcSkel_Helper_Smarty('Signup/passwordSent.tpl');
+        $smarty->assign('title', 'Forgot Password Sent');
+        return $smarty->render();
+    }
+
     /**
      * Output captcha image.
      */

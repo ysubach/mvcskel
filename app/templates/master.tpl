@@ -30,7 +30,7 @@
                 {else}
                 <a href="{url to='Auth/Login'}">Sing In</a>
                 <a href="{url to='Signup'}">Sing Up</a>
-                <a href="{url to='Member/ForgotPassword'}">Forgot Password?</a>
+                <a href="{url to='Signup/ForgotPassword'}">Forgot Password?</a>
                 {/if}
             </div>
 
