@@ -61,12 +61,5 @@ class Helper_SignupForm extends MvcSkel_Helper_Form {
         $auth->start();
         $auth->setAuth($u->username);
     }
-
-    protected function render() {
-        $smarty = $this->smarty;
-        $smarty->assign('form', $this);
-        $smarty->assign('object', $this->getObject());
-        return $smarty->render();
-    }
 }
 ?>

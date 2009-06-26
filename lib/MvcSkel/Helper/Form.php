@@ -198,6 +198,16 @@ abstract class MvcSkel_Helper_Form {
     protected function exitRedirect() {
         MvcSkel_Helper_Url::redirect($this->exitAction);
     }
+
+    /**
+     * Form rendering through Smarty
+     */
+    protected function render() {
+        $smarty = $this->smarty;
+        $smarty->assign('form', $this);
+        $smarty->assign('object', $this->getObject());
+        return $smarty->render();
+    }
     
     /**
     * @return object The fresh one for this form
@@ -218,10 +228,5 @@ abstract class MvcSkel_Helper_Form {
     * Performs action, called after successful validation
     */
     abstract protected function action();
-    
-    /**
-    * Implements form rendering
-    */
-    abstract protected function render();
 }
 ?>

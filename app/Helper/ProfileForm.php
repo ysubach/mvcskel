@@ -57,12 +57,5 @@ class Helper_ProfileForm extends MvcSkel_Helper_Form {
         }
         $u->save();
     }
-
-    protected function render() {
-        $smarty = $this->smarty;
-        $smarty->assign('form', $this);
-        $smarty->assign('object', $this->getObject());
-        return $smarty->render();
-    }
 }
 ?>
