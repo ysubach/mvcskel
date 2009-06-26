@@ -8,3 +8,5 @@ logger:
     handler: file
 
 nice-urls: true
+
+email-from: nobody@mvcskel.org

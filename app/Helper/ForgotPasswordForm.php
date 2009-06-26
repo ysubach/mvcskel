@@ -40,10 +40,21 @@ class Helper_ForgotPasswordForm extends MvcSkel_Helper_Form {
         // save new password
         $u = $this->getObject();
         $user = Doctrine::getTable('User')->findOneByEmail($u['email']);
-        $user->password = md5('123');
+        $newPass = $this->genRandomPassword();
+        $user->password = md5($newPass);
         $user->save();
 
         // send email notification
+        Helper_Mail::systemMessage('forgot', $user, array('newPass'=>$newPass));
+    }
+
+    /**
+     * Generate new random password
+     * @return string New password in clear text
+     */
+    protected function genRandomPassword() {
+        $newPass = mt_rand(1000000, 9000000);
+        return $newPass;
     }
 }
 ?>
