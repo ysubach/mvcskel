@@ -14,7 +14,7 @@
 
         <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js,init.js,SignupPage.js"></script>
         <script type="text/javascript">
-        var root = '{$root}';
+        var mvcskel_root = '{$root}';
         </script>
     </head>
     <body>

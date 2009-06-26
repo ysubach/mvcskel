@@ -8,7 +8,7 @@ var SignupPage = Class.create({
     },
     changeCaptcha: function() {
         var image = $('captchaImage');
-        image.writeAttribute('src', application_root+'/Signup/Captcha/c/'+this.refrechCount++);
+        image.writeAttribute('src', mvcskel_root+'Signup/Captcha/c/'+this.refrechCount++);
     }
 });
 

@@ -1,5 +1,3 @@
-var application_root = '/mvcskel';
-
 /* Initial settings */
 function initializeApplication() {
     if ($('formSignup')) {
