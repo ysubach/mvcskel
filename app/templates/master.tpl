@@ -13,6 +13,9 @@
         <!--[if lt IE 8]><link rel="stylesheet" href="{$root}styles/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
         <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js,init.js,SignupPage.js"></script>
+        <script type="text/javascript">
+        var root = '{$root}';
+        </script>
     </head>
     <body>
         <div class="container">
