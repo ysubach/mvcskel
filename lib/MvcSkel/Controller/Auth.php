@@ -31,6 +31,12 @@ class MvcSkel_Controller_Auth extends MvcSkel_Controller {
             }
             return $view->render();
         }
+
+        // deal with remember me flag
+        if (isset($_REQUEST['rememberme'])) {
+            $auth->autoLoginPut();
+        }
+        
         if (isset($_REQUEST['destination'])) {
             MvcSkel_Helper_Url::redirect($_REQUEST['destination']);
         } else {

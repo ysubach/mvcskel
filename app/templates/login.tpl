@@ -15,6 +15,15 @@
             </div>
             {/if}
         </div>
+        <div>
+            <input id="rememberme" type="checkbox" name="rememberme" value="">
+            <label for="rememberme">Keep me signed in for 6 days [Uncheck if on a shared computer]</label><br>
+            {if $smarty.request.username}
+            <div class="error">
+                Incorrect username or password.
+            </div>
+            {/if}
+        </div>
     </fieldset>
     
     <p>

@@ -33,6 +33,7 @@ class MvcSkel_Runner {
         // add default filters
         $this->addFilter(new MvcSkel_Filter_Router());
         $this->addFilter(new MvcSkel_Filter_DoctrineInit());
+        $this->addFilter(new MvcSkel_Filter_AutoLogin());
     }
 
     /**
