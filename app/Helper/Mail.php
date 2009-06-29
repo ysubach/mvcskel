@@ -1,8 +1,14 @@
 <?php
-require_once 'Smarty.class.php';
-
 /**
  * Mail rendering and delivery
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    startup
+ * @copyright  2009, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
  */
 class Helper_Mail {
     /**

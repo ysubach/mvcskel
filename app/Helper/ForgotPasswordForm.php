@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * MvcSkel forgot password form helper.
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    startup
+ * @copyright  2009, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
+ */
 class Helper_ForgotPasswordForm extends MvcSkel_Helper_Form {
     protected function buildFresh() {
         MvcSkel_Helper_Captcha::init(true);

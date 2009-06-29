@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * MvcSkel signup form helper.
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    startup
+ * @copyright  2009, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
+ */
 class Helper_SignupForm extends MvcSkel_Helper_Form {
     protected function buildFresh() {
         $u = new User();
