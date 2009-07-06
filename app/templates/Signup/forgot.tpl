@@ -6,7 +6,12 @@
             Please enter registered email address below. New password
             will be generated and sent to you inbox.
         </p>
-        {include file='field.tpl' name='email' label='Email address' type='text' class='text'}
+        <div>
+            <label for="email">Email address</label><br>
+            <input type="text" class="text" id="email" name="email"
+                   value="{$object.email}">
+            {if $form->haveError('email')}<div class="error">{$form->getError('email')}</div>{/if}
+        </div>
     </fieldset>
     <fieldset>
         <legend>Spam Protection</legend>
