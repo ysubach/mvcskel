@@ -49,6 +49,7 @@ require_once 'Auth.php';
  * @subpackage Helper
  */
 class MvcSkel_Helper_Auth extends Auth {
+    protected static $currentUser = null;
     public function __construct() {
         $config = MvcSkel_Helper_Config::read();
 
@@ -57,13 +58,21 @@ class MvcSkel_Helper_Auth extends Auth {
             'table'      => 'User',
             'usernamecol'  => 'username',
             'passwordcol'  => 'password',
-            'db_fields'  => array('roles', 'fname', 'id'),
+            'db_fields'  => array('roles', 'fname', 'id', 'lastLoginDT'),
             'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE),
             'enableLogging'=>true,
         );
-
+        
         $this->Auth('MDB2', $options, '', false);
         $this->logger = MvcSkel_Helper_Log::get('MvcSkel_Helper_Auth');
+        
+        $this->setLoginCallback(array('MvcSkel_Helper_Auth', 'onLogin'));
+    }
+
+    protected function onLogin($username, $auth) {
+        $user = $auth->getUser();
+        $user->lastLoginDT = new Doctrine_Expression('now()');
+        $user->save();
     }
 
     /**
@@ -83,11 +92,24 @@ class MvcSkel_Helper_Auth extends Auth {
     * Return current logged in user object
     */
     public function getUser() {
+        if ($this->currentUser!=null) {
+            return $this->currentUser;
+        }
+
         $id = $this->getAuthData('id');
         if ($id==null) {
             throw new Exception("User identifier is missing!");
         }
-        return Doctrine::getTable('User')->find($id);
+        
+        $this->currentUser = Doctrine::getTable('User')->find($id);
+        return $this->currentUser;
+    }
+
+    /**
+     * Reset cached user instance: to force get data from database.
+     */
+    public static function clearCurrentUser() {
+        self::$currentUser = null;
     }
 
     /**
@@ -110,10 +132,6 @@ class MvcSkel_Helper_Auth extends Auth {
         if ($user) {
             $usernamecol = $this->storage_options['usernamecol'];
             $this->setAuth($user->$usernamecol);
-            // set auth data necessary for application
-            foreach ($this->storage_options['db_fields'] as $field) {
-                $this->setAuthData($field, $user->$field);
-            }
             return true;
         }
         return false;

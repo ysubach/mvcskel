@@ -16,7 +16,7 @@
     </fieldset>
     <p>
         <button type="submit" class="button positive">
-            <img src="{$root}styles/blueprint/icons/tick.png" alt=""/> Join
+            <img src="{$root}styles/blueprint/icons/tick.png" alt=""/> Update
         </button>
     </p>
 </form>

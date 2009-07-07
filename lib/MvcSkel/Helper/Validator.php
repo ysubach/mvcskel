@@ -40,7 +40,7 @@ class MvcSkel_Helper_Validator {
     public function checkNotEmpty($field, $value) 
     {
         if (trim($value)=='') {
-            $this->form->attachError($field, 'not empty value expected');
+            $this->form->attachError($field, 'This information is required');
             return false;
         }
         return true;
@@ -56,7 +56,7 @@ class MvcSkel_Helper_Validator {
     {
         $value = trim($value);
         if (!ereg('^[[:digit:]]*\.{0,1}[[:digit:]]{0,2}$', $value)) {
-            $this->form->attachError($field, 'please enter correct sum');
+            $this->form->attachError($field, 'Please enter correct sum');
             return false;
         }
         return true;
@@ -72,7 +72,7 @@ class MvcSkel_Helper_Validator {
     {
         $value = trim($value);
         if (!ereg('^[[:digit:]]+$', $value)) {
-            $this->form->attachError($field, 'please enter integer number');
+            $this->form->attachError($field, 'Please enter integer number');
             return false;
         }
         return true;
@@ -88,10 +88,22 @@ class MvcSkel_Helper_Validator {
     {
         $value = trim($value);
         if (!ereg('\:\/\/', $value)) {
-            $this->form->attachError($field, 'please enter correct URL');
+            $this->form->attachError($field, 'Please enter correct URL');
             return false;
         }
         return true;
+    }
+    
+    /**
+     * Try to fix url with adding of necessary protocol
+     * @param string $url url string to fix
+     * @param string $proto the protocol to add to url
+     * @return string fixed url
+     */
+    public function fixURL($url, $proto = 'http://') {
+        if (substr($url, 0, strlen($proto))!=$proto) {
+            return $proto.$url;
+        }
     }
 
     /**
@@ -109,7 +121,7 @@ class MvcSkel_Helper_Validator {
                  $value)) {
             return true;
         } else {
-            $this->form->attachError($field, 'please enter correct Email');
+            $this->form->attachError($field, 'Please enter correct email address');
             return false;
         }
     }
@@ -123,7 +135,7 @@ class MvcSkel_Helper_Validator {
     public function checkFileNotEmpty($field, $file)
     {
         if (!$file->isValid() or $file->getProp('size')==0) {
-            $this->form->attachError($field, 'please upload not empty file');
+            $this->form->attachError($field, 'Please upload not empty file');
             return false;
         }
         return true;
@@ -146,7 +158,7 @@ class MvcSkel_Helper_Validator {
                     !ereg('\.jpg$', $filename) &&
                     !ereg('\.jpeg$', $filename)
                     ) {
-                $this->form->attachError($field, 'please upload PNG, GIF or JPEG file');
+                $this->form->attachError($field, 'Please upload PNG, GIF or JPEG file');
                 return false;
             }
         }

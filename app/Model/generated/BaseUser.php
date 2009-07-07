@@ -15,6 +15,8 @@ abstract class BaseUser extends Doctrine_Record
     $this->hasColumn('email', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
     $this->hasColumn('fname', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
     $this->hasColumn('autoLoginKey', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
+    $this->hasColumn('lastLoginDT', 'timestamp', null, array('type' => 'timestamp', 'default' => '', 'notnull' => true));
+    $this->hasColumn('registrationDT', 'timestamp', null, array('type' => 'timestamp', 'default' => '', 'notnull' => true));
   }
 
 }

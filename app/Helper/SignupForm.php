@@ -62,9 +62,10 @@ class Helper_SignupForm extends MvcSkel_Helper_Form {
         $u = $this->getObject();
         $u->password = md5($u->password);
         $u->roles = 'User';
+        $u->registrationDT = new Doctrine_Expression('now()');
         $u->save();
 
-        // clear image for next sigup
+        // clear image for next signup
         MvcSkel_Helper_Captcha::init(true);
 
         $auth = new MvcSkel_Helper_Auth();

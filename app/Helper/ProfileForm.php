@@ -56,6 +56,7 @@ class Helper_ProfileForm extends MvcSkel_Helper_Form {
             $u->password = $_REQUEST['password'];
         }
         $u->save();
+        MvcSkel_Helper_Auth::clearCurrentUser();
     }
 }
 ?>

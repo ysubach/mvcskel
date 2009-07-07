@@ -56,6 +56,9 @@ class Helper_ForgotPasswordForm extends MvcSkel_Helper_Form {
 
         // send email notification
         Helper_Mail::systemMessage('forgot', $user, array('newPass'=>$newPass));
+        
+        // clear image for next page render
+        MvcSkel_Helper_Captcha::init(true);
     }
 
     /**
