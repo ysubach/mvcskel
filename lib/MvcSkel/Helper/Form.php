@@ -1,7 +1,7 @@
 <?php
 /**
  * MvcSkel form helper.
- * 
+ *
  * PHP versions 5
  *
  * @category   framework
@@ -26,22 +26,22 @@
 abstract class MvcSkel_Helper_Form {
     /** Form identifier */
     private $id;
-    
+
     /** Flag indicates that form found in request */
     private $inRequest;
-    
+
     /** Object edited by the form */
     private $object;
-    
+
     /** Errors associated with object */
     private $errors;
-    
+
     /** Smarty instance for form rendering */
     protected $smarty;
-    
+
     /** Name of form source action  */
     protected $sourceAction;
-    
+
     /** Name of form exit action  */
     protected $exitAction;
 
@@ -69,7 +69,7 @@ abstract class MvcSkel_Helper_Form {
             $this->resetErrors();
         }
     }
-    
+
     /**
     * Destructor.
     * Save current form into session.
@@ -81,17 +81,17 @@ abstract class MvcSkel_Helper_Form {
         $data = array('object' => $this->object, 'errors' =>$this->errors);
         $_SESSION[$this->getSid()] = $data;
     }
-    
+
     /** Return session Id of the form */
     private function getSid() {
         return "mvcskel_form_".$this->id;
     }
-    
+
     /** Return current form identifier */
     public function getId() {
         return $this->id;
     }
-    
+
     /** Return associated action name */
     public function getSourceAction() {
         return $this->sourceAction;
@@ -112,14 +112,14 @@ abstract class MvcSkel_Helper_Form {
         $this->object = $object;
         $this->resetErrors();
     }
-    
+
     /** Reset errors to nothing */
     public function resetErrors() {
         $this->errors = array();
     }
-    
-    /** 
-    * Check that we have any errors 
+
+    /**
+    * Check that we have any errors
     */
     public function haveErrors() {
         if (isset($this->errors) && count($this->errors)>0) {
@@ -128,10 +128,10 @@ abstract class MvcSkel_Helper_Form {
             return false;
         }
     }
-    
-    /** 
+
+    /**
     * Attach new error
-    * @param string $fieldId Field identifier where error happen 
+    * @param string $fieldId Field identifier where error happen
     * @param string $errorMessage Description of error
     */
     public function attachError($fieldId, $errorMessage) {
@@ -143,7 +143,7 @@ abstract class MvcSkel_Helper_Form {
         $elist[] = $errorMessage;
         $this->errors[$fieldId] = $elist;
     }
-    
+
     /**
     * Check that we have error for specific field
     * @param string $fieldId Field identifier
@@ -155,7 +155,7 @@ abstract class MvcSkel_Helper_Form {
             return false;
         }
     }
-    
+
     /**
     * Retrieve error(s) associated with field
     * @param string $fieldId Field identifier
@@ -166,21 +166,50 @@ abstract class MvcSkel_Helper_Form {
         }
         return implode("<br>", $this->errors[$fieldId]);
     }
-    
+
     /**
-    * Form processing entry point.
-    * Implements top level processing logic, supported by set of 
-    * abstract methods.
-    *
-    * @return string Content of rendered Smarty instance,
-    *       or exit if redirect was done
-    */
-    public function process() {
+     * Form processing entry point.
+     * Implements top level processing logic, supported by set of
+     * abstract methods.
+     * @param bool $ajax if request was done by ajax, at that case
+     * JSON structure will be return. Example:
+     * <code>
+     * {
+     *      success:false,
+     *      errors:{username:['the field is mandatory'],
+     *              password:['the field is mandatory','minimum 5 symbols']}
+     * }
+     * </code>
+     * OR
+     * <code>
+     * {
+     *      success:true,
+     *      location:'http://new-location/path'
+     * }
+     * </code>
+     * @return string Content of rendered Smarty instance,
+     *       or exit if redirect was done
+     */
+    public function process($ajax = false) {
         // process request
         if ($this->foundInRequest()) {
             $this->fillByRequest();
             $this->validate();
         }
+
+        // doing action or rendering (ajax mode)
+        if ($ajax && $this->foundInRequest()) {
+            $response = array('success'=>true);
+            if ($this->haveErrors()) {
+                $response['success'] = false;
+                $response['errors'] = $this->errors;
+            } else {
+                $this->action();
+                $response['location'] = MvcSkel_Helper_Url::url($this->exitAction);
+            }
+            return json_encode($response);
+        }
+
         // doing action or rendering
         if ($this->foundInRequest() && !$this->haveErrors()) {
             $this->action();
@@ -208,22 +237,22 @@ abstract class MvcSkel_Helper_Form {
         $smarty->assign('object', $this->getObject());
         return $smarty->render();
     }
-    
+
     /**
     * @return object The fresh one for this form
     */
     abstract protected function buildFresh();
-    
+
     /**
     * Fill form object's fields from request
     */
     abstract protected function fillByRequest();
-    
+
     /**
     * Validate current object
     */
     abstract protected function validate();
-    
+
     /**
     * Performs action, called after successful validation
     */

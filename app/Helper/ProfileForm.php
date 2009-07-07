@@ -53,7 +53,7 @@ class Helper_ProfileForm extends MvcSkel_Helper_Form {
     protected function action() {
         $u = $this->getObject();
         if (!empty($_REQUEST['password'])) {
-            $u->password = $_REQUEST['password'];
+            $u->password = md5($_REQUEST['password']);
         }
         $u->save();
         MvcSkel_Helper_Auth::clearCurrentUser();

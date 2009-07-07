@@ -23,14 +23,16 @@ class Controller_Member extends MvcSkel_Controller {
         $smarty = new MvcSkel_Helper_Smarty('Member/profile.tpl');
         $form = new Helper_ProfileForm('Member', 'Member/View', $smarty);
         $smarty->assign('title', 'Profile Page');
-        return $form->process();
+        return $form->process(true);
     }
 
     /**
      * @todo Profile view page.
      */
     public function actionView() {
-        echo 'comming soon...';
+        $smarty = new MvcSkel_Helper_Smarty('Member/view.tpl');
+        $smarty->assign('title', 'Profile View');
+        echo $smarty->render();
     }
 }
 ?>

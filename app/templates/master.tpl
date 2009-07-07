@@ -12,9 +12,13 @@
 
         <!--[if lt IE 8]><link rel="stylesheet" href="{$root}styles/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
+        {if $auth->checkAuth()}
+        <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js,init.js,FormUtils.js,Profile.js"></script>
+        {else}
         <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js,init.js,SignupPage.js"></script>
+        {/if}
         <script type="text/javascript">
-        var mvcskel_root = '{$root}';
+            var mvcskel_root = '{$root}';
         </script>
     </head>
     <body>
