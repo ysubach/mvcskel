@@ -72,7 +72,7 @@ class MvcSkel_Helper_Validator {
     {
         $value = trim($value);
         if (!ereg('^[[:digit:]]+$', $value)) {
-            $this->form->attachError($field, 'Please enter integer number');
+            $this->form->attachError($field, 'Please enter numeric');
             return false;
         }
         return true;
