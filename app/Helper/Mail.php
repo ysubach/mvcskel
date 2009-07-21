@@ -11,14 +11,18 @@
  * @link       http://code.google.com/p/mvcskel/
  */
 class Helper_Mail {
-    /**
-     * Available email templates
-     */
+/**
+ * Available email templates
+ */
     protected static $emailTemplates = array(
-        'forgot' => array(
-            'subject' => 'MvcSkel: New password created',
-            'filename' => 'forgotPass.tpl'
-            )
+    'forgot' => array(
+    'subject' => 'MoneyDice: New password created',
+    'filename' => 'forgotPass.tpl'
+    ),
+    'vote'=> array(
+    'subject' => 'MoneyDice: Vote Created',
+    'filename' => 'vote.tpl'
+    ),
     );
 
     /**
@@ -40,6 +44,12 @@ class Helper_Mail {
         // message delivery
         $headers = "From: {$config['email-from']}";
         mail($user->email, $tpl['subject'], $body, $headers);
+
+        $logger = MvcSkel_Helper_Log::get(__CLASS__);
+        $logger->debug('headers: '.$headers);
+        $logger->debug('email: '.$user->email);
+        $logger->debug('subject: '.$tpl['subject']);
+        $logger->debug('body: '.$body);
     }
 }
 ?>

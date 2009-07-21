@@ -60,7 +60,7 @@ class MvcSkel_Helper_Auth extends Auth {
             'passwordcol'  => 'password',
             'db_fields'  => array('roles', 'fname', 'id', 'lastLoginDT'),
             'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE),
-            'enableLogging'=>true,
+            'enableLogging'=>false,
         );
         
         $this->Auth('MDB2', $options, '', false);
