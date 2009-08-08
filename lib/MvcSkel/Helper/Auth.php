@@ -72,6 +72,7 @@ class MvcSkel_Helper_Auth extends Auth {
     protected function onLogin($username, $auth) {
         $user = $auth->getUser();
         $user->lastLoginDT = new Doctrine_Expression('now()');
+        $user->lastIP = $_SERVER['REMOTE_ADDR'];
         $user->save();
     }
 

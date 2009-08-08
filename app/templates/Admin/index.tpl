@@ -5,13 +5,14 @@
 </p>
 
 <h3>New Users of This Week</h3>
-<table>
+<table id="newUsers">
     {foreach from=$newUsers item='newUser'}
     <tr>
         <td>{$newUser->id}</td>
         <td>{$newUser->email}</td>
         <td>{$newUser->fname}</td>
         <td>{$newUser->registrationDT}</td>
+        <td>{$newUser->lastIP}</td>
     </tr>
     {/foreach}
 </table>

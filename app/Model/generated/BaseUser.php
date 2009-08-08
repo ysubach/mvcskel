@@ -9,13 +9,14 @@ abstract class BaseUser extends Doctrine_Record
   {
     $this->setTableName('User');
     $this->hasColumn('id', 'integer', 4, array('type' => 'integer', 'length' => 4, 'primary' => true, 'autoincrement' => true));
-    $this->hasColumn('username', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
-    $this->hasColumn('password', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
+    $this->hasColumn('username', 'string', 40, array('type' => 'string', 'length' => 40, 'default' => '', 'notnull' => true));
+    $this->hasColumn('password', 'string', 32, array('type' => 'string', 'length' => 32, 'default' => '', 'notnull' => true));
     $this->hasColumn('roles', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
-    $this->hasColumn('email', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
-    $this->hasColumn('fname', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
-    $this->hasColumn('autoLoginKey', 'string', 255, array('type' => 'string', 'length' => 255, 'default' => '', 'notnull' => true));
+    $this->hasColumn('email', 'string', 40, array('type' => 'string', 'length' => 40, 'default' => '', 'notnull' => true));
+    $this->hasColumn('fname', 'string', 40, array('type' => 'string', 'length' => 40, 'default' => '', 'notnull' => true));
+    $this->hasColumn('autoLoginKey', 'string', 32, array('type' => 'string', 'length' => 32, 'default' => '', 'notnull' => true));
     $this->hasColumn('lastLoginDT', 'timestamp', null, array('type' => 'timestamp', 'default' => '', 'notnull' => true));
+    $this->hasColumn('lastIP', 'string', 15, array('type' => 'string', 'length' => 15, 'default' => '', 'notnull' => true));
     $this->hasColumn('registrationDT', 'timestamp', null, array('type' => 'timestamp', 'default' => '', 'notnull' => true));
   }
 
