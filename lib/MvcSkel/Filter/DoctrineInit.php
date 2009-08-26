@@ -30,6 +30,8 @@ class MvcSkel_Filter_DoctrineInit extends MvcSkel_Filter {
         
         // back to standard limit clause
         Doctrine_Manager::getInstance()->setAttribute(Doctrine::ATTR_QUERY_LIMIT, Doctrine::LIMIT_ROWS);
+        // using native db enum
+        Doctrine_Manager::getInstance()->setAttribute(Doctrine::ATTR_USE_NATIVE_ENUM, true);
         
         // setup connection
         $config = MvcSkel_Helper_Config::read();
