@@ -104,6 +104,7 @@ class MvcSkel_Helper_Validator {
         if (substr($url, 0, strlen($proto))!=$proto) {
             return $proto.$url;
         }
+        return $url;
     }
 
     /**
