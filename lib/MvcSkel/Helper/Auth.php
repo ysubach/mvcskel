@@ -49,7 +49,12 @@ require_once 'Auth.php';
  * @subpackage Helper
  */
 class MvcSkel_Helper_Auth extends Auth {
+    /** Current user object */
     protected static $currentUser = null;
+
+    /**
+     * Constructor
+     */
     public function __construct() {
         $config = MvcSkel_Helper_Config::read();
 
@@ -60,7 +65,7 @@ class MvcSkel_Helper_Auth extends Auth {
             'passwordcol'  => 'password',
             'db_fields'  => array('roles', 'fname', 'id', 'lastLoginDT'),
             'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE),
-            'enableLogging'=>false,
+            'enableLogging' => false,
         );
         
         $this->Auth('MDB2', $options, '', false);
@@ -69,6 +74,9 @@ class MvcSkel_Helper_Auth extends Auth {
         $this->setLoginCallback(array('MvcSkel_Helper_Auth', 'onLogin'));
     }
 
+    /**
+     * Callback method, called by parent after login.
+     */
     protected function onLogin($username, $auth) {
         $user = $auth->getUser();
         $user->lastLoginDT = new Doctrine_Expression('now()');
@@ -90,11 +98,11 @@ class MvcSkel_Helper_Auth extends Auth {
     }
 
     /**
-    * Return current logged in user object
-    */
+     * Return current logged in user object
+     */
     public function getUser() {
-        if ($this->currentUser!=null) {
-            return $this->currentUser;
+        if (self::$currentUser!=null) {
+            return self::$currentUser;
         }
 
         $id = $this->getAuthData('id');
@@ -102,8 +110,8 @@ class MvcSkel_Helper_Auth extends Auth {
             throw new Exception("User identifier is missing!");
         }
         
-        $this->currentUser = Doctrine::getTable('User')->find($id);
-        return $this->currentUser;
+        self::$currentUser = Doctrine::getTable('User')->find($id);
+        return self::$currentUser;
     }
 
     /**
@@ -152,7 +160,7 @@ class MvcSkel_Helper_Auth extends Auth {
     }
 
     public function logout() {
-        $this->currentUser = null;
+        self::$currentUser = null;
         $result = parent::logout();
         if (isset($_COOKIE['mvcskel_auto_login'])) {
             setcookie('mvcskel_auto_login', '', time()-3600*24*6, '/');
