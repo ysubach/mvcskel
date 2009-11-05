@@ -97,6 +97,7 @@ class MvcSkel_Helper_Url {
      */
     public static function redirect($url, $params=null) {
         header('Location: ' . MvcSkel_Helper_Url::url($url, $params));
+        session_write_close();
         exit();
     }
     
