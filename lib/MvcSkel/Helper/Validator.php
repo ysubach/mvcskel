@@ -37,8 +37,7 @@ class MvcSkel_Helper_Validator {
      * @param string value
      * @return true if value not empty, false otherwise
      */
-    public function checkNotEmpty($field, $value) 
-    {
+    public function checkNotEmpty($field, $value) {
         if (trim($value)=='') {
             $this->form->attachError($field, 'This information is required');
             return false;
@@ -63,6 +62,30 @@ class MvcSkel_Helper_Validator {
     }
 
     /**
+     * Compares given object userId with the current user.id.
+     * @param int $userId user id of checked object
+     */
+    public static function checkOwnership($userId) {
+        $logger = MvcSkel_Helper_Log::get(__CLASS__);
+        $auth = new MvcSkel_Helper_Auth();
+        if ($auth->checkRole('Administrator')) {
+            return true;
+        }
+        
+        $user = MvcSkel_Helper_Auth::user();
+        if ($userId!=$user->id) {
+            $this->form->attachError('ownership', 'you are not the owner of object');
+            
+            $logger->alert('user with id:'.$user->id.
+                    ' tries access in context of object of user '.$userId);
+        
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Check if value is correct integer number
      * @param string field
      * @param string value
@@ -71,8 +94,8 @@ class MvcSkel_Helper_Validator {
     public function checkInteger($field, $value)
     {
         $value = trim($value);
-        if (!ereg('^[[:digit:]]+$', $value)) {
-            $this->form->attachError($field, 'Please enter numeric');
+        if (!is_numeric($value)) {
+            $this->form->attachError($field, 'Please enter numeric value');
             return false;
         }
         return true;
@@ -93,14 +116,14 @@ class MvcSkel_Helper_Validator {
         }
         return true;
     }
-    
+
     /**
      * Try to fix url with adding of necessary protocol
      * @param string $url url string to fix
      * @param string $proto the protocol to add to url
      * @return string fixed url
      */
-    public function fixURL($url, $proto = 'http://') {
+    public static function fixURL($url, $proto = 'http://') {
         if (substr($url, 0, strlen($proto))!=$proto) {
             return $proto.$url;
         }
