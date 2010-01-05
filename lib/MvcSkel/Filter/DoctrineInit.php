@@ -33,6 +33,9 @@ class MvcSkel_Filter_DoctrineInit extends MvcSkel_Filter {
         // using native db enum
         Doctrine_Manager::getInstance()->setAttribute(Doctrine::ATTR_USE_NATIVE_ENUM, true);
         
+        // prevent serialize error
+        require_once 'Doctrine/Event.php';
+        
         // setup connection
         $config = MvcSkel_Helper_Config::read();
         Doctrine_Manager::connection($config['dsn']);
