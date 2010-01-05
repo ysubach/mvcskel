@@ -2,15 +2,33 @@
  * Some useful utils for ajax form handling.
  */
 var FormUtils = Class.create({
-    initialize: function(){},
+    /**
+     * C-r. If parameters are given, then it can be used for
+     * very common case of form handling.
+     */
+    initialize: function(formId, submitId) {
+        if (typeof(formId)=='undefined' || typeof(submitId)=='undefined') {
+            return;
+        }
+
+        // set event for very common case of form handling
+        var fu = new FormUtils();
+        $(submitId).observe('click', function(event, form, fu){
+            fu.handleRequest();
+            $(form).request({
+                onComplete: function(fu, transport) {
+                    fu.handleResponse(transport);
+                }.bind(this, fu)
+            });
+        }.bindAsEventListener(this, $(formId), fu));
+    },
     /**
      * Handle request, make some visual effects.
-     * @param formId id of form which will be submitted
      */
     handleRequest:function() {
-        this.hideProblem();
-        this.hideComplete();
-        this.showProgress();
+        $('mvcskel_form_problem').hide();
+        $('mvcskel_form_complete').show();
+        $('mvcskel_form_progress').show();
     },
 
     /**
@@ -35,10 +53,10 @@ var FormUtils = Class.create({
                 return false;
             }
         } catch (e) {
-            this.showProblem();
+            $('mvcskel_form_problem').show();
             return false;
         } finally {
-            this.hideProgress();
+            $('mvcskel_form_progress').hide();
         }
     },
     /**
@@ -54,46 +72,6 @@ var FormUtils = Class.create({
 
             }
         }
-        this.showComplete();
-    },
-
-    /**
-     * Show problem div.
-     */
-    showProblem: function() {
-        if ($('mvcskel_form_problem')) {
-            $('mvcskel_form_problem').show();
-        }
-    },
-    hideProblem: function() {
-        if ($('mvcskel_form_problem')) {
-            $('mvcskel_form_problem').hide();
-        }
-    },
-    /**
-     * Show progress div.
-     */
-    showProgress: function() {
-        if ($('mvcskel_form_progress')) {
-            $('mvcskel_form_progress').show();
-        }
-    },
-    hideProgress: function() {
-        if ($('mvcskel_form_progress')) {
-            $('mvcskel_form_progress').hide();
-        }
-    },
-    /**
-     * Show complete div, when ok, with errors was returned
-     */
-    showComplete: function() {
-        if ($('mvcskel_form_complete')) {
-            $('mvcskel_form_complete').show();
-        }
-    },
-    hideComplete: function() {
-        if ($('mvcskel_form_complete')) {
-            $('mvcskel_form_complete').hide();
-        }
+        $('mvcskel_form_complete').show();
     }
 });
