@@ -11,7 +11,7 @@ var FormUtils = Class.create({
             return;
         }
 
-        var fu = new FormUtils();
+        var fu = this;
         var form = $(formId);
         
         // check input file, use AIM in that case
