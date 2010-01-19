@@ -11,24 +11,45 @@ var FormUtils = Class.create({
             return;
         }
 
-        // set event for very common case of form handling
         var fu = new FormUtils();
-        $(submitId).observe('click', function(event, form, fu){
-            fu.handleRequest();
-            $(form).request({
-                onComplete: function(fu, transport) {
-                    fu.handleResponse(transport);
-                }.bind(this, fu)
+        var form = $(formId);
+        
+        // check input file, use AIM in that case
+        if (form.select('input[type="file"]')) {
+            $(submitId).observe('click', function(){
+                // setup form with AIM handlers
+                fu.handleRequest();
+                AIM.submit(form, {
+                    onComplete: function(content) {
+                        //console.log(content);
+                        fu.handleResponse({
+                            responseText: content
+                        });
+                    }
+                });
+                form.submit();
             });
-        }.bindAsEventListener(this, $(formId), fu));
+            return;
+        }
+
+        // set event for very common case of form handling
+        $(submitId).observe('click', function(){
+            fu.handleRequest();
+            form.request({
+                onComplete: function(transport) {
+                    fu.handleResponse(transport);
+                }
+            });
+        });
     },
     /**
      * Handle request, make some visual effects.
+     * @param formId id of form which will be submitted
      */
     handleRequest:function() {
-        $('mvcskel_form_problem').hide();
-        $('mvcskel_form_complete').show();
-        $('mvcskel_form_progress').show();
+        this.hideProblem();
+        this.hideComplete();
+        this.showProgress();
     },
 
     /**
@@ -53,10 +74,10 @@ var FormUtils = Class.create({
                 return false;
             }
         } catch (e) {
-            $('mvcskel_form_problem').show();
+            this.showProblem();
             return false;
         } finally {
-            $('mvcskel_form_progress').hide();
+            this.hideProgress();
         }
     },
     /**
@@ -72,6 +93,100 @@ var FormUtils = Class.create({
 
             }
         }
-        $('mvcskel_form_complete').show();
+        this.showComplete();
+    },
+
+    /**
+     * Show problem div.
+     */
+    showProblem: function() {
+        if ($('mvcskel_form_problem')) {
+            $('mvcskel_form_problem').show();
+        }
+    },
+    hideProblem: function() {
+        if ($('mvcskel_form_problem')) {
+            $('mvcskel_form_problem').hide();
+        }
+    },
+    /**
+     * Show progress div.
+     */
+    showProgress: function() {
+        if ($('mvcskel_form_progress')) {
+            $('mvcskel_form_progress').show();
+        }
+    },
+    hideProgress: function() {
+        if ($('mvcskel_form_progress')) {
+            $('mvcskel_form_progress').hide();
+        }
+    },
+    /**
+     * Show complete div, when ok, with errors was returned
+     */
+    showComplete: function() {
+        if ($('mvcskel_form_complete')) {
+            $('mvcskel_form_complete').show();
+        }
+    },
+    hideComplete: function() {
+        if ($('mvcskel_form_complete')) {
+            $('mvcskel_form_complete').hide();
+        }
     }
 });
+
+/**
+ *
+ *  AJAX IFRAME METHOD (AIM)
+ *  http://www.webtoolkit.info/
+ *
+ **/
+AIM = {
+    frame : function(c) {
+
+        var n = 'f' + Math.floor(Math.random() * 99999);
+        var d = document.createElement('DIV');
+        d.innerHTML = '<iframe style="display:none" src="about:blank" id="'+n+'" name="'+n+'" onload="AIM.loaded(\''+n+'\')"></iframe>';
+        document.body.appendChild(d);
+
+        var i = document.getElementById(n);
+        if (c && typeof(c.onComplete) == 'function') {
+            i.onComplete = c.onComplete;
+        }
+
+        return n;
+    },
+
+    form : function(f, name) {
+        f.setAttribute('target', name);
+    },
+
+    submit : function(f, c) {
+        AIM.form(f, AIM.frame(c));
+        if (c && typeof(c.onStart) == 'function') {
+            return c.onStart();
+        } else {
+            return true;
+        }
+    },
+
+    loaded : function(id) {
+        var i = document.getElementById(id);
+        if (i.contentDocument) {
+            var d = i.contentDocument;
+        } else if (i.contentWindow) {
+            var d = i.contentWindow.document;
+        } else {
+            var d = window.frames[id].document;
+        }
+        if (d.location.href == "about:blank") {
+            return;
+        }
+
+        if (typeof(i.onComplete) == 'function') {
+            i.onComplete(d.body.innerHTML);
+        }
+    }
+}
