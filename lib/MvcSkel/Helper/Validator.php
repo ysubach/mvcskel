@@ -177,11 +177,9 @@ class MvcSkel_Helper_Validator {
         $result = true;
         if ($file->isValid()) {
             $filename = $file->getProp('name');
-            if (!ereg('\.gif$', $filename) &&
-                    !ereg('\.png$', $filename) &&
-                    !ereg('\.jpg$', $filename) &&
-                    !ereg('\.jpeg$', $filename)
-                    ) {
+            $parts = pathinfo($filename);
+            $ext = strtolower($parts['extension']);
+            if (!in_array($ext, array('png', 'jpg', 'gif', 'jpeg'))) {
                 $this->form->attachError($field, 'Please upload PNG, GIF or JPEG file');
                 return false;
             }
