@@ -111,14 +111,15 @@ class MvcSkel_Helper_Url {
     * @return mixed Current variable value
     */
     public static function getStickyVar($varName, $default) {
+        $sessionKey = "{$_REQUEST['mvcskel_c']}_{$_REQUEST['mvcskel_a']}_$varName";
         $value = $default;
         if (isset($_REQUEST[$varName])) {
             $value = $_REQUEST[$varName];
-        } else if (isset($_SESSION[$varName])) {
-            $value = $_SESSION[$varName];
+        } else if (isset($_SESSION[$sessionKey])) {
+            $value = $_SESSION[$sessionKey];
         }
         
-        $_SESSION[$varName] = $value;
+        $_SESSION[$sessionKey] = $value;
         return $value;
     }
 

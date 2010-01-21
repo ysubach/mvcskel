@@ -159,6 +159,9 @@ class MvcSkel_Helper_Auth extends Auth {
             time()+3600*24*6, '/');
     }
 
+    /**
+     * Logout and kill session
+     */
     public function logout() {
         self::$currentUser = null;
         $result = parent::logout();
