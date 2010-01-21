@@ -49,7 +49,7 @@ PATH_PROJECT=../lib/MvcSkel
 #  *
 #  * @var               string PATH_PHPDOC
 #  */
-PATH_PHPDOC=~/bin/phpdoc/phpdoc
+PATH_PHPDOC=phpdoc
 
 #/**
 #  * where documentation will be put
