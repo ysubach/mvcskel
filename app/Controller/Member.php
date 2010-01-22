@@ -13,6 +13,7 @@
 class Controller_Member extends MvcSkel_Controller {
     public function __construct() {
         $this->addFilter(new MvcSkel_Filter_Auth(array('User', 'Administrator')));
+        $this->addFilter(new MvcSkel_Filter_Ownership(array()));
     }
 
     /**

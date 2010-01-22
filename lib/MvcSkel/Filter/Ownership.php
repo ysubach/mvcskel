@@ -19,32 +19,70 @@
  * @subpackage    Filter
  */
 class MvcSkel_Filter_Ownership extends MvcSkel_Filter {
-    private $model;
+    private $links;
 
     /**
      * C-r.
-     * @param string $model model to check the entity
+     * Usage:
+     * entity Restaurant belong to entity User
+     * <code>
+     * new MvcSkel_Filter_Ownership('Restaurant');
+     * </code>
+     * it will check if current user try to access his restaurant.
+     * More complex case (develop the case above):
+     * entity MenuCategory belong to Restaurant (which belong to User)
+     * <code>
+     * new MvcSkel_Filter_Ownership(array('MenuCategory', 'Restaurant'));
+     * </code>
+     * Thus you give a way to get User entity (owner). Just to check
+     * if user access it's own record:
+     * <code>
+     * new MvcSkel_Filter_Ownership(array());
+     * </code>
+     * @param string | array $model model to check the entity
      */
-    public function __construct($model) {
-        $this->model = $model;
+    public function __construct($links) {
+        if (!is_array($links)) {
+            $links = array($links);
+        }
+        $this->links = $links;
     }
 
     /**
      * Check userId of the got model object.
      */
     public function filter() {
+        // it is not an access to a model, nothing todo
         if (!isset($_REQUEST['id']) || empty($_REQUEST['id'])) {
             return true;
         }
-        
+
         $auth = new MvcSkel_Helper_Auth();
+
+        // admin is allowed to do everything
+        if ($auth->checkRole('Administrator')) {
+            return true;
+        }
+
         $user = $auth->getUser();
 
-        $q = Doctrine_Query::create()
-            ->from("{$this->model} obj")
-            ->where('obj.userId = ? AND obj.id = ?', array($user->id, $_REQUEST['id']));
+        // case when we check User entity itself
+        if (!count($this->links)) {
+            $obj = Doctrine::getTable('User')->find($_REQUEST['id']);
+            return $obj->id==$user->id;
+        }
+        
+        // in case we call filter twice (by some strange reason)
+        $copyLinks = $this->links;
 
-        return $q->count()>0;
+        $first = array_shift($copyLinks);
+        $obj = Doctrine::getTable($first)->find($_REQUEST['id']);
+        // follow by links
+        foreach ($copyLinks as $modelName) {
+            $obj = $obj->$modelName;
+        }
+
+        return $obj->User->id==$user->id;
     }
 }
 ?>
