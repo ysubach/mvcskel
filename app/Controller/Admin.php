@@ -4,13 +4,12 @@
 */
 class Controller_Admin extends MvcSkel_Controller {
     public function __construct() {
-        //$this->addFilter(new MvcSkel_Filter_Auth('Administrator'));
+        $this->addFilter(new MvcSkel_Filter_Auth('Administrator'));
     }
     
     public function actionIndex() {
         $smarty = new MvcSkel_Helper_Smarty('Admin/index.tpl');
-        $smarty->setLayout('adminMaster.tpl');
-        $smarty->assign('title', 'Admin Dashboard');
+        $smarty->assign('title', 'Administrator Dashboard');
         $this->prepareDashboard($smarty);
         return $smarty->render();
     }
@@ -20,6 +19,7 @@ class Controller_Admin extends MvcSkel_Controller {
      */
     public function actionUsers() {
         $smarty = new MvcSkel_Helper_Smarty('Admin/users.tpl');
+        $smarty->assign('title', 'User Management');
         $usersList = new Helper_UsersList();
         $usersList->assignValues($smarty);
         return $smarty->render();

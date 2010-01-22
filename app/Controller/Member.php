@@ -24,6 +24,7 @@ class Controller_Member extends MvcSkel_Controller {
         $smarty = new MvcSkel_Helper_Smarty('Member/profile.tpl');
         $form = new Helper_ProfileForm('Member', 'Member/View', $smarty);
         $smarty->assign('title', 'Profile Page');
+        $smarty->assign('roles', array('User', 'Administrator'));
         return $form->process(true);
     }
 

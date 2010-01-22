@@ -6,6 +6,7 @@
         <div>
             <label for="password">Password</label><br>
             <input type="password" id="password" name="password" value="" class="text">
+            <div class="error" id="error-password" style="display:none;"></div>
         </div>
         {include file='fieldAjax.tpl' name='pass2' label='Password repeat' type='password' class='text'}
     </fieldset>
@@ -14,6 +15,17 @@
         {include file='fieldAjax.tpl' name='email' label='Email address' type='text' class='text'}
         {include file='fieldAjax.tpl' name='fname' label='First name' type='text' class='text'}
     </fieldset>
+    {if $auth->checkRole('Administrator') && $auth->getAuthData('id')!=$object->id}
+    <fieldset>
+        <legend>User Permissions</legend>
+        <div>
+            <label for="roles">User Role</label><br>
+            {html_options id='roles' name='roles'
+            values=$roles output=$roles selected=$object->roles}
+            <div class="error" id="error-role" style="display:none;"></div>
+        </div>
+    </fieldset>
+    {/if}
     <p>
         <button id="formProfileSubmit" class="button positive" onclick="javascript:return false;">
             <img src="{$root}styles/blueprint/icons/tick.png" alt=""/> Update

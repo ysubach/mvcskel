@@ -4,7 +4,7 @@ function initializeApplication() {
         new SignupPage();
     }
     if ($('formProfile')) {
-        new Profile();
+        new FormUtils('formProfile', 'formProfileSubmit');
     }
 }
 

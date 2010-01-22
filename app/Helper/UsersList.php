@@ -7,7 +7,6 @@ class Helper_UsersList extends MvcSkel_Helper_DoctrineTableView {
         $this->query = Doctrine_Query::create()
             ->select('*')
             ->from('User u');
-        //$this->pagerEnable(false);
 
         $this->setSortColumns(
             array(
@@ -16,8 +15,6 @@ class Helper_UsersList extends MvcSkel_Helper_DoctrineTableView {
                 'fn'=>'u.fname',
                 'em'=>'u.email'
             ));
-
-        $this->setPageSize(2);
     }
 }
 ?>

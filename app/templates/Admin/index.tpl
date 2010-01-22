@@ -1,4 +1,3 @@
-<h3>Summary Information</h3>
 <p>
     Total users: {$totalUsers}<br>
     Last day unique logins: {$uniqueLogins}

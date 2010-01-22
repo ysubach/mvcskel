@@ -12,6 +12,13 @@
  */
 class Helper_ProfileForm extends MvcSkel_Helper_Form {
     protected function buildFresh() {
+        if (isset($_REQUEST['id'])) {
+            return Doctrine::getTable('User')->find($_REQUEST['id']);
+        } elseif (isset($_REQUEST['new'])) {
+            $o = new User();
+            $o->roles = 'User';
+            return $o;
+        }
         $auth = new MvcSkel_Helper_Auth();
         return $auth->getUser();
     }
@@ -22,6 +29,13 @@ class Helper_ProfileForm extends MvcSkel_Helper_Form {
         $u->username = $R['username'];
         $u->email = $R['email'];
         $u->fname = $R['fname'];
+
+        // only admin can setup roles
+        $auth = new MvcSkel_Helper_Auth();
+        if ($auth->checkRole('Administrator') && isset($R['roles'])) {
+            $u->roles = $R['roles'];
+        }
+
         $this->setObject($u);
     }
 
@@ -39,6 +53,10 @@ class Helper_ProfileForm extends MvcSkel_Helper_Form {
         // password checks
         if ($_REQUEST['password']!=$_REQUEST['pass2']) {
             $this->attachError('pass2', 'Password do not match original!');
+        }
+
+        if (!$u->id) {
+            $validator->checkNotEmpty('password', $_REQUEST['password']);
         }
 
         // email related check

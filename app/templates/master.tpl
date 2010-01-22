@@ -12,11 +12,7 @@
 
         <!--[if lt IE 8]><link rel="stylesheet" href="{$root}styles/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
-        {if $auth->checkAuth()}
-        <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js,init.js,FormUtils.js,Profile.js"></script>
-        {else}
-        <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js,init.js,SignupPage.js"></script>
-        {/if}
+        <script type="text/javascript" src="{$root}js/prototype-1.6.0.3.js,init.js,FormUtils.js,SignupPage.js"></script>
         <script type="text/javascript">
             var mvcskel_root = '{$root}';
         </script>
@@ -30,9 +26,6 @@
             <div id="mainlinks" class="span-7 last">
                 {if $auth->getAuth()}
                 Welcome, <a href="{url to='Member'}">{$auth->getAuthData('fname')}</a>
-                {if $auth->getAuthData('roles')=='Administrator'}
-                <a href="{url to='Admin'}">Admin Panel</a>
-                {/if}
                 <a href="{url to='Auth/Logout'}">Logout</a>
                 {else}
                 <a href="{url to='Auth/Login'}">Sign In</a>
@@ -50,6 +43,16 @@
                 {include file=$bodyTemplate}
             </div>
             <div id="sidebar" class="span-6 last">
+                {if $auth->checkRole('Administrator')}
+                <div>
+                    <h3 class="caps">Admin Section</h3>
+                    <div class="box">
+                        <a href="{url to='Admin'}">Dashboard</a><br>
+                        <a href="{url to='Admin/Users'}">Users</a>
+                    </div>
+                </div>
+                {/if}
+                
                 <div id="interestingLinks">
                     <h3 class="caps">Useful Links</h3>
                     <div class="box">
