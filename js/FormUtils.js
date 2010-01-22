@@ -13,9 +13,9 @@ var FormUtils = Class.create({
 
         var fu = this;
         var form = $(formId);
-        
+
         // check input file, use AIM in that case
-        if (form.select('input[type="file"]')) {
+        if (form.select('input[type="file"]').length) {
             $(submitId).observe('click', function(){
                 // setup form with AIM handlers
                 fu.handleRequest();
