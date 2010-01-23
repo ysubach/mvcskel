@@ -1,4 +1,8 @@
-php_value error_reporting 8
+# show notices too
+#php_value error_reporting 8
+
+# show all errors including depricated
+#php_value error_reporting 30719
 
 RewriteEngine on
 RewriteBase /mvcskel
