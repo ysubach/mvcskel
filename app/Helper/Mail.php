@@ -11,18 +11,18 @@
  * @link       http://code.google.com/p/mvcskel/
  */
 class Helper_Mail {
-/**
- * Available email templates
- */
+    /**
+     * Available email templates
+     */
     protected static $emailTemplates = array(
-    'forgot' => array(
-    'subject' => 'MoneyDice: New password created',
-    'filename' => 'forgotPass.tpl'
-    ),
-    'vote'=> array(
-    'subject' => 'MoneyDice: Vote Created',
-    'filename' => 'vote.tpl'
-    ),
+            'forgot' => array(
+                            'subject' => 'MvcSkel: New password created',
+                            'filename' => 'forgotPass.tpl'
+            ),
+            'vote'=> array(
+                            'subject' => 'MvcSkel: Vote Created',
+                            'filename' => 'vote.tpl'
+            ),
     );
 
     /**
