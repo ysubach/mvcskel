@@ -92,9 +92,6 @@ class MvcSkel_Runner {
             $actName = "action{$action}";
             // controller scope filters
             if ($conObj->applyFilters()) {
-                // Starting session
-                session_start();
-
                 // Execute action
                 echo $conObj->$actName();
             }

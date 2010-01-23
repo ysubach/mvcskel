@@ -1,3 +1,5 @@
+php_value error_reporting 8
+
 RewriteEngine on
 RewriteBase /mvcskel
 RewriteCond %{REQUEST_URI} !(index.php|images/|styles/|js/)
