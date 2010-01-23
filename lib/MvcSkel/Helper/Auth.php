@@ -15,6 +15,7 @@
 * Include PEAR Auth library.
 */
 require_once 'Auth.php';
+require_once 'MDB2.php';
 
 /**
  * Auth helper.
