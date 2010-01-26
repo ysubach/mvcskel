@@ -8,12 +8,12 @@
             <input type="password" id="password" name="password" value="" class="text">
             <div class="error" id="error-password" style="display:none;"></div>
         </div>
-        {include file='fieldAjax.tpl' name='pass2' label='Password repeat' type='password' class='text'}
+        {include file='fieldAjax.tpl' name='pass2' label='Confirm Password' type='password' class='text'}
     </fieldset>
     <fieldset>
         <legend>Personal Information</legend>
-        {include file='fieldAjax.tpl' name='email' label='Email address' type='text' class='text'}
-        {include file='fieldAjax.tpl' name='fname' label='First name' type='text' class='text'}
+        {include file='fieldAjax.tpl' name='email' label='Email Address' type='text' class='text'}
+        {include file='fieldAjax.tpl' name='fname' label='First Name' type='text' class='text'}
     </fieldset>
     {if $auth->checkRole('Administrator') && $auth->getAuthData('id')!=$object->id}
     <fieldset>

@@ -4,12 +4,12 @@
         <legend>Fill in the Registration Form</legend>
         {include file='field.tpl' name='username' label='Username' type='text' class='text'}
         {include file='field.tpl' name='password' label='Password' type='password' class='text'}
-        {include file='field.tpl' name='pass2' label='Password repeat' type='password' class='text'}
+        {include file='field.tpl' name='pass2' label='Confirm Password' type='password' class='text'}
     </fieldset>
     <fieldset>
         <legend>Personal Information</legend>
-        {include file='field.tpl' name='email' label='Email address' type='text' class='text'}
-        {include file='field.tpl' name='fname' label='First name' type='text' class='text'}
+        {include file='field.tpl' name='email' label='Email Address' type='text' class='text'}
+        {include file='field.tpl' name='fname' label='First Name' type='text' class='text'}
     </fieldset>
     <fieldset>
         <legend>Spam Protection</legend>
