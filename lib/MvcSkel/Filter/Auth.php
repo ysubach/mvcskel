@@ -72,9 +72,8 @@ class MvcSkel_Filter_Auth extends MvcSkel_Filter {
      */
     protected function showLogin() {
         // redirect to login form
-        MvcSkel_Helper_Url::redirect('Auth/Login',
-            array('destination'=>$_SERVER['REQUEST_URI'])
-        );
+        MvcSkel_Helper_Url::redirect('Auth/Login?destination='.
+                urlencode($_SERVER['REQUEST_URI']));
     }
 }
 ?>
