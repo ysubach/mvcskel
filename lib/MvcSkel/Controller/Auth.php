@@ -37,7 +37,7 @@ class MvcSkel_Controller_Auth extends MvcSkel_Controller {
             $auth->autoLoginPut();
         }
         
-        if (isset($_REQUEST['destination'])) {
+        if (isset($_REQUEST['destination']) && !empty($_REQUEST['destination'])) {
             MvcSkel_Helper_Url::redirect($_REQUEST['destination']);
         } else {
             MvcSkel_Helper_Url::redirect("Main/Index");
