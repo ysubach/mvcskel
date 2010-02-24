@@ -1,19 +1,19 @@
 <?php
 /**
-* MvcSkel Auth helper.
-*
-* PHP versions 5
-*
-* @category   framework
-* @package    MvcSkel
-* @copyright  2008, Whirix Ltd.
-* @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
-* @link       http://code.google.com/p/mvcskel/
-*/
+ * MvcSkel Auth helper.
+ *
+ * PHP versions 5
+ *
+ * @category   framework
+ * @package    MvcSkel
+ * @copyright  2008, Whirix Ltd.
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
+ * @link       http://code.google.com/p/mvcskel/
+ */
 
 /**
-* Include PEAR Auth library.
-*/
+ * Include PEAR Auth library.
+ */
 require_once 'Auth.php';
 require_once 'MDB2.php';
 
@@ -68,10 +68,10 @@ class MvcSkel_Helper_Auth extends Auth {
             'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE),
             'enableLogging' => false,
         );
-        
+
         $this->Auth('MDB2', $options, '', false);
         $this->logger = MvcSkel_Helper_Log::get('MvcSkel_Helper_Auth');
-        
+
         $this->setLoginCallback(array('MvcSkel_Helper_Auth', 'onLogin'));
     }
 
@@ -110,7 +110,7 @@ class MvcSkel_Helper_Auth extends Auth {
         if ($id==null) {
             throw new Exception("User identifier is missing!");
         }
-        
+
         self::$currentUser = Doctrine::getTable('User')->find($id);
         return self::$currentUser;
     }
@@ -139,9 +139,26 @@ class MvcSkel_Helper_Auth extends Auth {
             return false;
         }
         $user = Doctrine::getTable('User')->findOneByAutoLoginKey($_COOKIE['mvcskel_auto_login']);
+        $this->logger->debug('try autologin by key '.$_COOKIE['mvcskel_auto_login']);
         if ($user) {
+            // set auth
             $usernamecol = $this->storage_options['usernamecol'];
             $this->setAuth($user->$usernamecol);
+
+            // set additional auth data (by some reason it is not done yet?)
+            $this->logger->debug('found user with id ' . $user->id .
+                ' and username ' . $user->$usernamecol);
+            $db_fields = $usernamecol = $this->storage_options['db_fields'];
+            foreach ($db_fields as $field) {
+                $this->setAuthData($field, $user->$field);
+                $this->logger->debug('set auth data:'.$field.'-'.$user->$field);
+            }
+
+            // update user last login data
+            $user->lastLoginDT = new Doctrine_Expression('now()');
+            $user->lastIP = $_SERVER['REMOTE_ADDR'];
+            $user->save();
+            
             return true;
         }
         return false;
