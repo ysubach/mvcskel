@@ -35,7 +35,7 @@
             </div>
 
             <hr>
-            <div id="header" class="span-24 last">
+            <div class="span-24 last">
                 <h2 class="alt">{$title}</h2>
             </div>
 
