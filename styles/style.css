@@ -6,6 +6,27 @@
     text-decoration:none;
 }
 
+/* forms enhancements */
+button.disabled, button.disabled:hover {
+    color:#aaa;
+    background:#F5F5F5;
+    border-color:#EEEEEE #DEDEDE #DEDEDE #EEEEEE;
+}
+div.notification {
+    background:#FFF6BF;
+    color:#514721;
+    border:1px solid #FFD324;
+    line-height:17px;
+    padding:4px 10px 4px 7px;
+    margin:0.7em 0 0.7em 0.5em;
+    float:right;
+}
+div.alert {
+    background:#FBE3E4;
+    color:#8a1f11;;
+    border:1px solid #FBC2C4;
+}
+
 #mainlinks {
     text-align:right;
     margin:5px 0 0 0;

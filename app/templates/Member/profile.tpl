@@ -1,19 +1,18 @@
-<form id="formProfile" class="prepend-3 span-11 append-3" action="{url to=$form->getSourceAction()}" method="post">
+<form class="prepend-3 span-11 append-3 fu" action="{url to=$form->getSourceAction()}" method="post">
     <input type="hidden" name="mvcskel_form_id" value="{$form->getId()}" />
     <fieldset>
         <legend>Credentials</legend>
-        {include file='fieldAjax.tpl' name='username' label='Username' type='text' class='text'}
+        {include file='field.tpl' name='username' label='Username'}
         <div>
             <label for="password">Password</label><br>
             <input type="password" id="password" name="password" value="" class="text">
-            <div class="error" id="error-password" style="display:none;"></div>
         </div>
-        {include file='fieldAjax.tpl' name='pass2' label='Confirm Password' type='password' class='text'}
+        {include file='field.tpl' name='pass2' label='Confirm Password' type='password'}
     </fieldset>
     <fieldset>
         <legend>Personal Information</legend>
-        {include file='fieldAjax.tpl' name='email' label='Email Address' type='text' class='text'}
-        {include file='fieldAjax.tpl' name='fname' label='First Name' type='text' class='text'}
+        {include file='field.tpl' name='email' label='Email Address'}
+        {include file='field.tpl' name='fname' label='First Name'}
     </fieldset>
     {if $auth->checkRole('Administrator') && $auth->getAuthData('id')!=$object->id}
     <fieldset>
@@ -22,15 +21,13 @@
             <label for="roles">User Role</label><br>
             {html_options id='roles' name='roles'
             values=$roles output=$roles selected=$object->roles}
-            <div class="error" id="error-role" style="display:none;"></div>
         </div>
     </fieldset>
     {/if}
     <p>
-        <button id="formProfileSubmit" class="button positive" onclick="javascript:return false;">
+        <button type="submit" class="button positive">
             <img src="{$root}styles/blueprint/icons/tick.png" alt=""/> Update
         </button>
     </p>
     <div class="clearBoth" style="clear:both;"></div>
-    {include file='formStatus.tpl'}
 </form>

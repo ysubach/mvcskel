@@ -1,13 +1,10 @@
 /**
- * Singup form AJAX functions.
+ * Captcha image handling
  */
-var SignupPage = Class.create({
-    refrechCount: 1,
-    initialize: function () {
-        $('captchaChange').observe('click', this.changeCaptcha.bindAsEventListener(this));
-    },
-    changeCaptcha: function() {
-        var image = $('captchaImage');
-        image.writeAttribute('src', mvcskel_root+'Signup/Captcha/c/'+this.refrechCount++);
-    }
+$(function(){
+    var refrechCount = 1;
+    $('#captchaChange').click(function(){
+        var newSrc = mvcskel_root+'Signup/Captcha/c/'+refrechCount++;
+        $('#captchaImage').attr('src', newSrc);
+    });
 });
