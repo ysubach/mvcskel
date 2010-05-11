@@ -99,7 +99,7 @@ class MvcSkel_Helper_Auth extends Auth {
     }
 
     /**
-     * Return current logged in user object
+     * Return current logged in user object, NULL if no logged user
      */
     public function getUser() {
         if (self::$currentUser!=null) {
@@ -108,7 +108,8 @@ class MvcSkel_Helper_Auth extends Auth {
 
         $id = $this->getAuthData('id');
         if ($id==null) {
-            throw new Exception("User identifier is missing!");
+            // user identifier is missing
+            return null;
         }
 
         self::$currentUser = Doctrine::getTable('User')->find($id);
