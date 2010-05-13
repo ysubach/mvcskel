@@ -10,3 +10,7 @@ logger:
 nice-urls: true
 
 email-from: nobody@mvcskel.org
+
+smarty-compile-check: 1
+
+version: set_current_revno

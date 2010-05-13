@@ -8,14 +8,14 @@
         <link rel="icon" href="{$root}images/favicon.ico" type="image/x-icon" />
         <link rel="shortcut icon" href="{$root}images/favicon.ico" type="image/x-icon" />
 
-        <link rel="stylesheet" href="{$root}styles/blueprint/screen.css,style.css" type="text/css" media="screen">
+        <link rel="stylesheet" href="{$root}min/?g=css&v={$version}" type="text/css" media="screen">
 
-        <!--[if lt IE 8]><link rel="stylesheet" href="{$root}styles/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+        <!--[if lt IE 8]><link rel="stylesheet" href="{$root}min/g=css_ie&v={$version}" type="text/css" media="screen, projection"><![endif]-->
 
         <script type="text/javascript">
             var mvcskel_root = '{$root}';
         </script>
-        <script type="text/javascript" src="{$root}js/jquery-1.3.2.min.js,jquery.formutils.js,SignupPage.js"></script>
+        <script type="text/javascript" src="{$root}min/?g=js&v={$version}"></script>
     </head>
     <body>
         <div class="container">
@@ -24,14 +24,7 @@
                 <h1><a id="logo" href="{$root}">MvcSkel Startup Application</a></h1>
             </div>
             <div id="mainlinks" class="span-7 last">
-                {if $auth->getAuth()}
-                Welcome, <a href="{url to='Member'}">{$auth->getAuthData('fname')}</a>
-                <a href="{url to='Auth/Logout'}">Logout</a>
-                {else}
-                <a href="{url to='Auth/Login'}">Sign In</a>
-                <a href="{url to='Signup'}">Sign Up</a>
-                <a href="{url to='Signup/ForgotPassword'}">Forgot Password?</a>
-                {/if}
+                {insert name='render' file='headerLinks.tpl'}
             </div>
 
             <hr>
@@ -43,32 +36,21 @@
                 {include file=$bodyTemplate}
             </div>
             <div id="sidebar" class="span-6 last">
-                {if $auth->checkRole('Administrator')}
-                <div>
-                    <h3 class="caps">Admin Section</h3>
-                    <div class="box">
-                        <a href="{url to='Admin'}">Dashboard</a><br>
-                        <a href="{url to='Admin/Users'}">Users</a>
-                    </div>
+                {insert name=render file=adminSection.tpl}
+
+                <h3 class="caps">Useful Links</h3>
+                <div class="box">
+                    <a href="http://code.google.com/p/mvcskel/">Project Home Page</a>
                 </div>
-                {/if}
-                
-                <div id="interestingLinks">
-                    <h3 class="caps">Useful Links</h3>
-                    <div class="box">
-                        <a href="http://www.mvcskel.org/api">MvcSkel API Docs</a><br>
-                        <a href="http://www.mvcskel.org/doc:start">MvcSkel Tutorials</a><br>
-                        <a href="http://code.google.com/p/mvcskel/downloads/list">Download Page</a>
-                    </div>
-                </div>
-                <div id="usedLibraries">
-                    <h3 class="caps">Used Libraries</h3>
-                    <div class="box">
-                        <a href="http://www.doctrine-project.org">Doctrine ORM</a><br>
-                        <a href="http://wiki.github.com/joshuaclayton/blueprint-css">Blueprint CSS Framework</a><br>
-                        <a href="http://www.smarty.net/">Smarty Template Engine</a><br>
-                        <a href="http://pear.php.net/">PEAR Libraries</a>
-                    </div>
+
+                <h3 class="caps">Used Libraries</h3>
+                <div class="box">
+                    <a href="http://www.doctrine-project.org">Doctrine ORM</a><br>
+                    <a href="http://wiki.github.com/joshuaclayton/blueprint-css">Blueprint CSS Framework</a><br>
+                    <a href="http://www.smarty.net/">Smarty Template Engine</a><br>
+                    <a href="http://pear.php.net/">PEAR Libraries</a><br>
+                    <a href="http://code.google.com/p/minify/">minify</a><br>
+                    <a href="http://jquery.com/">jQuery</a>
                 </div>
             </div>
 

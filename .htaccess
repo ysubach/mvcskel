@@ -6,8 +6,30 @@
 
 RewriteEngine on
 RewriteBase /mvcskel
-RewriteCond %{REQUEST_URI} !(index.php|images/|styles/|js/)
+RewriteCond %{REQUEST_URI} !(index.php|images/|min/|styles/)
 RewriteRule ^.* index.php?mvcskel_redirect_url=$0 [QSA]
 
-RewriteRule ^styles/(.*\.css)$ index.php?mvcskel_redirect_url=Combine/Css&files=$1
-RewriteRule ^js/(.*\.js)$      index.php?mvcskel_redirect_url=Combine/Js&files=$1
+# static content expiration
+<IfModule mod_expires.c>
+    <FilesMatch "\.(flv|gif|jpg|jpeg|png|ico)$">
+        ExpiresActive on
+        ExpiresDefault A31104000
+        <IfModule mod_headers.c>
+            Header append Cache-Control public
+        </IfModule>
+    </FilesMatch>
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+    SetOutputFilter DEFLATE
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+    SetEnvIfNoCase Request_URI \
+        \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+    <IfModule mod_headers.c>
+        Header append Vary User-Agent env=!dont-vary
+    </IfModule>
+</IfModule>

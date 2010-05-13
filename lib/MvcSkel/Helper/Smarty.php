@@ -18,6 +18,7 @@
  * Use Smarty as template engine.
  */
 require_once 'Smarty.class.php';
+require_once 'Minify/HTML.php';
 
 /**
  * Smarty helper. Implements basic concept of templates rendering.
@@ -72,11 +73,14 @@ class MvcSkel_Helper_Smarty extends Smarty {
 
         $config = MvcSkel_Helper_Config::read();
         $this->compile_dir = $config['tmp_dir'] . '/templates_c';
+        $this->cache_dir = $config['tmp_dir'] . '/cache';
+        $this->compile_check = $config['smarty-compile-check'];
 
         // assign common variables
         $this->assign('bodyTemplate', $bodyTemplate);
         $this->assign('auth', new MvcSkel_Helper_Auth());
         $this->assign('root', $config['root']);
+        $this->assign('version', $config['version']);
 
         // assign variables from external class Helper_SmartyAssigner
         if (class_exists('Helper_SmartyAssigner')) {
@@ -87,18 +91,24 @@ class MvcSkel_Helper_Smarty extends Smarty {
         // add MvcSkel specific plugin(s)
         $this->register_function('url',
             array('MvcSkel_Helper_Smarty', 'pluginUrl'));
+        $this->register_outputfilter(array('MvcSkel_Helper_Smarty', 'minifyHtml'));
+        // native smarty html minificator
+        //$this->load_filter('output', 'trimwhitespace');
     }
 
     /**
      * Short hand for fetching of master.tpl.
      * @return result of @see Smarty::fetch()
      */
-    public function render() {
-        if (!$this->forAjax) {
-            return $this->fetch($this->masterTemplate);
-        } else {
+    public function render($cacheId = null) {
+        if ($this->forAjax) {
             return $this->fetch($this->bodyTemplate);
+        } 
+
+        if ($this->authorized) {
+            $cacheId .= '_1';
         }
+        return $this->fetch($this->masterTemplate, $cacheId);
     }
 
     /**
@@ -157,6 +167,13 @@ class MvcSkel_Helper_Smarty extends Smarty {
         unset($params['a']);
         // build URL
         return MvcSkel_Helper_Url::url($url, $params, $anchor);
+    }
+    
+    /**
+     * Optimize HTML output.
+     */
+    public static function minifyHtml($source, &$smarty) {
+        return Minify_HTML::minify($source);
     }
 
     /**

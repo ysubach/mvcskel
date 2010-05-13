@@ -13,7 +13,7 @@
 
 // set PATH to project related PEAR installation
 $p = array('app', 'lib', 'lib/pear', 'lib/misc', 'lib/smarty', 
-    'lib/doctrine/lib', ini_get('include_path'));
+    'lib/doctrine/lib', 'min/lib', ini_get('include_path'));
 ini_set('include_path', join(PATH_SEPARATOR, $p));
 
 /**
@@ -22,6 +22,7 @@ ini_set('include_path', join(PATH_SEPARATOR, $p));
 require_once 'MvcSkel/Runner.php';
 
 $mvcskel = new MvcSkel_Runner();
-$mvcskel->addFilter(new MvcSkel_Filter_DefaultPage('Main', 'Index'));
+$mvcskel->addFilter(new MvcSkel_Filter_DefaultPage('Static', 'Index'));
+$mvcskel->addFilter(new Filter_StaticPage());
 $mvcskel->run();
 ?>
