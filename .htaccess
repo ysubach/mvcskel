@@ -6,7 +6,8 @@
 
 RewriteEngine on
 RewriteBase /mvcskel
-RewriteCond %{REQUEST_URI} !(index.php|images/|min/|styles/)
+RewriteCond %{REQUEST_URI} !/(404|favicon|sitemap|robots)
+RewriteCond %{REQUEST_URI} !/(index.php|images/|min/|styles/)
 RewriteRule ^.* index.php?mvcskel_redirect_url=$0 [QSA]
 
 # static content expiration
