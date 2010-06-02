@@ -9,9 +9,9 @@ jQuery.fn.fuinit = function() {
             FormUtils.handleResponse(form, data);
         });
         return false;
-    });
+    }).find('button[type=submit]').attr('disabled', false);
 
-    /*
+/*
     // check input file, use AIM in that case
     if (form.select('input[type="file"]')) {
         $(submitId).observe('click', function(){
@@ -39,7 +39,7 @@ var FormUtils = {
     handleRequest: function(form) {
         form.find('.error, .notification').remove();
         var button = form.find('button[type=submit]');
-        button.attr('disabled', true).addClass('disabled');
+        button.attr('disabled', true);
     
         var img = button.find('img');
         var tmp = img.attr('src');
@@ -71,10 +71,9 @@ var FormUtils = {
             form.find('.clearBoth').before('<div class="notification alert">Could not handle request, please try again later.</div>');
             return false;
         } finally {
-            var button = form.find('button[type=submit]');
-            button.attr('disabled', false).removeClass('disabled');
-            var img = button.find('img');
+            var img = form.find('button[type=submit] img');
             img.attr('src', img.attr('tmp'));
+        //img.remove();
         }
     },
     
@@ -83,10 +82,11 @@ var FormUtils = {
      */
     showErrors:function (form, data) {
         for (var err in data.errors) {
-            form.find('input[name='+err+']').
+            form.find('input[name='+err+'],textarea[name='+err+'],select[name='+err+']').
             after('<div class="error">'+data.errors[err].join('<br>')+'</div>');
         }
         form.find('.clearBoth').before('<div class="notification">Please check your input, errors was found.</div>');
+        form.find('button[type=submit]').attr('disabled', false);
     }
 };
 

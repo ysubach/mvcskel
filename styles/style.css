@@ -7,10 +7,13 @@
 }
 
 /* forms enhancements */
-button.disabled, button.disabled:hover {
+button[disabled], button[disabled]:hover {
     color:#aaa;
     background:#F5F5F5;
     border-color:#EEEEEE #DEDEDE #DEDEDE #EEEEEE;
+}
+input[disabled] {
+    border-color:#DEDEDE;
 }
 div.notification {
     background:#FFF6BF;

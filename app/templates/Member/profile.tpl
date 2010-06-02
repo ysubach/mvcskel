@@ -25,7 +25,7 @@
     </fieldset>
     {/if}
     <p>
-        <button type="submit" class="button positive">
+        <button type="submit" class="button positive" disabled="disabled">
             <img src="{$root}styles/blueprint/icons/tick.png" alt=""/> Update
         </button>
     </p>
