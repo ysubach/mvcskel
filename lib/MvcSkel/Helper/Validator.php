@@ -123,11 +123,15 @@ class MvcSkel_Helper_Validator {
      * @param string $proto the protocol to add to url
      * @return string fixed url
      */
-    public static function fixURL($url, $proto = 'http://') {
-        if (substr($url, 0, strlen($proto))!=$proto) {
+    public function fixURL($url, $proto='http://') {
+        $https = 'https://';
+        if (substr($url, 0, strlen($proto))==$proto || $url=='') {
+            return $url;
+        } if ($proto=='http://' && substr($url, 0, strlen($https))==$https) {
+            return $url;
+        } else {
             return $proto.$url;
         }
-        return $url;
     }
 
     /**
