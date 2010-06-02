@@ -149,7 +149,7 @@ class MvcSkel_Helper_Auth extends Auth {
             // set additional auth data (by some reason it is not done yet?)
             $this->logger->debug('found user with id ' . $user->id .
                 ' and username ' . $user->$usernamecol);
-            $db_fields = $usernamecol = $this->storage_options['db_fields'];
+            $db_fields = $this->storage_options['db_fields'];
             foreach ($db_fields as $field) {
                 $this->setAuthData($field, $user->$field);
                 $this->logger->debug('set auth data:'.$field.'-'.$user->$field);
