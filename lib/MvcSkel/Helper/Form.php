@@ -24,6 +24,9 @@
 * @subpackage Helper
 */
 abstract class MvcSkel_Helper_Form {
+    /** Session FIFO queue size */
+    private static $QUEUE_SIZE = 50;
+
     /** Form identifier */
     private $id;
 
@@ -71,15 +74,27 @@ abstract class MvcSkel_Helper_Form {
     }
 
     /**
-    * Destructor.
-    * Save current form into session.
-    */
+     * Destructor.
+     * Save current form into session. Check queue and remove old forms.
+     */
     public function __destruct() {
-        if (!isset($this->id)) {
-            return;
+        // Get queue
+        $qn = 'mvcskel_form_queue';
+        $queue = !empty($_SESSION[$qn]) ? $_SESSION[$qn] : array();
+
+        // Save form
+        if (isset($this->id)) {
+            $data = array('object' => $this->object, 'errors' =>$this->errors);
+            $_SESSION[$this->getSid()] = $data;
+            array_push($queue, $this->getSid());
         }
-        $data = array('object' => $this->object, 'errors' =>$this->errors);
-        $_SESSION[$this->getSid()] = $data;
+
+        // Check queue, remove old forms
+        while (count($queue)>self::$QUEUE_SIZE) {
+            $sid = array_shift($queue);
+            unset($_SESSION[$sid]);
+        }
+        $_SESSION[$qn] = $queue;
     }
 
     /** Return session Id of the form */
