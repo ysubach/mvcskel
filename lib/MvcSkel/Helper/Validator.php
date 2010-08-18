@@ -102,19 +102,31 @@ class MvcSkel_Helper_Validator {
     }
 
     /**
-     * Check if value is correct URL
+     * Check if value is correct URL and present a supported protocol
      * @param string field
      * @param string value
      * @return true if value not empty, false otherwise
      */
-    public function checkURL($field, $value)
-    {
+    public function checkURL($field, $value) {
         $value = trim($value);
-        if (!ereg('\:\/\/', $value)) {
+        if (!preg_match('/^(http|https):\/\/\w+/', $value)) {
             $this->form->attachError($field, 'Please enter correct URL');
+            // additional note about protocol
+            if ($this->hasProtocol($value)) {
+                $this->form->attachError($field, 'Protocol is not supported');
+            }
             return false;
         }
         return true;
+    }
+
+    /**
+     * Check if url starts with a protocol (any protocol)
+     * @param string $url
+     * @return mixed @see preg_match
+     */
+    public function hasProtocol($url) {
+        return preg_match('/:\/\/\w+/', $url);
     }
 
     /**
@@ -123,15 +135,14 @@ class MvcSkel_Helper_Validator {
      * @param string $proto the protocol to add to url
      * @return string fixed url
      */
-    public function fixURL($url, $proto='http://') {
-        $https = 'https://';
-        if (substr($url, 0, strlen($proto))==$proto || $url=='') {
+    public function fixURL($url, $proto = 'http://') {
+        // do nothing if clever user already add a protocol
+        if ($this->hasProtocol($url)) {
             return $url;
-        } if ($proto=='http://' && substr($url, 0, strlen($https))==$https) {
-            return $url;
-        } else {
-            return $proto.$url;
         }
+
+        // otherwise add a default one
+        return $proto . $url;
     }
 
     /**
