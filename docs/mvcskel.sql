@@ -16,5 +16,5 @@ CREATE TABLE IF NOT EXISTS `User` (
 ) engine=InnoDB;
 
 INSERT INTO `User` (`id`, `username`, `password`, `roles`, `email`, `fname`, `lastLoginDT`, `registrationDT`) VALUES
-(1, 'admin', md5('admin'), 'Administrator', 'admin@noemail.org', 'Fred', now(), now()),
-(2, 'user', md5('user'), 'User', 'user@noemail.org', 'Joe', now(), now());
+(1, 'admin', md5('1'), 'Administrator', 'admin@noemail.org', 'Admin User', now(), now()),
+(2, 'user', md5('1'), 'User', 'user@noemail.org', 'John', now(), now());

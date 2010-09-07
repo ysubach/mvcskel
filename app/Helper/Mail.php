@@ -37,6 +37,7 @@ class Helper_Mail {
 
         // render body
         $smarty = new MvcSkel_Helper_Smarty('Mail/'.$tpl['filename'], true);
+        $smarty->enableEmailMode();
         $smarty->assign($data);
         $smarty->assign('user', $user);
         $body = $smarty->render();

@@ -97,6 +97,14 @@ class MvcSkel_Helper_Smarty extends Smarty {
     }
 
     /**
+     * Enable Email rendering mode
+     */
+    public function enableEmailMode() {
+        $this->unregister_outputfilter(array('MvcSkel_Helper_Smarty', 'minifyHtml'));
+        $this->caching = 0;
+    }
+
+    /**
      * Short hand for fetching of master.tpl.
      * @return result of @see Smarty::fetch()
      */
