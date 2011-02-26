@@ -3,7 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <title>{$title} - MvcSkel Startup Application</title>
+        <title>{$title|default:$meta.title}</title>
+        {insert name='render' file='meta.tpl'}
 
         <link rel="icon" href="{$root}images/favicon.ico" type="image/x-icon" />
         <link rel="shortcut icon" href="{$root}images/favicon.ico" type="image/x-icon" />

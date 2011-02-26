@@ -1,0 +1,8 @@
+all:
+  author: Whirix
+  description: MvcSkel is open source web development framework written in PHP5.
+  keywords: mvc,smarty,ajax
+
+Home:
+  title: MvcSkel
+

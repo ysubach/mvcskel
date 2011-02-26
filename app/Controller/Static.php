@@ -3,11 +3,6 @@
  * Rendering of statoc pages
  */
 class Controller_Static extends MvcSkel_Controller {
-    /** Static pages list */
-    private $staticPageList = array(
-        'Home' => 'Summary Page',
-    );
-
     /**
      * Special entry for home
      */
@@ -24,9 +19,13 @@ class Controller_Static extends MvcSkel_Controller {
         $smarty = new MvcSkel_Helper_Smarty("Static/$p.tpl");
         $smarty->caching = 2;
         $smarty->cache_lifetime = 3600*24*7;
-        $smarty->assign('title', $this->staticPageList[$p]);
+
+        // static seo information
+        $seo = MvcSkel_Helper_Config::read('app/meta.yml');
+        $meta = $seo[$p] + $seo['all'];
+        $smarty->assign('meta', $meta);
+
         $smarty->assign('staticPage', $p);
-        $smarty->assign('staticPageList', $this->staticPageList);
         echo $smarty->render($p);
     }
 
