@@ -4,7 +4,7 @@ MvcSkel is open source web development framework written in PHP5. It provides
 good basis for professional web developers because it integrates industry
 leading practices and libraries. Framework developed and maintained
 by [Whirix](http://www.whirix.com). We used this solution in many projects,
-that's why we strongly believe that !MvcSkel will be useful for professional
+that's why we strongly believe that MvcSkel will be useful for professional
 web development.
 
 ## Features
