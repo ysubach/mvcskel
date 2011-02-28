@@ -30,7 +30,7 @@
 
             <hr>
             <div class="span-24 last">
-                <h2 class="alt">{$title}</h2>
+                <h2 class="alt">{$title|default:$meta.title}</h2>
             </div>
 
             <div id="content" class="span-17 colborder">
