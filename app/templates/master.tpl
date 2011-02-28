@@ -41,7 +41,7 @@
 
                 <h3 class="caps">Useful Links</h3>
                 <div class="box">
-                    <a href="http://code.google.com/p/mvcskel/">Project Home Page</a>
+                    <a href="https://github.com/ysubach/mvcskel">Project Home Page</a>
                 </div>
 
                 <h3 class="caps">Used Libraries</h3>
