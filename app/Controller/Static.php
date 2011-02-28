@@ -22,8 +22,9 @@ class Controller_Static extends MvcSkel_Controller {
 
         // static seo information
         $seo = MvcSkel_Helper_Config::read('app/meta.yml');
-        $meta = $seo[$p] + $seo['all'];
-        $smarty->assign('meta', $meta);
+        $meta_page = empty($seo[$p]) ? array() : $seo[$p];
+        $meta_all = empty($seo['all']) ? array() : $seo['all'];
+        $smarty->assign('meta', $meta_page + $meta_all);
 
         $smarty->assign('staticPage', $p);
         echo $smarty->render($p);
