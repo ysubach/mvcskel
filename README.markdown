@@ -17,13 +17,6 @@ web development.
 * Minimal YAML based configuration.
 * Smooth AJAX integration.
 
-## Documentation
+## More Details
 
-* [[Basic-Principles]]
-* [[Install-Instructions]]
-* [[How-to-Create-Simple-Page]]
-* [[How-to-Create-List]]
-* [[How-to-Create-Form]
-* [[Database-Usage]]
-* [[Working-with-AJAX]]
-* [[Authorization-and-Access-Control]]
+More details available on project Wiki pages at [[https://github.com/ysubach/mvcskel/wiki]]
