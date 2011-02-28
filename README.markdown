@@ -19,4 +19,4 @@ web development.
 
 ## More Details
 
-More details available on project Wiki pages at [https://github.com/ysubach/mvcskel/wiki]
+More details available on project [Wiki pages](https://github.com/ysubach/mvcskel/wiki)
