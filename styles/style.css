@@ -30,6 +30,13 @@ div.alert {
     border:1px solid #FBC2C4;
 }
 
+a.sort {
+    text-decoration: none;
+}
+a.sort span {
+    background: #E5ECF9;
+}
+
 #mainlinks {
     text-align:right;
     margin:5px 0 0 0;
