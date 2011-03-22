@@ -16,7 +16,7 @@
  *
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
- * <http://www.phpdoctrine.org>.
+ * <http://www.doctrine-project.org>.
  */
 
 /**
@@ -26,7 +26,7 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @category    Object Relational Mapping
- * @link        www.phpdoctrine.org
+ * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  */
@@ -47,8 +47,8 @@ class Doctrine_Migration_TestCase extends Doctrine_UnitTestCase
         $migration->setCurrentVersion(3);
         $migration->migrate(0);
         $this->assertEqual($migration->getCurrentVersion(), 0);
-        $this->assertEqual($migration->getLatestVersion(), 4);
-        $this->assertEqual($migration->getNextVersion(), 5);
+        $this->assertEqual($migration->getLatestVersion(), 11);
+        $this->assertEqual($migration->getNextVersion(), 12);
         $current = $migration->getCurrentVersion();
         $migration->setCurrentVersion(100);
         $this->assertEqual($migration->getCurrentVersion(), 100);
@@ -72,6 +72,19 @@ class Doctrine_Migration_TestCase extends Doctrine_UnitTestCase
         $this->assertFalse($this->conn->import->tableExists('migration_phonenumber'));
         $this->assertFalse($this->conn->import->tableExists('migration_user'));
         $this->assertFalse($this->conn->import->tableExists('migration_profile'));
+        $this->assertEqual(array(
+          1 => 'AddPhonenumber',
+          2 => 'AddUser',
+          3 => 'AddProfile',
+          4 => 'DropProfile',
+          5 => 'Test5',
+          6 => 'Test6',
+          7 => 'Test7',
+          8 => 'Test8',
+          9 => 'Test9',
+          10 => 'Test10',
+          11 => 'Test11',
+        ), $migration->getMigrationClasses());
     }
 
     public function testMigrateClearsErrors()

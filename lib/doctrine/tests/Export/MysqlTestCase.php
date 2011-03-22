@@ -16,7 +16,7 @@
  *
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
- * <http://www.phpdoctrine.org>.
+ * <http://www.doctrine-project.org>.
  */
 
 /**
@@ -26,7 +26,7 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @category    Object Relational Mapping
- * @link        www.phpdoctrine.org
+ * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  */
@@ -363,5 +363,21 @@ class Doctrine_Export_Mysql_TestCase extends Doctrine_UnitTestCase
 
         $this->assertEqual($sql[0], 'CREATE TABLE mytable (id TINYINT(1), lang INT, INDEX id_idx (id), INDEX lang_idx (lang)) ENGINE = INNODB');
         $this->assertEqual($sql[1], 'ALTER TABLE mytable ADD FOREIGN KEY (id, lang) REFERENCES sometable(id, lang)');
+    }
+    public function testCreateTableSupportsFieldCharset()
+    {
+        $sql = $this->export->createTableSql('mytable', array(
+            'name' => array('type' => 'string', 'length' => 255, 'charset' => 'utf8'),
+        ));
+
+        $this->assertEqual($sql[0], 'CREATE TABLE mytable (name VARCHAR(255) CHARACTER SET utf8) ENGINE = INNODB');
+    }
+    public function testCreateTableSupportsFieldCollation()
+    {
+        $sql = $this->export->createTableSql('mytable', array(
+            'name' => array('type' => 'string', 'length' => 255, 'collation' => 'utf8_general_ci'),
+        ));
+
+        $this->assertEqual($sql[0], 'CREATE TABLE mytable (name VARCHAR(255) COLLATE utf8_general_ci) ENGINE = INNODB');
     }
 }

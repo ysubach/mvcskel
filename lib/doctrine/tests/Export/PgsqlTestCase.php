@@ -16,7 +16,7 @@
  *
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
- * <http://www.phpdoctrine.org>.
+ * <http://www.doctrine-project.org>.
  */
 
 /**
@@ -26,7 +26,7 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @category    Object Relational Mapping
- * @link        www.phpdoctrine.org
+ * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  */
@@ -142,5 +142,37 @@ class Doctrine_Export_Pgsql_TestCase extends Doctrine_UnitTestCase
                                          9 => 'ALTER TABLE foo ADD CONSTRAINT foo_parent_id_foo_id FOREIGN KEY (parent_id) REFERENCES foo(id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE', 
                                          10 => 'ALTER TABLE foo ADD CONSTRAINT foo_local_foo_foo_locally_owned_id FOREIGN KEY (local_foo) REFERENCES foo_locally_owned(id) ON DELETE RESTRICT NOT DEFERRABLE INITIALLY IMMEDIATE', 
                                          ));
+    }
+
+	public function testAlterTableSql()
+    {
+        $changes  = array(
+			'add' => array('newfield' => array('type' => 'int')),
+			'remove' => array('oldfield' => array())
+		);
+
+        $sql = $this->export->alterTableSql('mytable', $changes);
+
+		$this->assertEqual($sql, array(
+		    0 => 'ALTER TABLE mytable ADD newfield INT',
+			1 => 'ALTER TABLE mytable DROP oldfield'
+		));
+    }
+
+	public function testAlterTableSqlIdentifierQuoting()
+    {
+		$this->conn->setAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER, true);
+		
+        $changes  = array(
+			'add' => array('newfield' => array('type' => 'int')),
+			'remove' => array('oldfield' => array())
+		);
+
+        $sql = $this->export->alterTableSql('mytable', $changes);
+
+		$this->assertEqual($sql, array(
+		    0 => 'ALTER TABLE "mytable" ADD "newfield" INT',
+			1 => 'ALTER TABLE "mytable" DROP "oldfield"'
+		));
     }
 }

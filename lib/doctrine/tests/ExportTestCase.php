@@ -16,7 +16,7 @@
  *
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
- * <http://www.phpdoctrine.org>.
+ * <http://www.doctrine-project.org>.
  */
 
 /**
@@ -26,7 +26,7 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @category    Object Relational Mapping
- * @link        www.phpdoctrine.org
+ * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  */
@@ -84,5 +84,13 @@ class Doctrine_Export_TestCase extends Doctrine_UnitTestCase
     public function testExport() 
     {
         
+    }
+    public function testDropDottedForeignKey()
+    {
+        $this->export->dropForeignKey('sometable', 'normal_foreign_key');
+        $this->assertEqual($this->adapter->pop(), 'ALTER TABLE sometable DROP CONSTRAINT normal_foreign_key');
+
+        $this->export->dropForeignKey('sometable', 'dotted.foreign.key');
+        $this->assertEqual($this->adapter->pop(), 'ALTER TABLE sometable DROP CONSTRAINT dotted_foreign_key');
     }
 }

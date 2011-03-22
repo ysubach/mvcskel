@@ -16,7 +16,7 @@
  *
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
- * <http://www.phpdoctrine.org>.
+ * <http://www.doctrine-project.org>.
  */
 
 /**
@@ -26,7 +26,7 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @category    Object Relational Mapping
- * @link        www.phpdoctrine.org
+ * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  */
@@ -34,7 +34,11 @@ class Doctrine_Ticket_DC292_TestCase extends Doctrine_UnitTestCase
 {
     public function testTest()
     {
-        $migration = new Doctrine_Migration(dirname(__FILE__) . '/DC292/migrations');
+        $dir = dirname(__FILE__) . '/DC292/migrations';
+        if ( ! is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $migration = new Doctrine_Migration($dir);
         $diff = new Doctrine_Migration_Diff(dirname(__FILE__) . '/DC292/from.yml', dirname(__FILE__) . '/DC292/to.yml', $migration);
         $changes = $diff->generateChanges();
         $this->assertEqual(2, count($changes['created_columns']['article']));

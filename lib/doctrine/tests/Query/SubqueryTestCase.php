@@ -16,7 +16,7 @@
  *
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
- * <http://www.phpdoctrine.org>.
+ * <http://www.doctrine-project.org>.
  */
 
 /**
@@ -27,7 +27,7 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @category    Object Relational Mapping
- * @link        www.phpdoctrine.org
+ * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  */
@@ -62,6 +62,25 @@ class Doctrine_Query_Subquery_TestCase extends Doctrine_UnitTestCase
         $q = new Doctrine_Query();
         
         $q->parseDqlQuery("SELECT u.name, (SELECT COUNT(p.id) FROM Phonenumber p WHERE p.entity_id = u.id) pcount FROM User u WHERE u.name = 'zYne' LIMIT 1");
+
+        $this->assertEqual($q->getSqlQuery(), "SELECT e.id AS e__id, e.name AS e__name, (SELECT COUNT(p.id) AS p__0 FROM phonenumber p WHERE (p.entity_id = e.id)) AS e__0 FROM entity e WHERE (e.name = 'zYne' AND (e.type = 0)) LIMIT 1");
+        // test consequent call
+        $this->assertEqual($q->getSqlQuery(), "SELECT e.id AS e__id, e.name AS e__name, (SELECT COUNT(p.id) AS p__0 FROM phonenumber p WHERE (p.entity_id = e.id)) AS e__0 FROM entity e WHERE (e.name = 'zYne' AND (e.type = 0)) LIMIT 1");
+
+        $users = $q->execute();
+
+        $this->assertEqual($users->count(), 1);
+
+        $this->assertEqual($users[0]->name, 'zYne');
+        $this->assertEqual($users[0]->pcount, 1);
+    }
+
+    public function testSubqueryInSelectPartWithRawSql()
+    {
+        // ticket DC-706
+        $q = new Doctrine_Query();
+        
+        $q->parseDqlQuery("SELECT u.name, (SQL:SELECT COUNT(p.id) AS p__0 FROM phonenumber p WHERE (p.entity_id = e.id)) as pcount FROM User u WHERE u.name = 'zYne' LIMIT 1");
 
         $this->assertEqual($q->getSqlQuery(), "SELECT e.id AS e__id, e.name AS e__name, (SELECT COUNT(p.id) AS p__0 FROM phonenumber p WHERE (p.entity_id = e.id)) AS e__0 FROM entity e WHERE (e.name = 'zYne' AND (e.type = 0)) LIMIT 1");
         // test consequent call
