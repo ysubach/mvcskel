@@ -29,5 +29,5 @@
             <img src="{$root}styles/blueprint/icons/tick.png" alt=""/> Update
         </button>
     </p>
-    <div class="clearBoth" style="clear:both;"></div>
+    <div class="clear" style="clear:both;"></div>
 </form>

@@ -68,7 +68,7 @@ var FormUtils = {
                 return false;
             }
         } catch (e) {
-            form.find('.clearBoth').before('<div class="notification alert">Could not handle request, please try again later.</div>');
+            form.find('.clear').before('<div class="notification alert">Could not handle request, please try again later.</div>');
             return false;
         } finally {
             var img = form.find('button[type=submit] img');
@@ -85,7 +85,7 @@ var FormUtils = {
             form.find('input[name='+err+'],textarea[name='+err+'],select[name='+err+']').
             after('<div class="error">'+data.errors[err].join('<br>')+'</div>');
         }
-        form.find('.clearBoth').before('<div class="notification">Please check your input, errors was found.</div>');
+        form.find('.clear').before('<div class="notification">Please check your input, errors was found.</div>');
         form.find('button[type=submit]').attr('disabled', false);
     }
 };
