@@ -44,7 +44,7 @@ class Controller_Admin extends MvcSkel_Controller {
         $smarty->assign('uniqueLogins', $q->count());
 
         $q->where('registrationDT>?', date('Y-m-d', strtotime("-1 week")));
-        $smarty->assign('newUsers', $q->execute());
+        $smarty->assign('newUsers', $q->execute()->getData());
     }
 }
 ?>
