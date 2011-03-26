@@ -1,6 +1,6 @@
 <?php
 /**
- * Rendering of statoc pages
+ * Rendering of static pages
  */
 class Controller_Static extends MvcSkel_Controller {
     /**
@@ -21,10 +21,7 @@ class Controller_Static extends MvcSkel_Controller {
         $smarty->cache_lifetime = 3600*24*7;
 
         // static seo information
-        $seo = MvcSkel_Helper_Config::read('app/meta.yml');
-        $meta_page = empty($seo[$p]) ? array() : $seo[$p];
-        $meta_all = empty($seo['all']) ? array() : $seo['all'];
-        $smarty->assign('meta', $meta_page + $meta_all);
+        MvcSkel_Helper_Meta::assign($p, $smarty);
 
         $smarty->assign('staticPage', $p);
         echo $smarty->render($p);
