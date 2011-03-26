@@ -1,0 +1,16 @@
+# mail configuration
+config:
+    # from header for email message
+    from: nobody@mvcskel.org
+
+# config to send forgot password
+forgot:
+    # subject to email message
+    subject: MvcSkel - New password created
+    # smarty template name to use for email body
+    # see folder app/templates/Mail
+    filename: forgotPass.tpl
+
+vote:
+    subject: MvcSkel - Vote Created
+    filename: vote.tpl

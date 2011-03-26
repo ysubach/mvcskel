@@ -1,8 +1,11 @@
+# meta information for all page
 all:
   author: Whirix
   description: MvcSkel is open source web development framework written in PHP5.
   keywords: mvc,smarty,ajax
 
+# specific meta information for Home page
+# it'll override information from all: section
 Home:
   title: MvcSkel
 

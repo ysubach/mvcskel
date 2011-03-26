@@ -2,7 +2,7 @@
 /**
  * Rendering of static pages
  */
-class Controller_Static extends MvcSkel_Controller {
+class MvcSkel_Controller_StaticPage extends MvcSkel_Controller {
     /**
      * Special entry for home
      */

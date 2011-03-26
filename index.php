@@ -22,7 +22,7 @@ ini_set('include_path', join(PATH_SEPARATOR, $p));
 require_once 'MvcSkel/Runner.php';
 
 $mvcskel = new MvcSkel_Runner();
-$mvcskel->addFilter(new MvcSkel_Filter_DefaultPage('Static', 'Index'));
-$mvcskel->addFilter(new Filter_StaticPage());
+$mvcskel->addFilter(new MvcSkel_Filter_DefaultPage('StaticPage', 'Index'));
+$mvcskel->addFilter(new MvcSkel_Filter_StaticPage());
 $mvcskel->run();
 ?>
