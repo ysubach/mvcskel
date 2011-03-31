@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MvcSkel validator helper.
  * 
@@ -12,21 +13,22 @@
  */
 
 /**
-* Validator helper.
-* Provide standard validation methods. Found errors are saved in associated
-* form object.
-*
-* @package    MvcSkel
-* @subpackage Helper
-*/
+ * Validator helper.
+ * Provide standard validation methods. Found errors are saved in associated
+ * form object.
+ *
+ * @package    MvcSkel
+ * @subpackage Helper
+ */
 class MvcSkel_Helper_Validator {
+
     /** Associated form */
     private $form;
-    
+
     /**
-    * Contructor.
-    * @param string $form From object for saving errors
-    */
+     * Contructor.
+     * @param string $form From object for saving errors
+     */
     public function __construct($form) {
         $this->form = $form;
     }
@@ -38,7 +40,7 @@ class MvcSkel_Helper_Validator {
      * @return true if value not empty, false otherwise
      */
     public function checkNotEmpty($field, $value) {
-        if (trim($value)=='') {
+        if (trim($value) == '') {
             $this->form->attachError($field, 'This information is required');
             return false;
         }
@@ -51,8 +53,7 @@ class MvcSkel_Helper_Validator {
      * @param string value
      * @return true if value not empty, false otherwise
      */
-    public function checkCurrency($field, $value)
-    {
+    public function checkCurrency($field, $value) {
         $value = trim($value);
         if (!ereg('^[[:digit:]]*\.{0,1}[[:digit:]]{0,2}$', $value)) {
             $this->form->attachError($field, 'Please enter correct sum');
@@ -71,14 +72,14 @@ class MvcSkel_Helper_Validator {
         if ($auth->checkRole('Administrator')) {
             return true;
         }
-        
+
         $user = MvcSkel_Helper_Auth::user();
-        if ($userId!=$user->id) {
+        if ($userId != $user->id) {
             $this->form->attachError('ownership', 'you are not the owner of object');
-            
-            $logger->alert('user with id:'.$user->id.
-                    ' tries access in context of object of user '.$userId);
-        
+
+            $logger->alert('user with id:' . $user->id .
+                    ' tries access in context of object of user ' . $userId);
+
             return false;
         }
 
@@ -91,8 +92,7 @@ class MvcSkel_Helper_Validator {
      * @param string value
      * @return true if validation ok
      */
-    public function checkInteger($field, $value)
-    {
+    public function checkInteger($field, $value) {
         $value = trim($value);
         if (!is_numeric($value)) {
             $this->form->attachError($field, 'Please enter numeric value');
@@ -151,13 +151,12 @@ class MvcSkel_Helper_Validator {
      * @param string value
      * @return true if value is correct, false otherwise
      */
-    public function checkEmail($field, $value)
-    {
-        $value = trim($value);        
-        if (ereg('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+'.'@'.
-                 '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.'.
-                 '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$', 
-                 $value)) {
+    public function checkEmail($field, $value) {
+        $value = trim($value);
+        if (ereg('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+' . '@' .
+                        '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.' .
+                        '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$',
+                        $value)) {
             return true;
         } else {
             $this->form->attachError($field, 'Please enter correct email address');
@@ -171,9 +170,8 @@ class MvcSkel_Helper_Validator {
      * @param HTTP_Upload_File file
      * @return true if file not empty, false otherwise
      */
-    public function checkFileNotEmpty($field, $file)
-    {
-        if (!$file->isValid() or $file->getProp('size')==0) {
+    public function checkFileNotEmpty($field, $file) {
+        if (!$file->isValid() or $file->getProp('size') == 0) {
             $this->form->attachError($field, 'Please upload not empty file');
             return false;
         }
@@ -187,22 +185,26 @@ class MvcSkel_Helper_Validator {
      * @param HTTP_Upload_File file
      * @return true if file is correct image, false otherwise
      */
-    public function checkImageFormat($field, $file)
-    {
+    public function checkImageFormat($field, $file, $extentions = FALSE) {
+        if (!$extentions) {
+            $extentions = array('png', 'jpg', 'gif', 'jpeg');
+        }
         $result = true;
         if ($file->isValid()) {
             $filename = $file->getProp('name');
             $parts = pathinfo($filename);
             $ext = strtolower($parts['extension']);
-            if (!in_array($ext, array('png', 'jpg', 'gif', 'jpeg'))) {
-                $this->form->attachError($field, 'Please upload PNG, GIF or JPEG file');
+            if (!in_array($ext, $extentions)) {
+                $this->form->attachError($field, 'Possible image extentions: '.
+                        implode(', ', $extentions));
                 return false;
             }
-        }
-        else {
+        } else {
             $result = false;
         }
         return $result;
-    }    
+    }
+
 }
+
 ?>
