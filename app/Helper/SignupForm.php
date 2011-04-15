@@ -32,8 +32,10 @@ class Helper_SignupForm extends MvcSkel_Helper_Form {
 
         // username checks
         $validator->checkNotEmpty('username', $u->username);
-        $user = Doctrine::getTable('User')->findOneByUsername($u->username);
-        if ($user!==false) {
+        $unc = Doctrine_Query::create()->from('User')
+            ->addWhere('username=?', $u->username)
+            ->count();
+        if ($unc>0) {
             $this->attachError('username', 'Username is already in use.');
         }
 
@@ -46,8 +48,10 @@ class Helper_SignupForm extends MvcSkel_Helper_Form {
         // email related check
         $validator->checkNotEmpty('email', $u->email);
         $validator->checkEmail('email', $u->email);
-        $user = Doctrine::getTable('User')->findOneByEmail($u->email);
-        if ($user!==false) {
+        $emc = Doctrine_Query::create()->from('User')
+            ->addWhere('email=?', $u->email)
+            ->count();
+        if ($emc>0) {
             $this->attachError('email', 'Email is already in use.');
         }
 

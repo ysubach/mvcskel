@@ -13,7 +13,8 @@
 class Helper_ProfileForm extends MvcSkel_Helper_Form {
     protected function buildFresh() {
         if (isset($_REQUEST['id'])) {
-            return Doctrine::getTable('User')->find($_REQUEST['id']);
+            $u = Doctrine::getTable('User')->find($_REQUEST['id']);
+            return $u;
         } elseif (isset($_REQUEST['new'])) {
             $o = new User();
             $o->roles = 'User';
@@ -45,8 +46,10 @@ class Helper_ProfileForm extends MvcSkel_Helper_Form {
 
         // username checks
         $validator->checkNotEmpty('username', $u->username);
-        $user = Doctrine::getTable('User')->findOneByUsername($u->username);
-        if ($user!==false && $user->id!=$u->id) {
+        $unc = Doctrine_Query::create()->from('User')
+            ->addWhere('username=?', $u->username)->addWhere('id!=?', $u->id)
+            ->count();
+        if ($unc>0) {
             $this->attachError('username', 'Username is already in use.');
         }
 
@@ -54,7 +57,6 @@ class Helper_ProfileForm extends MvcSkel_Helper_Form {
         if ($_REQUEST['password']!=$_REQUEST['pass2']) {
             $this->attachError('pass2', 'Password do not match original!');
         }
-
         if (!$u->id) {
             $validator->checkNotEmpty('password', $_REQUEST['password']);
         }
@@ -62,8 +64,10 @@ class Helper_ProfileForm extends MvcSkel_Helper_Form {
         // email related check
         $validator->checkNotEmpty('email', $u->email);
         $validator->checkEmail('email', $u->email);
-        $user = Doctrine::getTable('User')->findOneByEmail($u->email);
-        if ($user!==false && $user->id!=$u->id) {
+        $emc = Doctrine_Query::create()->from('User')
+            ->addWhere('email=?', $u->email)->addWhere('id!=?', $u->id)
+            ->count();
+        if ($emc>0) {
             $this->attachError('email', 'Email is already in use.');
         }
     }
