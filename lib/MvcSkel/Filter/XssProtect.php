@@ -48,13 +48,25 @@ class MvcSkel_Filter_XssProtect extends MvcSkel_Filter {
                 // deeper in array
                 foreach ($GLOBALS[$n][$i] as $j=>$w) {
                     if (!is_numeric($w)) {
-                        $GLOBALS[$n][$i][$j] = htmlentities($w);
+                        $GLOBALS[$n][$i][$j] = $this->stringTransform($w);
                     }
                 }
             } else {
                 // string encode
-                $GLOBALS[$n][$i] = htmlentities($v);
+                $GLOBALS[$n][$i] = $this->stringTransform($v);
             }
+        }
+    }
+
+    /**
+     * Transform string to safe form
+     */
+    private function stringTransform($w) {
+        if (strstr($w, '<')!==false && strstr($w, '>')!==false) {
+            $x = htmlentities($w);
+            return $x;
+        } else {
+            return $w;
         }
     }
 }
