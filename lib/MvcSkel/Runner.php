@@ -130,8 +130,20 @@ class MvcSkel_Runner {
         // search for file, include if found
         foreach ($includePaths as $path) {
             if (file_exists($path.$fileName)) {
+                // simple search
                 require_once $path.$fileName;
                 return;
+            } else if (substr($className, 0, 10)=='Controller') {
+                // for controllers search ignoring case
+                $fullpath = $path.$fileName;
+                $dir = dirname($fullpath);
+                $file = basename($fullpath);
+                foreach (scandir($dir) as $scanFile) {
+                    if (strtolower($file)==strtolower($scanFile)) {
+                        require_once $dir . '/' . $scanFile;
+                        return;
+                    }
+                }
             }
         }
     }

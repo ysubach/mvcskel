@@ -39,6 +39,7 @@ class MvcSkel_Helper_Url {
     * @return string target URL
     */
     public static function url($url, $params = null, $anchor = '') {
+        $url = strtolower($url);
         $config = MvcSkel_Helper_Config::read();
         if ($params==null) {
             $params = array();
