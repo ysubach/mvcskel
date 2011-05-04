@@ -45,17 +45,32 @@ class MvcSkel_Filter_XssProtect extends MvcSkel_Filter {
                 // nothing for numeric
                 continue;
             } else if (is_array($v)) {
-                // deeper in array
-                foreach ($GLOBALS[$n][$i] as $j=>$w) {
-                    if (!is_numeric($w)) {
-                        $GLOBALS[$n][$i][$j] = $this->stringTransform($w);
-                    }
-                }
+                // array
+                $GLOBALS[$n][$i] = $this->protectArray($v);
             } else {
                 // string encode
                 $GLOBALS[$n][$i] = $this->stringTransform($v);
             }
         }
+    }
+
+    /**
+     * Encode simple array
+     * @param array $arr Source array
+     * @return array Safe array
+     */
+    private function protectArray($arr) {
+        $pa = array();
+        foreach ($arr as $k => $v) {
+            if (is_numeric($v)) {
+                $pa[$k] = $v;
+            } else if (is_array($v)) {
+                $pa[$k] = $this->protectArray($v);
+            } else {
+                $pa[$k] = $this->stringTransform($v);
+            }
+        }
+        return $pa;
     }
 
     /**
