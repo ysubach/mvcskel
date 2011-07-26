@@ -6,6 +6,6 @@ all:
 
 # specific meta information for Home page
 # it'll override information from all: section
-Home:
+home:
   title: MvcSkel
 
