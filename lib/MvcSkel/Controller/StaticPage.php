@@ -7,7 +7,7 @@ class MvcSkel_Controller_StaticPage extends MvcSkel_Controller {
      * Special entry for home
      */
     public function actionIndex() {
-        $_REQUEST['page'] = 'Home';
+        $_REQUEST['page'] = 'home';
         return $this->actionRender();
     }
 

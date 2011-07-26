@@ -40,7 +40,7 @@ class MvcSkel_Controller_Auth extends MvcSkel_Controller {
         if (isset($_REQUEST['destination']) && !empty($_REQUEST['destination'])) {
             MvcSkel_Helper_Url::redirect($_REQUEST['destination']);
         } else {
-            MvcSkel_Helper_Url::redirect("Home.html");
+            MvcSkel_Helper_Url::redirect("home");
         }
     }
 
@@ -52,7 +52,7 @@ class MvcSkel_Controller_Auth extends MvcSkel_Controller {
             $auth->start();
         }
 
-        MvcSkel_Helper_Url::redirect("Home.html");
+        MvcSkel_Helper_Url::redirect("home");
     }
 }
 ?>

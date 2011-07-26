@@ -1,23 +1,23 @@
 <?php
-
 /**
- * Static page filter (*.html)
- */
+* Static page filter
+*/ 
 class MvcSkel_Filter_StaticPage extends MvcSkel_Filter {
 
     /**
      * Redirect *.html to Controller_Static
      */
     public function filter() {
-        $r = preg_match('/(\w+)\.html$/', $_REQUEST['mvcskel_c'], $matches);
-        if ($r > 0) {
+        $ctrl = $_REQUEST['mvcskel_c'];
+        if (class_exists("Controller_$ctrl")) {
+            return true;
+        }
+        if (file_exists("app/templates/Static/$ctrl.tpl")) {
             $_REQUEST['mvcskel_c'] = 'StaticPage';
             $_REQUEST['mvcskel_a'] = 'Render';
-            $_REQUEST['page'] = $matches[1];
+            $_REQUEST['page'] = $ctrl;
         }
         return true;
     }
-
 }
-
 ?>

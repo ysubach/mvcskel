@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MvcSkel Auth helper.
  *
@@ -9,10 +10,6 @@
  * @copyright  2008, Whirix Ltd.
  * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
  * @link       http://code.google.com/p/mvcskel/
- */
-
-/**
- * Include PEAR Auth library.
  */
 require_once 'Auth.php';
 require_once 'MDB2.php';
@@ -50,6 +47,7 @@ require_once 'MDB2.php';
  * @subpackage Helper
  */
 class MvcSkel_Helper_Auth extends Auth {
+
     /** Current user object */
     protected static $currentUser = null;
 
@@ -60,11 +58,11 @@ class MvcSkel_Helper_Auth extends Auth {
         $config = MvcSkel_Helper_Config::read();
 
         $options = array(
-            'dsn'        => $config['dsn'],
-            'table'      => 'User',
-            'usernamecol'  => 'username',
-            'passwordcol'  => 'password',
-            'db_fields'  => array('roles', 'fname', 'id', 'lastLoginDT'),
+            'dsn' => $config['dsn'],
+            'table' => 'User',
+            'usernamecol' => 'username',
+            'passwordcol' => 'password',
+            'db_fields' => array('roles', 'fname', 'id', 'lastLoginDT'),
             'db_options' => array('portability' => MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE),
             'enableLogging' => false,
         );
@@ -102,12 +100,12 @@ class MvcSkel_Helper_Auth extends Auth {
      * Return current logged in user object, NULL if no logged user
      */
     public function getUser() {
-        if (self::$currentUser!=null) {
+        if (self::$currentUser != null) {
             return self::$currentUser;
         }
 
         $id = $this->getAuthData('id');
-        if ($id==null) {
+        if ($id == null) {
             // user identifier is missing
             return null;
         }
@@ -140,26 +138,9 @@ class MvcSkel_Helper_Auth extends Auth {
             return false;
         }
         $user = Doctrine::getTable('User')->findOneByAutoLoginKey($_COOKIE['mvcskel_auto_login']);
-        $this->logger->debug('try autologin by key '.$_COOKIE['mvcskel_auto_login']);
+        $this->logger->debug('try autologin by key ' . $_COOKIE['mvcskel_auto_login']);
         if ($user) {
-            // set auth
-            $usernamecol = $this->storage_options['usernamecol'];
-            $this->setAuth($user->$usernamecol);
-
-            // set additional auth data (by some reason it is not done yet?)
-            $this->logger->debug('found user with id ' . $user->id .
-                ' and username ' . $user->$usernamecol);
-            $db_fields = $this->storage_options['db_fields'];
-            foreach ($db_fields as $field) {
-                $this->setAuthData($field, $user->$field);
-                $this->logger->debug('set auth data:'.$field.'-'.$user->$field);
-            }
-
-            // update user last login data
-            $user->lastLoginDT = new Doctrine_Expression('now()');
-            $user->lastIP = $_SERVER['REMOTE_ADDR'];
-            $user->save();
-            
+            $this->setAuthUser($user);
             return true;
         }
         return false;
@@ -171,11 +152,34 @@ class MvcSkel_Helper_Auth extends Auth {
     public function autoLoginPut() {
         // keep key in db
         $user = $this->getUser();
-        $user->autoLoginKey = md5(time().rand());
+        $user->autoLoginKey = md5(time() . rand());
         $user->save();
         // keep key in cookie
-        setcookie('mvcskel_auto_login', $user->autoLoginKey,
-            time()+3600*24*6, '/');
+        setcookie('mvcskel_auto_login', $user->autoLoginKey, time() + 3600 * 24 * 6, '/');
+    }
+
+    /**
+     * Set user as currently authorized
+     * @param User $user
+     */
+    public function setAuthUser($user) {
+        // set auth
+        $usernamecol = $this->storage_options['usernamecol'];
+        $this->setAuth($user->$usernamecol);
+
+        // set additional auth data (by some reason it is not done yet?)
+        $this->logger->debug('found user with id ' . $user->id .
+                ' and username ' . $user->$usernamecol);
+        $db_fields = $this->storage_options['db_fields'];
+        foreach ($db_fields as $field) {
+            $this->setAuthData($field, $user->$field);
+            $this->logger->debug('set auth data:' . $field . '-' . $user->$field);
+        }
+
+        // update user last login data
+        $user->lastLoginDT = new Doctrine_Expression('now()');
+        $user->lastIP = $_SERVER['REMOTE_ADDR'];
+        $user->save();
     }
 
     /**
@@ -185,10 +189,12 @@ class MvcSkel_Helper_Auth extends Auth {
         self::$currentUser = null;
         $result = parent::logout();
         if (isset($_COOKIE['mvcskel_auto_login'])) {
-            setcookie('mvcskel_auto_login', '', time()-3600*24*6, '/');
+            setcookie('mvcskel_auto_login', '', time() - 3600 * 24 * 6, '/');
         }
         session_unset();
         return $result;
     }
+
 }
+
 ?>
