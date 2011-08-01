@@ -9,6 +9,8 @@ logger:
 
 nice-urls: true
 
+email-admin: developer@email-address.com
+
 smarty-compile-check: 1
 
 version: set_current_revno
