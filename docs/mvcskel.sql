@@ -18,3 +18,12 @@ CREATE TABLE IF NOT EXISTS `User` (
 INSERT INTO `User` (`id`, `username`, `password`, `roles`, `email`, `fname`, `lastLoginDT`, `registrationDT`) VALUES
 (1, 'admin', md5('1'), 'Administrator', 'admin@noemail.org', 'Admin User', now(), now()),
 (2, 'user', md5('1'), 'User', 'user@noemail.org', 'John', now(), now());
+
+
+CREATE TABLE IF NOT EXISTS `Opt` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE (`name`)
+) engine=InnoDB;
