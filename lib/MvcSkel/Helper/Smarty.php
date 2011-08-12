@@ -42,6 +42,18 @@ class MvcSkel_Helper_Smarty extends Smarty {
     protected $masterTemplate = 'master.tpl';
 
     /**
+     * Uses for handlin of authorized user.
+     * @var MvcSkel_Helper_Auth object.
+     */
+    protected $auth;
+    
+    /**
+     * Authorization flag, affects caching. 
+     * @var boolean whether user authorized
+     */
+    protected $authorized;
+
+    /**
      * Constructor.
      *
      * Special class Helper_SmartyAssigner is used for assigning of
@@ -75,10 +87,12 @@ class MvcSkel_Helper_Smarty extends Smarty {
         $this->compile_dir = $config['tmp_dir'] . '/templates_c';
         $this->cache_dir = $config['tmp_dir'] . '/cache';
         $this->compile_check = $config['smarty-compile-check'];
+        $this->auth = new MvcSkel_Helper_Auth();
+        $this->authorized = $this->auth->getAuth();
 
         // assign common variables
         $this->assign('bodyTemplate', $bodyTemplate);
-        $this->assign('auth', new MvcSkel_Helper_Auth());
+        $this->assign('auth', $this->auth);
         $this->assign('root', $config['root']);
         $this->assign('version', $config['version']);
 
