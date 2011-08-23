@@ -46,8 +46,11 @@ class MvcSkel_Helper_Config {
 
         // try to read from memory cache at first
         if (!isset($conf[$file])) {
+            // prefix is necessary becuase we use/keep relative path to TMP dir
+            // thus caches created from differerent locations must different
+            $prefix = substr(md5($tmp_dir), 0, 4);
             // try to read from file cache then
-            $cache = $tmp_dir . '/cache.' . basename($file);
+            $cache = $tmp_dir . "/cache.{$prefix}." . basename($file);
             if (@filemtime($cache)>filemtime($file)) {
                 $conf[$file] = unserialize(file_get_contents($cache));
             } else {
