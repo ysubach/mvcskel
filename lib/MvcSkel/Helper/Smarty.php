@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MvcSkel Smarty helper.
  *
@@ -13,7 +14,6 @@
  * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser Public General License (LGPL).
  * @link       http://code.google.com/p/mvcskel/
  */
-
 /**
  * Use Smarty as template engine.
  */
@@ -26,7 +26,8 @@ require_once 'Minify/HTML.php';
  * @subpackage    Helper
  */
 class MvcSkel_Helper_Smarty extends Smarty {
-/** Currently rendered file */
+
+    /** Currently rendered file */
     protected $bodyTemplate;
 
     /**
@@ -40,13 +41,13 @@ class MvcSkel_Helper_Smarty extends Smarty {
      * @var string path to master template
      */
     protected $masterTemplate = 'master.tpl';
-    
+
     /**
      * Uses for handlin of authorized user.
      * @var MvcSkel_Helper_Auth object.
      */
     protected $auth;
-    
+
     /**
      * Authorization flag, affects caching. 
      * @var boolean whether user authorized
@@ -103,8 +104,7 @@ class MvcSkel_Helper_Smarty extends Smarty {
         }
 
         // add MvcSkel specific plugin(s)
-        $this->register_function('url',
-            array('MvcSkel_Helper_Smarty', 'pluginUrl'));
+        $this->register_function('url', array('MvcSkel_Helper_Smarty', 'pluginUrl'));
         $this->register_outputfilter(array('MvcSkel_Helper_Smarty', 'minifyHtml'));
         // native smarty html minificator
         //$this->load_filter('output', 'trimwhitespace');
@@ -125,7 +125,7 @@ class MvcSkel_Helper_Smarty extends Smarty {
     public function render($cacheId = null) {
         if ($this->forAjax) {
             return $this->fetch($this->bodyTemplate);
-        } 
+        }
 
         if ($this->authorized) {
             $cacheId .= '_1';
@@ -176,16 +176,16 @@ class MvcSkel_Helper_Smarty extends Smarty {
             $url = $params['to'];
             unset($params['to']);
         } else if (isset($params['cc'])) {
-                $url = $_REQUEST['mvcskel_c'].'/'.$_REQUEST['mvcskel_a'];
-                foreach ($_GET as $k=>$v) {
-                    if (substr($k, 0, 7)!='mvcskel' && !isset($params[$k])) {
-                        $params[$k] = $v;
-                    }
+            $url = $_REQUEST['mvcskel_c'] . '/' . $_REQUEST['mvcskel_a'];
+            foreach ($_REQUEST as $k => $v) {
+                if (substr($k, 0, 7) != 'mvcskel' && !isset($params[$k])) {
+                    $params[$k] = $v;
                 }
-                unset($params['cc']);
-            } else {
-                throw new Exception("Parameter 'to' is required");
             }
+            unset($params['cc']);
+        } else {
+            throw new Exception("Parameter 'to' is required");
+        }
 
         // handling 'a'
         $anchor = $params['a'];
@@ -196,7 +196,7 @@ class MvcSkel_Helper_Smarty extends Smarty {
         }
         return MvcSkel_Helper_Url::url($url, $params, $anchor);
     }
-    
+
     /**
      * Optimize HTML output.
      */
@@ -210,8 +210,8 @@ class MvcSkel_Helper_Smarty extends Smarty {
      * @param string $prefix Prefix used in template in {html_select_date}
      */
     public static function extractDate($prefix) {
-        return $_REQUEST[$prefix.'Year'].'-'.
-            $_REQUEST[$prefix.'Month'].'-'.$_REQUEST[$prefix.'Day'];
+        return $_REQUEST[$prefix . 'Year'] . '-' .
+                $_REQUEST[$prefix . 'Month'] . '-' . $_REQUEST[$prefix . 'Day'];
     }
 
     /**
@@ -220,17 +220,19 @@ class MvcSkel_Helper_Smarty extends Smarty {
      * @param string $prefix Prefix used in template in {html_select_time}
      */
     public static function extractTime($prefix) {
-        $h = $_REQUEST[$prefix.'Hour'];
-        $m = $_REQUEST[$prefix.'Minute'];
-        if (isset($_REQUEST[$prefix.'Meridian']) &&
-            $_REQUEST[$prefix.'Meridian']=='pm') {
+        $h = $_REQUEST[$prefix . 'Hour'];
+        $m = $_REQUEST[$prefix . 'Minute'];
+        if (isset($_REQUEST[$prefix . 'Meridian']) &&
+                $_REQUEST[$prefix . 'Meridian'] == 'pm') {
             $h += 12;
         }
-        $time = $h.':'.$m;
-        if (isset($_REQUEST[$prefix.'Second'])) {
-            $time = $time.':'.$_REQUEST[$prefix.'Second'];
+        $time = $h . ':' . $m;
+        if (isset($_REQUEST[$prefix . 'Second'])) {
+            $time = $time . ':' . $_REQUEST[$prefix . 'Second'];
         }
         return $time;
     }
+
 }
+
 ?>
