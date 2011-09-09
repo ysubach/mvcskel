@@ -40,6 +40,10 @@ class MvcSkel_Filter_DoctrineInit extends MvcSkel_Filter {
         $config = MvcSkel_Helper_Config::read();
         Doctrine_Manager::connection($config['dsn']);
         
+        // uncomment if you need character set for connection
+        //$con = Doctrine_Manager::getInstance()->connection();
+        //$con->execute("SET CHARACTER SET utf8");
+
         return true;
     }
 }
