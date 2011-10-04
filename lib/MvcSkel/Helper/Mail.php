@@ -33,6 +33,32 @@ class MvcSkel_Helper_Mail {
 
         // message delivery
         $headers = "From: {$mailConfig['config']['from']}";
+        if (!empty($data['html'])) {
+            $headers .= "Mime-Version: 1.0\r\n";
+            $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+        }
+
+        /* if (!empty($data['attachment'])) {
+          $filename = $data['attachment'];
+
+          $f = fopen($filename, "rb");
+          $un = strtoupper(uniqid(time()));
+          $headers .= "Mime-Version: 1.0\n";
+          $headers .= "Content-Type:multipart/mixed;";
+          $headers .= "boundary=\"----------" . $un . "\"\n\n";
+          $zag = "------------" . $un . "\nContent-Type:text/html;\n";
+          $zag .= "Content-Transfer-Encoding: 8bit\n\n$body\n\n";
+          $zag .= "------------" . $un . "\n";
+          $zag .= "Content-Type: application/octet-stream;";
+          $zag .= "name=\"" . basename($filename) . "\"\n";
+          $zag .= "Content-Transfer-Encoding:base64\n";
+          $zag .= "Content-Disposition:attachment;";
+          $zag .= "filename=\"" . basename($filename) . "\"\n\n";
+          $zag .= chunk_split(base64_encode(fread($f, filesize($filename)))) . "\n";
+
+          $body = $zag;
+          } */
+
         mail($user->email, $tpl['subject'], $body, $headers);
 
         $logger = MvcSkel_Helper_Log::get(__CLASS__);
